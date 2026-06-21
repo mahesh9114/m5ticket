@@ -1,0 +1,79 @@
+{
+  "success": true,
+  "data": {
+    "train": {
+      "trainNo": "12711",
+      "trainName": "PINAKINI SF EXP",
+      "from": "BZA",
+      "to": "MAS",
+      "fromStationName": "Vijayawada Junction",
+      "toStationName": "Chennai Central",
+      "distance": 431,
+      "travelClass": "2S",
+      "quota": "GN"
+    },
+    "fare": {
+      "baseFare": 160,
+      "reservationCharge": 15,
+      "superfastCharge": 15,
+      "serviceTax": 0,
+      "totalFare": 190
+    },
+    "availability": [
+      {
+        "date": "22-6-2026",
+        "status": "WAITLIST",
+        "availabilityText": "WL 111",
+        "rawStatus": "GNWL153/WL111",
+        "prediction": "43% Chance",
+        "predictionPercentage": 43,
+        "canBook": true
+      },
+      {
+        "date": "23-6-2026",
+        "status": "AVAILABLE",
+        "availabilityText": "AVL 17",
+        "rawStatus": "AVAILABLE-0017",
+        "prediction": "Available",
+        "predictionPercentage": 100,
+        "canBook": true
+      },
+      {
+        "date": "24-6-2026",
+        "status": "AVAILABLE",
+        "availabilityText": "AVL 142",
+        "rawStatus": "AVAILABLE-0142",
+        "prediction": "Available",
+        "predictionPercentage": 100,
+        "canBook": true
+      },
+      {
+        "date": "25-6-2026",
+        "status": "AVAILABLE",
+        "availabilityText": "AVL 137",
+        "rawStatus": "AVAILABLE-0137",
+        "prediction": "Available",
+        "predictionPercentage": 100,
+        "canBook": true
+      },
+      {
+        "date": "26-6-2026",
+        "status": "WAITLIST",
+        "availabilityText": "WL 44",
+        "rawStatus": "GNWL68/WL44",
+        "prediction": "75% Chance",
+        "predictionPercentage": 75,
+        "canBook": true
+      },
+      {
+        "date": "27-6-2026",
+        "status": "WAITLIST",
+        "availabilityText": "WL 89",
+        "rawStatus": "GNWL115/WL89",
+        "prediction": "61% Chance",
+        "predictionPercentage": 61,
+        "canBook": true
+      }
+    ]
+  }
+}
