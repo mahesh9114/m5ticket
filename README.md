@@ -174,11 +174,11 @@ mSticket/
 
 ## 📄 License
 
-MIT License — feel free to use and modify.
+MIT License — feel free to use and collaburate.
 
 ---
 
-<p align="center">Made with ❤️ for smarter train travel 🚂</p>
+<p align="center">Made with ❤️ for Fastest Last-mint train travel 🚂</p>
 ```
 
 ---
