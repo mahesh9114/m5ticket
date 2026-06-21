@@ -131,7 +131,7 @@ mSticket/
 | Requirement | Version |
 |-------------|---------|
 | Node.js | v18+ |
-| RailKit API Key | required |
+| API Key | required |
 
 ---
 
@@ -139,7 +139,7 @@ mSticket/
 
 | Variable | Description | Required |
 |----------|-------------|----------|
-| `RAILKIT_API_KEY` | Your RailKit API key | ✅ Yes |
+| `API_KEY` | Your API key | ✅ Yes |
 
 ---
 
