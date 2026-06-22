@@ -1,4 +1,5 @@
 import "dotenv/config";
+import { setCache, getCache } from "../cache/cache.js";
 import { configure, getAvailability } from "railkit";
 
 // ✅ configure railkit with api key
@@ -31,27 +32,45 @@ async function m3(
       const [day, month, year] = d.split("-");
       return `${parseInt(day)}-${parseInt(month)}-${year}`;
     };
-    const normalizedDate = normalizeDate(date); // normalize once outside loop
+    const normalizedDate = normalizeDate(date);
 
-    // ✅ start from station AFTER toStnCode and go forwards
-    let index = toIndex + 1;
+    // ✅ step 1 — processResult defined FIRST
+    function processResult(result) {
+      const { fromStationName, toStationName } = result.data.train;
+      const availabilityList = result.data.availability;
 
-    while (index <= arrlen - 1) {
-      const to = arr[index]; // later station
-      console.log("trying to:", to);
+      const match = availabilityList.find(
+        (item) => item.date === normalizedDate,
+      );
 
-      // ✅ search fromStnCode → later station
-      const found = await search(trainNo, fromStnCode, to, date, coach, quota);
+      console.log("match:", match);
 
-      if (found) return true; // ✅ found! tell index.js to stop
-
-      index++; // ❌ not found, try next later station
+      if (match) {
+        console.log("status:", match.status);
+        if (match.status === "AVAILABLE") {
+          console.log(`✅ Success! ${fromStationName} -> ${toStationName}`);
+          console.log(`📅 Date: ${match.date}`);
+          return true; // ✅ available — stop loop
+        } else {
+          return false; // ❌ waitlist — try next station
+        }
+      }
+      return false; // ❌ no match
     }
 
-    return false; // ❌ no later station worked
-
-    // ✅ search function — checks availability for given from→to
+    // ✅ step 2 — search function defined SECOND
     async function search(trainNo, fromStnCode, toStnCode, date, coach, quota) {
+      // ✅ check cache first
+      const cached = await getCache(
+        trainNo,
+        fromStnCode,
+        toStnCode,
+        date,
+        coach,
+        quota,
+      );
+      if (cached) return processResult(cached);
+
       // ✅ call railkit api
       const result = await getAvailability(
         trainNo,
@@ -63,37 +82,39 @@ async function m3(
       );
 
       if (result && result.success) {
-        const availabilityList = result.data.availability;
-
-        // ✅ find matching date in availability array
-        const match = availabilityList.find(
-          (item) => item.date === normalizedDate,
+        // ✅ save to cache
+        await setCache(
+          trainNo,
+          fromStnCode,
+          toStnCode,
+          date,
+          coach,
+          quota,
+          result,
         );
-
-        console.log("match:", match);
-
-        if (match) {
-          console.log("status:", match.status);
-
-          if (match.status === "AVAILABLE") {
-            // ✅ found available ticket
-            const { fromStationName, toStationName } = result.data.train;
-            console.log(
-              `✅ Success! Found a way from ${fromStationName} -> to ${toStationName}`,
-            );
-            console.log(`📅 Date: ${match.date}`);
-            return true; // ✅ available — stop loop
-          } else {
-            return false; // ❌ waitlist — try next station
-          }
-        }
+        return processResult(result);
       }
 
-      return false; // ❌ no result — try next station
+      return false; // ❌ no result
     }
+
+    // ✅ step 3 — start from station AFTER toStnCode and go forwards
+    let index = toIndex + 1;
+
+    while (index <= arrlen - 1) {
+      const to = arr[index]; // later station
+      console.log("trying to:", to);
+
+      const found = await search(trainNo, fromStnCode, to, date, coach, quota);
+      if (found) return true; // ✅ found! stop
+
+      index++; // ❌ try next later station
+    }
+
+    return false; // ❌ no later station worked
   } catch (err) {
     console.log("❌ M3 error:", err.message);
-    return false; // ❌ error — try next module
+    return false;
   }
 }
 

@@ -1,5 +1,6 @@
 import readline from "node:readline/promises";
 import { stdin as input, stdout as output } from "node:process";
+import { connectValkey } from "./cache/cache.js";
 import { theSplicerStopsOfTrain } from "./splicingfunction.js";
 
 // ✅ import all search modules
@@ -17,6 +18,7 @@ async function run() {
   try {
     let finding = true; // ✅ true = still searching, false = found!
 
+    await connectValkey();
     // ✅ welcome message
     console.log("=== m5-ticket Search ===");
 
@@ -142,6 +144,9 @@ async function run() {
   } finally {
     // ✅ always close terminal interface at the end
     rl.close();
+
+    // Force the Node.js process to exit cleanly
+    process.exit(0);
   }
 }
 

@@ -31,8 +31,9 @@ async function theSplicerStopsOfTrain(trainNo, fromstncode, tostncode) {
 
     const too = (tooIndex, codeslength) => {
       // 1. Safely convert inputs to numbers, defaulting to 0 if they are invalid/missing
-      const cleanTooIndex = Number(tooIndex) || 0;
-      const cleanCodesLength = Number(codeslength) || 0;
+      // 2. adds 4 , but forces length of splicecodes.
+      const cleanTooIndex = Number(tooIndex);
+      const cleanCodesLength = Number(codeslength);
 
       // 2. Calculate maxIndex safely (ensure it doesn't drop below 0)
       const maxIndex = Math.max(0, cleanCodesLength);
