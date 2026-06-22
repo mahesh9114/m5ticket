@@ -1,4 +1,3 @@
-import { readFile } from "node:fs";
 import data from "./ALL-TRAINS-8490.json" with { type: "json" };
 
 async function theSplicerStopsOfTrain(trainNo, fromstncode, tostncode) {
@@ -56,7 +55,5 @@ async function theSplicerStopsOfTrain(trainNo, fromstncode, tostncode) {
   }
   return theSlicerOfStops(fromstncode, tostncode, splicedcodes);
 }
-
-theSplicerStopsOfTrain();
 
 export { theSplicerStopsOfTrain };
