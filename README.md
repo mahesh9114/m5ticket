@@ -28,12 +28,12 @@ mSticket is a CLI tool that searches for train ticket availability on Indian Rai
 
 ---
 
-## ⚙️ Installation
+### ⚙️ Installation
 
 ### 1. Clone the repository
 ```bash
-git clone https://github.com/yourusername/mSticket.git
-cd mSticket
+git clone https://github.com/mahesh/m5ticket.git
+cd m5ticket
 ```
 
 ### 2. Install dependencies
