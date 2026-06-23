@@ -45,7 +45,7 @@ async function m5(
         if (match.status === "AVAILABLE") {
           console.log(`✅ ${fromStationName} -> ${toStationName}`);
           console.log(`📅 Date: ${match.date}`);
-          return (true, fromStationName, toStationName);
+          return { from: fromStationName, to: toStationName };
         } else {
           return false;
         }
@@ -103,7 +103,7 @@ async function m5(
           console.log(`🎟️  ${from} -> ${to}`);
           console.log(`📅 Date: ${date}`);
           console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-          return true;
+          return { from, to };
         }
       }
       i--;
