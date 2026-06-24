@@ -36,7 +36,7 @@ async function setCache(
   data,
 ) {
   const key = cacheKey(trainNo, fromStnCode, toStnCode, date, coach, quota);
-  await valkey.set(key, JSON.stringify(data), "EX", 300); // 300 seconds = 5 mins
+  await valkey.set(key, JSON.stringify(data), "EX", 900); // 900 seconds = 15 mins
   console.log(`💾 Cached: ${key}`);
 }
 

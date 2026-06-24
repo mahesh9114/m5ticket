@@ -19,10 +19,20 @@ async function m1(
       const { fromStationName, toStationName } = result.data.train;
 
       const normalizeDate = (d) => {
+        // Checks if the date starts with a 4-digit year (e.g., 2026-06-29)
+        if (d.includes("-") && d.split("-")[0].length === 4) {
+          const [year, month, day] = d.split("-");
+          return `${parseInt(day)}-${parseInt(month)}-${year}`; // Returns "29-6-2026"
+        }
+
+        // Fallback: If it already arrives as DD-MM-YYYY
         const [day, month, year] = d.split("-");
         return `${parseInt(day)}-${parseInt(month)}-${year}`;
       };
+
       const normalizedDate = normalizeDate(date);
+
+      const { trainNo, trainName } = result.data.train;
 
       const availabilityList = result.data.availability;
       const match = availabilityList.find(
@@ -37,7 +47,12 @@ async function m1(
           console.log(`✅ Direct ticket found!`);
           console.log(`🎟️  ${fromStationName} -> ${toStationName}`);
           console.log(`📅 Date: ${match.date}`);
-          return true; // ✅ found
+          return {
+            bookFrom: fromStationName,
+            bookUpTo: toStationName,
+            trainNo: trainNo,
+            trainName: trainName,
+          }; // ✅ found
         } else {
           console.log(`❌ Status: "${match.status}" — not available`);
           return false; // ❌ not available

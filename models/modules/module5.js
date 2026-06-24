@@ -39,13 +39,21 @@ async function m5(
       const match = availabilityList.find(
         (item) => item.date === normalizedDate,
       );
+
+      const { trainNo, trainName } = result.data.train;
+
       console.log("match:", match);
       if (match) {
         console.log("status:", match.status);
         if (match.status === "AVAILABLE") {
           console.log(`✅ ${fromStationName} -> ${toStationName}`);
           console.log(`📅 Date: ${match.date}`);
-          return { from: fromStationName, to: toStationName };
+          return {
+            bookFrom: fromStationName,
+            bookUpTo: toStationName,
+            trainNo: trainNo,
+            trainName: trainName,
+          };
         } else {
           return false;
         }
@@ -103,7 +111,7 @@ async function m5(
           console.log(`🎟️  ${from} -> ${to}`);
           console.log(`📅 Date: ${date}`);
           console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-          return { from, to };
+          return found;
         }
       }
       i--;

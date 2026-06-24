@@ -1,0 +1,561 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>M5-ticket Find Book Travel</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --indigo: #0022d2;
+        --indigo-dark: #0019a8;
+        --indigo-tint: #ebedff;
+        --indigo-mid: rgba(0, 34, 210, 0.12);
+        --black: #0a0a0a;
+        --grey-700: #3a3a3a;
+        --grey-500: #6b6b6b;
+        --grey-300: #c4c4c4;
+        --grey-100: #f2f2f2;
+        --white: #ffffff;
+        --green: #00c853;
+        --green-tint: #e6f9ee;
+        --green-text: #00873a;
+        --teal: #00897b;
+        --teal-tint: #e0f2f1;
+        --teal-text: #00695c;
+        --radius-sm: 8px;
+        --radius-md: 12px;
+        --radius-lg: 18px;
+        --radius-pill: 999px;
+        --shadow-card: 0 2px 12px rgba(0, 0, 0, 0.08);
+        --font: "Inter", system-ui, sans-serif;
+        --transition: 0.18s ease;
+      }
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      html {
+        font-family: var(--font);
+        font-size: 16px;
+      }
+      body {
+        background: var(--grey-100);
+        color: var(--black);
+        min-height: 100dvh;
+      }
+      button {
+        cursor: pointer;
+        border: none;
+        background: none;
+        font-family: inherit;
+      }
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+      .header {
+        background: var(--white);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+      .header-inner {
+        max-width: 960px;
+        margin: 0 auto;
+        padding: 0 16px;
+        height: 56px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 40px;
+      }
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .logo-icon {
+        width: 34px;
+        height: 34px;
+        border-radius: var(--radius-sm);
+        background: var(--indigo);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .logo-icon svg {
+        width: 18px;
+        height: 18px;
+        fill: var(--white);
+      }
+      .logo-name {
+        font-size: 18px;
+        font-weight: 700;
+        color: var(--indigo);
+        letter-spacing: -0.4px;
+      }
+      .logo-tag {
+        font-size: 9px;
+        color: var(--grey-500);
+        letter-spacing: 1px;
+      }
+      .hero {
+        background: var(--indigo);
+        padding: 28px 16px 72px;
+        text-align: center;
+      }
+      .hero-title {
+        font-size: clamp(20px, 4vw, 28px);
+        font-weight: 700;
+        color: var(--white);
+        line-height: 1.2;
+      }
+      .hero-title span {
+        color: rgba(255, 255, 255, 0.55);
+        font-weight: 400;
+      }
+      .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        margin-top: 10px;
+        background: rgba(255, 255, 255, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        border-radius: var(--radius-pill);
+        padding: 5px 14px;
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--white);
+      }
+      .result-wrap {
+        max-width: 640px;
+        margin: -48px auto 0;
+        padding: 0 16px 80px;
+      }
+      .module-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 12px;
+      }
+      .module-badge {
+        font-size: 11px;
+        font-weight: 700;
+        color: var(--white);
+        background: var(--teal);
+        padding: 3px 10px;
+        border-radius: var(--radius-pill);
+        letter-spacing: 0.5px;
+      }
+      .module-type {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--grey-700);
+      }
+      .ticket-card {
+        background: var(--white);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-card);
+        overflow: hidden;
+        border: 1px solid rgba(0, 0, 0, 0.05);
+        animation: slideUp 0.25s ease both;
+      }
+      @keyframes slideUp {
+        from {
+          opacity: 0;
+          transform: translateY(12px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .tc-head {
+        background: var(--teal-tint);
+        border-bottom: 1px solid rgba(0, 137, 123, 0.15);
+        padding: 14px 18px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .tc-train-name {
+        font-size: 14px;
+        font-weight: 700;
+        color: var(--teal);
+      }
+      .tc-train-no {
+        font-size: 11px;
+        color: var(--grey-500);
+        margin-top: 2px;
+      }
+      .tc-date-badge {
+        font-size: 11px;
+        font-weight: 600;
+        color: var(--teal);
+        background: var(--white);
+        border: 1px solid rgba(0, 137, 123, 0.2);
+        padding: 4px 10px;
+        border-radius: var(--radius-pill);
+      }
+      .tc-journey {
+        padding: 20px 18px;
+      }
+      .tc-journey-title {
+        font-size: 10px;
+        font-weight: 700;
+        color: var(--grey-500);
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        margin-bottom: 16px;
+      }
+      .tc-stops {
+        display: flex;
+        flex-direction: column;
+      }
+      .tc-stop {
+        display: flex;
+        align-items: flex-start;
+        gap: 14px;
+      }
+      .tc-stop-line {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 20px;
+        flex-shrink: 0;
+      }
+      .tc-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: var(--teal);
+        border: 2.5px solid var(--white);
+        box-shadow: 0 0 0 2px var(--teal);
+        flex-shrink: 0;
+      }
+      .tc-dot.indigo {
+        background: var(--indigo);
+        box-shadow: 0 0 0 2px var(--indigo);
+      }
+      .tc-dot.green {
+        background: var(--green);
+        box-shadow: 0 0 0 2px var(--green);
+      }
+      .tc-dot.empty {
+        background: var(--white);
+        border: 2.5px solid var(--grey-300);
+        box-shadow: none;
+      }
+      .tc-connector {
+        width: 2px;
+        height: 24px;
+        background: var(--grey-300);
+        margin: 2px 0;
+      }
+      .tc-connector.dashed {
+        background: repeating-linear-gradient(
+          to bottom,
+          var(--grey-300) 0,
+          var(--grey-300) 4px,
+          transparent 4px,
+          transparent 8px
+        );
+      }
+      .tc-stop-info {
+        flex: 1;
+        padding: 0 0 16px;
+      }
+      .tc-stop-label {
+        font-size: 9px;
+        font-weight: 700;
+        color: var(--grey-500);
+        letter-spacing: 0.8px;
+        text-transform: uppercase;
+      }
+      .tc-stop-code {
+        font-size: 18px;
+        font-weight: 700;
+        color: var(--black);
+        letter-spacing: -0.3px;
+      }
+      .tc-stop-tag {
+        font-size: 10px;
+        font-weight: 600;
+        padding: 2px 8px;
+        border-radius: var(--radius-pill);
+        display: inline-block;
+        margin-top: 3px;
+      }
+      .tag-board {
+        color: var(--indigo);
+        background: var(--indigo-tint);
+      }
+      .tag-alight {
+        color: var(--green-text);
+        background: var(--green-tint);
+      }
+      .tag-ext {
+        color: var(--teal-text);
+        background: var(--teal-tint);
+      }
+      .tc-footer {
+        border-top: 1px solid var(--grey-100);
+        padding: 14px 18px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+      }
+      .tc-meta {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .tc-chip {
+        font-size: 10px;
+        font-weight: 600;
+        color: var(--grey-700);
+        padding: 4px 10px;
+        border-radius: var(--radius-pill);
+        background: var(--grey-100);
+      }
+      .tc-chip.active {
+        background: var(--teal-tint);
+        color: var(--teal);
+        border: 1px solid rgba(0, 137, 123, 0.2);
+      }
+      .btn-avl {
+        background: var(--green);
+        color: var(--white);
+        font-size: 14px;
+        font-weight: 700;
+        padding: 11px 24px;
+        border-radius: var(--radius-sm);
+        box-shadow: 0 4px 14px rgba(0, 200, 83, 0.35);
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        transition: var(--transition);
+        white-space: nowrap;
+      }
+      .btn-avl svg {
+        width: 16px;
+        height: 16px;
+        fill: var(--white);
+      }
+      .btn-avl:hover {
+        background: #00a844;
+        transform: translateY(-1px);
+      }
+      .btn-back {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--indigo);
+        background: var(--indigo-tint);
+        border: 1px solid rgba(0, 34, 210, 0.15);
+        padding: 9px 18px;
+        border-radius: var(--radius-pill);
+        margin-bottom: 14px;
+        transition: var(--transition);
+      }
+      .btn-back:hover {
+        background: var(--indigo);
+        color: var(--white);
+      }
+      .avl-banner {
+        background: var(--teal-tint);
+        border: 1px solid rgba(0, 137, 123, 0.2);
+        border-radius: var(--radius-md);
+        padding: 12px 16px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 14px;
+      }
+      .avl-banner-icon {
+        font-size: 22px;
+      }
+      .avl-banner-text {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--teal-text);
+      }
+      .footer-nav {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: var(--white);
+        border-top: 1px solid rgba(0, 0, 0, 0.08);
+        display: flex;
+        z-index: 100;
+      }
+      @media (min-width: 640px) {
+        .footer-nav {
+          display: none;
+        }
+      }
+      @media (max-width: 639px) {
+        body {
+          padding-bottom: 64px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="header">
+      <div class="header-inner">
+        <div class="logo">
+          <div class="logo-icon">
+            <svg viewBox="0 0 24 24">
+              <path
+                d="M4 4h16a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zm0 2v8h16V6H4zm-1 10l-1 3h20l-1-3H3zm5 1h8v1H8v-1zM6 9h12v2H6V9zm0-2h12v1H6V7z"
+              />
+            </svg>
+          </div>
+          <div>
+            <div class="logo-name">M5-ticket</div>
+            <div class="logo-tag">Find - Book - Travel</div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <section class="hero">
+      <h1 class="hero-title">
+        Extended Split Found!<br /><span>1 Ticket Journey</span>
+      </h1>
+      <div class="hero-badge">✅ AVAILABLE</div>
+    </section>
+
+    <div class="result-wrap">
+      <a href="/" class="btn-back">
+        <svg
+          viewBox="0 0 24 24"
+          style="width: 14px; height: 14px; fill: currentColor"
+        >
+          <path
+            d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"
+          />
+        </svg>
+        Search Again
+      </a>
+
+      <!-- <div class="avl-banner">
+        <div class="avl-banner-icon">🚀</div>
+        <div class="avl-banner-text">
+          Extended range ticket found! Book from <%= ticket.bookFrom %> to <%=
+          ticket.bookUpTo %>.
+        </div>
+      </div> -->
+
+      <!-- <div class="module-label">
+        <span class="module-badge">M5</span>
+        <span class="module-type">Extended Split — 1 Ticket Journey</span>
+      </div> -->
+
+      <div class="ticket-card">
+        <div class="tc-head">
+          <div>
+            <div class="tc-train-name">
+              <%= ticket.trainName || "Train" %> (<%= trainNo %>)
+            </div>
+            <div class="tc-train-no">
+              <%= ticket.coach %> · <%= ticket.quota %> Quota
+            </div>
+          </div>
+          <div class="tc-date-badge">📅 <%= ticket.date %></div>
+        </div>
+
+        <div class="tc-journey">
+          <div class="tc-journey-title">1 Ticket Journey</div>
+          <div class="tc-stops">
+            <!-- BookFrom (earlier station) -->
+            <div class="tc-stop">
+              <div class="tc-stop-line">
+                <div class="tc-dot teal"></div>
+                <div class="tc-connector dashed"></div>
+              </div>
+              <div class="tc-stop-info">
+                <div class="tc-stop-label">Book From</div>
+                <div class="tc-stop-code"><%= ticket.bookFrom %></div>
+                <span class="tc-stop-tag tag-ext"
+                  >🎫 Book Ticket From Here</span
+                >
+              </div>
+            </div>
+
+            <!-- Your actual From -->
+            <div class="tc-stop">
+              <div class="tc-stop-line">
+                <div class="tc-dot indigo"></div>
+                <div class="tc-connector"></div>
+              </div>
+              <div class="tc-stop-info">
+                <div class="tc-stop-label">Your Boarding</div>
+                <div class="tc-stop-code"><%= fromStnCode %></div>
+                <span class="tc-stop-tag tag-board">🚉 Board Train Here</span>
+              </div>
+            </div>
+
+            <!-- Your actual To -->
+            <div class="tc-stop">
+              <div class="tc-stop-line">
+                <div class="tc-dot empty"></div>
+                <div class="tc-connector dashed"></div>
+              </div>
+              <div class="tc-stop-info">
+                <div class="tc-stop-label">Your Drop Off</div>
+                <div class="tc-stop-code"><%= toStnCode %></div>
+                <span class="tc-stop-tag tag-alight">🏁 Alight Here</span>
+              </div>
+            </div>
+
+            <!-- BookUpTo (later station) -->
+            <div class="tc-stop">
+              <div class="tc-stop-line">
+                <div class="tc-dot green"></div>
+              </div>
+              <div class="tc-stop-info">
+                <div class="tc-stop-label">Book Up To</div>
+                <div class="tc-stop-code"><%= ticket.bookUpTo %></div>
+                <span class="tc-stop-tag tag-ext"
+                  >🏁 Ticket Booked Till Here</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tc-footer">
+          <div class="tc-meta">
+            <span class="tc-chip active"><%= ticket.coach %></span>
+            <span class="tc-chip"><%= ticket.quota %></span>
+            <!-- <span class="tc-chip">Extended ✅</span> -->
+          </div>
+          <button class="btn-avl">
+            <svg viewBox="0 0 24 24">
+              <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+            </svg>
+            AVL Tkt
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <nav class="footer-nav"></nav>
+  </body>
+</html>

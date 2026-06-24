@@ -18,7 +18,10 @@ export async function executeSequentialSearch(params, strategies) {
 
   const { m1, m2, m3, m4, m5 } = strategies;
 
-  // ✅ M1
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // ✅ M1 — direct search from → to
+  // EJS uses: ticket.from, ticket.to, ticket.trainNo, ticket.date, ticket.coach, ticket.quota
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   const m1result = await m1(
     trainNo,
     fromStnCode,
@@ -27,22 +30,29 @@ export async function executeSequentialSearch(params, strategies) {
     coach,
     quota,
   );
+
   if (m1result) {
     return {
       found: true,
       module: "M1",
       type: "Direct Ticket",
       ticket: {
-        from: fromStnCode,
-        to: toStnCode,
-        date,
-        coach,
-        quota,
+        trainNo: m1result.trainNo, // ✅ m1.ejs: ticket.trainNo
+        trainName: m1result.trainName, // ✅ m1.ejs: ticket.trainName
+        bookFrom: m1result.bookFrom, // ✅ m1.ejs: ticket.from
+        bookUpTo: m1result.bookUpTo, // ✅ m1.ejs: ticket.to
+        date, // ✅ m1.ejs: ticket.date
+        coach, // ✅ m1.ejs: ticket.coach
+        quota, // ✅ m1.ejs: ticket.quota
       },
     };
   }
 
-  // ✅ M2
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // ✅ M2 — earlier boarding station
+  // EJS uses: ticket.bookFrom, ticket.boarding, ticket.bookUpTo, ticket.date, ticket.coach, ticket.quota
+  // m2 returns: earlier station code string
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   const m2result = await m2(
     trainNo,
     fromStnCode,
@@ -52,22 +62,30 @@ export async function executeSequentialSearch(params, strategies) {
     quota,
     splicedTrainArr,
   );
+
   if (m2result) {
     return {
       found: true,
       module: "M2",
       type: "Earlier Boarding",
       ticket: {
-        from: m2result, // ✅ actual earlier station
-        to: toStnCode,
-        date,
-        coach,
-        quota,
+        trainNo: m2result.trainNo, // ✅ m2.ejs: ticket.trainNo
+        trainName: m2result.trainName, // ✅ m2.ejs: ticket.trainName
+        bookFrom: m2result.bookFrom, // ✅ m2.ejs: ticket.bookFrom — earlier station to book from
+        boarding: fromStnCode, // ✅ m2.ejs: ticket.boarding — user's actual boarding station
+        bookUpTo: toStnCode, // ✅ m2.ejs: ticket.bookUpTo — destination
+        date, // ✅ m2.ejs: ticket.date
+        coach, // ✅ m2.ejs: ticket.coach
+        quota, // ✅ m2.ejs: ticket.quota
       },
     };
   }
 
-  // ✅ M3
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // ✅ M3 — later alighting station
+  // EJS uses: ticket.bookFrom, ticket.dropOff, ticket.bookUpTo, ticket.date, ticket.coach, ticket.quota
+  // m3 returns: later station code string
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   const m3result = await m3(
     trainNo,
     fromStnCode,
@@ -77,22 +95,31 @@ export async function executeSequentialSearch(params, strategies) {
     quota,
     splicedTrainArr,
   );
+
   if (m3result) {
     return {
       found: true,
       module: "M3",
       type: "Later Alighting",
       ticket: {
-        from: fromStnCode,
-        to: m3result, // ✅ actual later station
-        date,
-        coach,
-        quota,
+        trainNo: m3result.trainNo, // ✅ m3.ejs: ticket.trainNo
+        trainName: m3result.trainName, // ✅ m3.ejs: ticket.trainName
+        bookFrom: fromStnCode, // ✅ m3.ejs: ticket.bookFrom — user's boarding station
+        dropOff: toStnCode, // ✅ m3.ejs: ticket.dropOff — user's actual destination
+        bookUpTo: m3result.bookUpTo, // ✅ m3.ejs: ticket.bookUpTo — later station to book till
+        date, // ✅ m3.ejs: ticket.date
+        coach, // ✅ m3.ejs: ticket.coach
+        quota, // ✅ m3.ejs: ticket.quota
       },
     };
   }
 
-  // ✅ M4
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // ✅ M4 — split ticket via middle station
+  // EJS uses: ticket.leg1.bookFrom, ticket.leg1.boarding, ticket.leg1.changeSeat
+  //           ticket.leg2.bookFrom, ticket.leg2.dropOff, ticket.leg2.bookUpTo
+  // m4 returns: midStation string
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   const m4result = await m4(
     trainNo,
     fromStnCode,
@@ -102,19 +129,41 @@ export async function executeSequentialSearch(params, strategies) {
     quota,
     splicedTrainArr,
   );
+
   if (m4result) {
     return {
       found: true,
       module: "M4",
       type: "Split Ticket",
       ticket: {
-        leg1: { from: fromStnCode, to: m4result, date, coach, quota }, // ✅ actual mid
-        leg2: { from: m4result, to: toStnCode, date, coach, quota }, // ✅ actual mid
+        leg1: {
+          trainNo: m4result.trainNo, // ✅ m4.ejs: ticket.trainNo
+          trainName: m4result.trainName, // ✅ m4.ejs: ticket.trainName
+          bookFrom: m4result.bookFrom, // ✅ m4.ejs: ticket.leg1.bookFrom
+          boarding: fromStnCode, // ✅ m4.ejs: ticket.leg1.boarding
+          bookUpTo: m4result.midStation, //add these bookUpto to m4.ejs file to match my diagram fileds
+          changeSeat: m4result.midStation, // ✅ m4.ejs: ticket.leg1.changeSeat — mid station
+          date, // ✅ m4.ejs: ticket.leg1.date
+          coach, // ✅ m4.ejs: ticket.leg1.coach
+          quota, // ✅ m4.ejs: ticket.leg1.quota
+        },
+        leg2: {
+          bookFrom: m4result.midStation, // ✅ m4.ejs: ticket.leg2.bookFrom — mid station
+          dropOff: toStnCode, // ✅ m4.ejs: ticket.leg2.dropOff — user's destination
+          bookUpTo: m4result.bookUpTo, // ✅ m4.ejs: ticket.leg2.bookUpTo
+          date, // ✅ m4.ejs: ticket.leg2.date
+          coach, // ✅ m4.ejs: ticket.leg2.coach
+          quota, // ✅ m4.ejs: ticket.leg2.quota
+        },
       },
     };
   }
 
-  // ✅ M5
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // ✅ M5 — extended split outside from→to range
+  // EJS uses: ticket.bookFrom, ticket.bookUpTo, ticket.date, ticket.coach, ticket.quota
+  // m5 returns: { from, to } object
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   const m5result = await m5(
     trainNo,
     fromStnCode,
@@ -124,17 +173,22 @@ export async function executeSequentialSearch(params, strategies) {
     quota,
     splicedTrainArr,
   );
+
   if (m5result) {
     return {
       found: true,
       module: "M5",
       type: "Extended Split",
       ticket: {
-        from: m5result.from, // ✅ actual earlier station
-        to: m5result.to, // ✅ actual later station
-        date,
-        coach,
-        quota,
+        trainNo: m5result.trainNo, // ✅ m5.ejs: ticket.trainNo
+        trainName: m5result.trainName, // ✅ m5.ejs: ticket.trainName
+        bookFrom: m5result.bookFrom, // ✅ m5.ejs: ticket.bookFrom — earlier station
+        boarding: fromStnCode, //add these boarding to m5.ejs file to match my diagram fileds
+        dropOff: toStnCode, //add these dropOff to m5.ejs file to match my diagram fileds
+        bookUpTo: m5result.bookUpTo, // ✅ m5.ejs: ticket.bookUpTo — later station
+        date, // ✅ m5.ejs: ticket.date
+        coach, // ✅ m5.ejs: ticket.coach
+        quota, // ✅ m5.ejs: ticket.quota
       },
     };
   }
@@ -142,6 +196,6 @@ export async function executeSequentialSearch(params, strategies) {
   // ❌ nothing found
   return {
     found: false,
-    message: "❌ No tickets found across all search methods",
+    message: "❌ No tickets found across all search by engine",
   };
 }

@@ -1,0 +1,863 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>M5-ticket Find Book Travel</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --indigo: #0022d2;
+        --indigo-tint: #ebedff;
+        --black: #0a0a0a;
+        --grey-700: #3a3a3a;
+        --grey-500: #6b6b6b;
+        --grey-300: #c4c4c4;
+        --grey-100: #f2f2f2;
+        --white: #ffffff;
+        --red: #f44336;
+        --red-tint: #fbe9e7;
+        --red-text: #bf360c;
+        --radius-sm: 8px;
+        --radius-md: 12px;
+        --radius-lg: 18px;
+        --radius-pill: 999px;
+        --shadow-card: 0 2px 12px rgba(0, 0, 0, 0.08);
+        --font: "Inter", system-ui, sans-serif;
+        --transition: 0.18s ease;
+      }
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      html {
+        font-family: var(--font);
+        font-size: 16px;
+      }
+      body {
+        background: var(--grey-100);
+        color: var(--black);
+        min-height: 100dvh;
+      }
+      button {
+        cursor: pointer;
+        border: none;
+        background: none;
+        font-family: inherit;
+      }
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+      .header {
+        background: var(--white);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+      .header-inner {
+        max-width: 960px;
+        margin: 0 auto;
+        padding: 0 16px;
+        height: 56px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 40px;
+      }
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .logo-icon {
+        width: 34px;
+        height: 34px;
+        border-radius: var(--radius-sm);
+        background: var(--indigo);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .logo-icon svg {
+        width: 18px;
+        height: 18px;
+        fill: var(--white);
+      }
+      .logo-name {
+        font-size: 18px;
+        font-weight: 700;
+        color: var(--indigo);
+        letter-spacing: -0.4px;
+      }
+      .logo-tag {
+        font-size: 9px;
+        color: var(--grey-500);
+        letter-spacing: 1px;
+      }
+      .hero {
+        background: var(--red);
+        padding: 28px 16px 72px;
+        text-align: center;
+      }
+      .hero-title {
+        font-size: clamp(20px, 4vw, 28px);
+        font-weight: 700;
+        color: var(--white);
+        line-height: 1.2;
+      }
+      .hero-title span {
+        color: rgba(255, 255, 255, 0.6);
+        font-weight: 400;
+      }
+      .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        margin-top: 10px;
+        background: rgba(255, 255, 255, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        border-radius: var(--radius-pill);
+        padding: 5px 14px;
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--white);
+      }
+      .result-wrap {
+        max-width: 640px;
+        margin: -48px auto 0;
+        padding: 0 16px 80px;
+      }
+      .btn-back {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--indigo);
+        background: var(--indigo-tint);
+        border: 1px solid rgba(0, 34, 210, 0.15);
+        padding: 9px 18px;
+        border-radius: var(--radius-pill);
+        margin-bottom: 14px;
+        transition: var(--transition);
+      }
+      .btn-back:hover {
+        background: var(--indigo);
+        color: var(--white);
+      }
+
+      /* failure card */
+      .failure-card {
+        background: var(--white);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-card);
+        overflow: hidden;
+        border: 1.5px solid rgba(244, 67, 54, 0.15);
+        animation: slideUp 0.25s ease both;
+      }
+      @keyframes slideUp {
+        from {
+          opacity: 0;
+          transform: translateY(12px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .failure-head {
+        background: var(--red-tint);
+        border-bottom: 1px solid rgba(244, 67, 54, 0.15);
+        padding: 20px 18px;
+        text-align: center;
+      }
+      .failure-icon {
+        font-size: 48px;
+        margin-bottom: 10px;
+      }
+      .failure-title {
+        font-size: 18px;
+        font-weight: 700;
+        color: var(--red-text);
+        margin-bottom: 6px;
+      }
+      .failure-sub {
+        font-size: 13px;
+        color: var(--grey-500);
+        line-height: 1.5;
+      }
+
+      /* search summary */
+      .search-summary {
+        padding: 18px 18px 0;
+      }
+      .search-summary-title {
+        font-size: 10px;
+        font-weight: 700;
+        color: var(--grey-500);
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        margin-bottom: 12px;
+      }
+      .search-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 8px 0;
+        border-bottom: 1px solid var(--grey-100);
+      }
+      .search-row:last-child {
+        border-bottom: none;
+      }
+      .search-key {
+        font-size: 12px;
+        color: var(--grey-500);
+        font-weight: 500;
+      }
+      .search-val {
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--black);
+      }
+
+      /* modules tried */
+      .modules-tried {
+        padding: 18px;
+        border-top: 1px solid var(--grey-100);
+      }
+      .modules-title {
+        font-size: 10px;
+        font-weight: 700;
+        color: var(--grey-500);
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        margin-bottom: 12px;
+      }
+      .module-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 0;
+        border-bottom: 1px solid var(--grey-100);
+      }
+      .module-row:last-child {
+        border-bottom: none;
+      }
+      .module-row-badge {
+        font-size: 10px;
+        font-weight: 700;
+        color: var(--white);
+        background: var(--red);
+        padding: 2px 8px;
+        border-radius: var(--radius-pill);
+        flex-shrink: 0;
+      }
+      .module-row-name {
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--grey-700);
+        flex: 1;
+      }
+      .module-row-status {
+        font-size: 11px;
+        color: var(--red-text);
+        font-weight: 600;
+      }
+
+      /* try again button */
+      .failure-footer {
+        padding: 18px;
+        border-top: 1px solid var(--grey-100);
+      }
+      .btn-try-again {
+        width: 100%;
+        padding: 14px;
+        background: var(--indigo);
+        color: var(--white);
+        font-size: 15px;
+        font-weight: 700;
+        border-radius: var(--radius-sm);
+        box-shadow: 0 4px 14px rgba(0, 34, 210, 0.35);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        transition: var(--transition);
+      }
+      .btn-try-again svg {
+        width: 18px;
+        height: 18px;
+        fill: var(--white);
+      }
+      .btn-try-again:hover {
+        background: #0019a8;
+        transform: translateY(-1px);
+      }
+
+      /* tips card */
+      .tips-card {
+        background: var(--white);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-card);
+        padding: 18px;
+        margin-top: 12px;
+      }
+      .tips-title {
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--black);
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .tip-row {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 8px 0;
+        border-bottom: 1px solid var(--grey-100);
+      }
+      .tip-row:last-child {
+        border-bottom: none;
+      }
+      .tip-icon {
+        font-size: 16px;
+        flex-shrink: 0;
+      }
+      .tip-text {
+        font-size: 12px;
+        color: var(--grey-700);
+        line-height: 1.5;
+      }
+      .tip-text strong {
+        color: var(--black);
+      }
+
+      .footer-nav {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: var(--white);
+        border-top: 1px solid rgba(0, 0, 0, 0.08);
+        display: flex;
+        z-index: 100;
+      }
+      @media (min-width: 640px) {
+        .footer-nav {
+          display: none;
+        }
+      }
+      @media (max-width: 639px) {
+        body {
+          padding-bottom: 64px;
+        }
+      }
+      .help-card {
+        background: var(--white);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-card);
+        overflow: hidden;
+        margin-top: 12px;
+      }
+      .help-card-head {
+        padding: 14px 18px;
+        border-bottom: 1px solid var(--grey-100);
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+      }
+      .help-card-title {
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--black);
+        display: flex;
+        align-items: center;
+        gap: 7px;
+      }
+      .help-card-sub {
+        font-size: 12px;
+        color: var(--grey-500);
+      }
+
+      /* ── SECTION LABEL ──────────────────────────────────────── */
+      .help-section-label {
+        font-size: 10px;
+        font-weight: 700;
+        color: var(--grey-500);
+        letter-spacing: 0.8px;
+        text-transform: uppercase;
+        padding: 14px 18px 8px;
+      }
+
+      /* ── RANK ROWS ──────────────────────────────────────────── */
+      .rank-rows {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        padding: 0 18px 14px;
+      }
+      .rank-row {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 12px 14px;
+        border-radius: var(--radius-md);
+      }
+      .rank-row.success {
+        background: #e6f9ee;
+        border: 1px solid rgba(0, 200, 83, 0.2);
+      }
+      .rank-row.success-dim {
+        background: #f0fdf6;
+        border: 1px solid rgba(0, 200, 83, 0.15);
+      }
+      .rank-row.warning {
+        background: #fff3e0;
+        border: 1px solid rgba(255, 152, 0, 0.2);
+      }
+      .rank-row.danger {
+        background: #fbe9e7;
+        border: 1px solid rgba(244, 67, 54, 0.2);
+      }
+      .rank-number {
+        min-width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--white);
+      }
+      .rank-number.success {
+        background: #00873a;
+      }
+      .rank-number.success-dim {
+        background: #33a85e;
+      }
+      .rank-number.warning {
+        background: #e65100;
+      }
+      .rank-number.danger {
+        background: #bf360c;
+      }
+      .rank-content {
+        flex: 1;
+      }
+      .rank-top {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-bottom: 4px;
+      }
+      .rank-title {
+        font-size: 13px;
+        font-weight: 700;
+      }
+      .rank-title.success {
+        color: #00873a;
+      }
+      .rank-title.success-dim {
+        color: #33a85e;
+      }
+      .rank-title.warning {
+        color: #e65100;
+      }
+      .rank-title.danger {
+        color: #bf360c;
+      }
+      .rank-badge {
+        font-size: 10px;
+        font-weight: 700;
+        padding: 2px 9px;
+        border-radius: var(--radius-pill);
+      }
+      .rank-badge.success {
+        background: #c8f5dc;
+        color: #00873a;
+      }
+      .rank-badge.success-dim {
+        background: #d8f5e4;
+        color: #33a85e;
+      }
+      .rank-badge.warning {
+        background: #ffe0b2;
+        color: #e65100;
+      }
+      .rank-badge.danger {
+        background: #ffccbc;
+        color: #bf360c;
+      }
+      .rank-desc {
+        font-size: 12px;
+        line-height: 1.5;
+      }
+      .rank-desc.success {
+        color: #00873a;
+      }
+      .rank-desc.success-dim {
+        color: #33a85e;
+      }
+      .rank-desc.warning {
+        color: #e65100;
+      }
+      .rank-desc.danger {
+        color: #bf360c;
+      }
+
+      /* ── FILTER TIPS ────────────────────────────────────────── */
+      .filter-tips {
+        border-top: 1px solid var(--grey-100);
+        padding: 0 18px 14px;
+      }
+      .tip-row {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 10px 0;
+        border-bottom: 1px solid var(--grey-100);
+      }
+      .tip-row:last-child {
+        border-bottom: none;
+      }
+      .tip-icon-wrap {
+        font-size: 18px;
+        flex-shrink: 0;
+        margin-top: 1px;
+        color: var(--grey-500);
+      }
+
+      .tip-title {
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--black);
+        margin-bottom: 3px;
+      }
+      .tip-desc {
+        font-size: 12px;
+        color: var(--grey-500);
+        line-height: 1.5;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="header">
+      <div class="header-inner">
+        <div class="logo">
+          <div class="logo-icon">
+            <svg viewBox="0 0 24 24">
+              <path
+                d="M4 4h16a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zm0 2v8h16V6H4zm-1 10l-1 3h20l-1-3H3zm5 1h8v1H8v-1zM6 9h12v2H6V9zm0-2h12v1H6V7z"
+              />
+            </svg>
+          </div>
+          <div>
+            <div class="logo-name">M5-ticket</div>
+            <div class="logo-tag">Find - Book - Travel</div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <section class="hero">
+      <h1 class="hero-title">
+        No Tickets Found<br /><span>All strategies tried</span>
+      </h1>
+      <div class="hero-badge">❌ WAITLIST — Try different date</div>
+    </section>
+
+    <div class="result-wrap">
+      <a href="/" class="btn-back">
+        <svg
+          viewBox="0 0 24 24"
+          style="width: 14px; height: 14px; fill: currentColor"
+        >
+          <path
+            d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"
+          />
+        </svg>
+        Search Again
+      </a>
+
+      <!-- failure card -->
+      <div class="failure-card">
+        <div class="failure-head">
+          <div class="failure-icon">🚫</div>
+          <div class="failure-title">No Available Tickets</div>
+          <div class="failure-sub">
+            We tried all strategies but no available seats were found for your
+            journey on this date.
+          </div>
+        </div>
+
+        <!-- search summary -->
+        <div class="search-summary">
+          <div class="search-summary-title">Your Search</div>
+          <div class="search-row">
+            <span class="search-key">Train</span>
+            <span class="search-val"><%= trainNo %></span>
+          </div>
+          <div class="search-row">
+            <span class="search-key">From</span>
+            <span class="search-val"><%= fromStnCode %></span>
+          </div>
+          <div class="search-row">
+            <span class="search-key">To</span>
+            <span class="search-val"><%= toStnCode %></span>
+          </div>
+          <div class="search-row">
+            <span class="search-key">Date</span>
+            <span class="search-val"><%= date %></span>
+          </div>
+          <div class="search-row">
+            <span class="search-key">Coach</span>
+            <span class="search-val"><%= coach %></span>
+          </div>
+          <div class="search-row">
+            <span class="search-key">Quota</span>
+            <span class="search-val"><%= quota %></span>
+          </div>
+        </div>
+
+        <!-- modules tried -->
+        <!-- <div class="modules-tried">
+          <div class="modules-title">Strategies Tried</div>
+          <div class="module-row">
+            <span class="module-row-badge">M1</span>
+            <span class="module-row-name">Direct Search</span>
+            <span class="module-row-status">❌ WAITLIST</span>
+          </div>
+          <div class="module-row">
+            <span class="module-row-badge">M2</span>
+            <span class="module-row-name">Earlier Boarding</span>
+            <span class="module-row-status">❌ WAITLIST</span>
+          </div>
+          <div class="module-row">
+            <span class="module-row-badge">M3</span>
+            <span class="module-row-name">Later Alighting</span>
+            <span class="module-row-status">❌ WAITLIST</span>
+          </div>
+          <div class="module-row">
+            <span class="module-row-badge">M4</span>
+            <span class="module-row-name">Split Ticket</span>
+            <span class="module-row-status">❌ WAITLIST</span>
+          </div>
+          <div class="module-row">
+            <span class="module-row-badge">M5</span>
+            <span class="module-row-name">Extended Split</span>
+            <span class="module-row-status">❌ WAITLIST</span>
+          </div>
+        </div> -->
+
+        <!-- try again -->
+        <div class="failure-footer">
+          <a href="/" class="btn-try-again">
+            <svg viewBox="0 0 24 24">
+              <path
+                d="M17.65 6.35A7.958 7.958 0 0 0 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0 1 12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"
+              />
+            </svg>
+            Try Different Date or Train
+          </a>
+        </div>
+      </div>
+
+      <!-- tips card -->
+      <!-- <div class="tips-card">
+        <div class="tips-title">💡 Tips to Find Tickets</div>
+        <div class="tip-row">
+          <div class="tip-icon">📅</div>
+          <div class="tip-text">
+            <strong>Try adjacent dates</strong> — availability often opens up a
+            day before or after.
+          </div>
+        </div>
+        <div class="tip-row">
+          <div class="tip-icon">🚆</div>
+          <div class="tip-text">
+            <strong>Try a different train</strong> — another train on the same
+            route may have seats.
+          </div>
+        </div>
+        <div class="tip-row">
+          <div class="tip-icon">🎟️</div>
+          <div class="tip-text">
+            <strong>Try Tatkal quota</strong> — Tatkal opens 1 day before
+            journey with higher availability.
+          </div>
+        </div>
+        <div class="tip-row">
+          <div class="tip-icon">⏰</div>
+          <div class="tip-text">
+            <strong>Check again later</strong> — cancellations happen and seats
+            open up closer to travel date.
+          </div>
+        </div>
+      </div> -->
+    </div>
+
+    <!-- ── HELP CARD HTML ─────────────────────────────────────── -->
+    <div class="help-card">
+      <!-- head -->
+      <div class="help-card-head">
+        <div class="help-card-title">
+          🔍 How to get an available seat faster
+        </div>
+        <div class="help-card-sub">
+          Pick the right search below based on your current WL position
+        </div>
+      </div>
+
+      <!-- rank section -->
+      <div class="help-section-label">
+        Ranked by WL position — try in this order
+      </div>
+
+      <div class="rank-rows">
+        <!-- RAC -->
+        <div class="rank-row success">
+          <div class="rank-number success">1</div>
+          <div class="rank-content">
+            <div class="rank-top">
+              <span class="rank-title success"
+                >RAC</span
+              >
+              <!-- <span class="rank-badge success"></span> -->
+            </div>
+            <p class="rank-dsearch direct route firstesc success">
+              1st search priority position to these Train while searching...
+            </p>
+          </div>
+        </div>
+
+        <!-- WL < 10 -->
+        <div class="rank-row success-dim">
+          <div class="rank-number success-dim">2</div>
+          <div class="rank-content">
+            <div class="rank-top">
+              <span class="rank-title success-dim">WL &lt; 10 </span>
+              <!-- <span class="rank-badge success-dim">Direct → Adjust</span> -->
+            </div>
+            <p class="rank-desc success-dim">
+              2nd search priority position to these Train while searching...
+            </p>
+          </div>
+        </div>
+
+        <!-- WL 10-25 -->
+        <div class="rank-row warning">
+          <div class="rank-number warning">3</div>
+          <div class="rank-content">
+            <div class="rank-top">
+              <span class="rank-title warning">WL 10–25</span>
+              <!-- <span class="rank-badge warning">Split Journey</span> -->
+            </div>
+            <p class="rank-desc warning">
+              3nd search priority position to these Train while searching...
+            </p>
+          </div>
+        </div>
+
+        <!-- WL > 25 -->
+        <div class="rank-row danger">
+          <div class="rank-number danger">4</div>
+          <div class="rank-content">
+            <div class="rank-top">
+              <span class="rank-title danger"
+                >WL &gt; 25</span
+              >
+              <!-- <span class="rank-badge danger">Extended Search</span> -->
+            </div>
+            <p class="rank-desc danger">
+              4nd search priority position to these Train while searching...
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- filter tips -->
+      <!-- <div class="filter-tips">
+        <div
+          class="help-section-label"
+          style="padding-left: 0; padding-top: 10px"
+        >
+          Filter tips — set these before searching
+        </div>
+
+        <div class="tip-row">
+          <div class="tip-icon-wrap">🚆</div>
+          <div class="tip-content">
+            <div class="tip-title">Keep the same train number</div>
+            <div class="tip-desc">
+              Our search works on one train at a time. Same train = faster and
+              more accurate results.
+            </div>
+          </div>
+        </div>
+
+        <div class="tip-row">
+          <div class="tip-icon-wrap">🎟️</div>
+          <div class="tip-content">
+            <div class="tip-title">
+              Switch quota to Tatkal or Premium Tatkal
+            </div>
+            <div class="tip-desc">
+              If General quota is REGRET, Tatkal often has AVL seats on the same
+              train and date.
+            </div>
+          </div>
+        </div>
+
+        <div class="tip-row">
+          <div class="tip-icon-wrap">💺</div>
+          <div class="tip-content">
+            <div class="tip-title">Try a different coach class</div>
+            <div class="tip-desc">
+              Sleeper full? Try AC 3 Tier or Second Sitting — each class has a
+              completely separate seat pool.
+            </div>
+          </div>
+        </div>
+
+        <div class="tip-row">
+          <div class="tip-icon-wrap">📅</div>
+          <div class="tip-content">
+            <div class="tip-title">Search ±1 day from your date</div>
+            <div class="tip-desc">
+              Availability resets per date. The day before or after may show
+              completely different results.
+            </div>
+          </div>
+        </div>
+
+        <div class="tip-row">
+          <div class="tip-icon-wrap">⏰</div>
+          <div class="tip-content">
+            <div class="tip-title">Search again at midnight</div>
+            <div class="tip-desc">
+              IRCTC releases cancelled seats at 11:55 PM the night before.
+              Re-run the search then for best results.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> -->
+
+    <nav class="footer-nav"></nav>
+  </body>
+</html>

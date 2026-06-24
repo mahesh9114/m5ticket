@@ -38,6 +38,8 @@ async function m2(
       const { fromStationName, toStationName } = result.data.train;
       const availabilityList = result.data.availability;
 
+      const { trainNo, trainName } = result.data.train;
+
       const match = availabilityList.find(
         (item) => item.date === normalizedDate,
       );
@@ -50,7 +52,11 @@ async function m2(
         if (match.status === "AVAILABLE") {
           console.log(`✅ Success! ${fromStationName} -> ${toStationName}`);
           console.log(`📅 Date: ${match.date}`);
-          return (true, fromStationName); // ✅ available — stop loop
+          return {
+            bookFrom: fromStationName,
+            trainNo: trainNo,
+            trainName: trainName,
+          }; // ✅ available — stop loop
         } else {
           return false; // ❌ waitlist — try next station
         }
@@ -107,7 +113,7 @@ async function m2(
       console.log("trying from:", from);
 
       const found = await search(trainNo, from, toStnCode, date, coach, quota);
-      if (found) return true; // ✅ found! stop
+      if (found) return found; // ✅ found! stop
 
       index--; // ❌ try next earlier station
     }

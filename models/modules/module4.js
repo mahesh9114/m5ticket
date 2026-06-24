@@ -46,6 +46,8 @@ async function m4(
         (item) => item.date === normalizedDate,
       );
 
+      const { trainNo, trainName } = result.data.train;
+
       console.log("match:", match);
 
       if (match) {
@@ -137,7 +139,13 @@ async function m4(
           console.log(`🎟️  Tkt 2: ${midStation} -> ${toStnCode}`);
           console.log(`📅 Date: ${date}`);
           console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-          return (true, midStation); // ✅ found! stop
+          return {
+            bookFrom: fromStnCode,
+            changeseat: midStation,
+            bookupto: toStnCode,
+            trainNo: trainNo,
+            trainName: trainName,
+          }; // ✅ found! stop
         }
         // ❌ second leg not available, try next mid station
       }

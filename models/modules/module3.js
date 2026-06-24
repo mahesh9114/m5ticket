@@ -39,6 +39,8 @@ async function m3(
       const { fromStationName, toStationName } = result.data.train;
       const availabilityList = result.data.availability;
 
+      const { trainNo, trainName } = result.data.train;
+
       const match = availabilityList.find(
         (item) => item.date === normalizedDate,
       );
@@ -50,9 +52,13 @@ async function m3(
         if (match.status === "AVAILABLE") {
           console.log(`✅ Success! ${fromStationName} -> ${toStationName}`);
           console.log(`📅 Date: ${match.date}`);
-          return true; // ✅ available — stop loop
+          return {
+            bookUpTo: toStationName,
+            trainNo: trainNo,
+            trainName: trainName,
+          }; // ✅ available — stop loop
         } else {
-          return (false, toStationName); // ❌ waitlist — try next station
+          return false; // ❌ waitlist — try next station
         }
       }
       return false; // ❌ no match
@@ -106,7 +112,7 @@ async function m3(
       console.log("trying to:", to);
 
       const found = await search(trainNo, fromStnCode, to, date, coach, quota);
-      if (found) return true; // ✅ found! stop
+      if (found) return found; // ✅ found! stop
 
       index++; // ❌ try next later station
     }
