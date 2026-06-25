@@ -775,6 +775,286 @@
         }
       }
 
+      /* ── LOADING VIEW ──────────────────────────────────── */
+      .card-form-view {
+        display: block;
+      }
+      .card-loading-view {
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 48px 32px 52px;
+        text-align: center;
+        min-height: 260px;
+        background: var(--white);
+        animation: fadeIn 0.22s ease;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+      /* train icon bounce */
+      .loading-train-icon {
+        width: 56px;
+        height: 56px;
+        border-radius: 14px;
+        background: var(--indigo);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 20px;
+        animation: trainBounce 1s ease-in-out infinite;
+      }
+      .loading-train-icon svg {
+        width: 28px;
+        height: 28px;
+        fill: var(--white);
+      }
+      @keyframes trainBounce {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-8px);
+        }
+      }
+      .loading-title {
+        font-size: 16px;
+        font-weight: 700;
+        color: var(--black);
+        margin-bottom: 6px;
+      }
+      .loading-sub {
+        font-size: 13px;
+        color: var(--grey-500);
+        margin-bottom: 28px;
+        line-height: 1.5;
+      }
+      .loading-sub strong {
+        color: var(--indigo);
+        font-weight: 600;
+      }
+      /* shimmer track */
+      .shimmer-track {
+        width: 100%;
+        max-width: 320px;
+        height: 4px;
+        background: var(--grey-100);
+        border-radius: var(--radius-pill);
+        overflow: hidden;
+        margin-bottom: 16px;
+        position: relative;
+      }
+      .shimmer-fill {
+        position: absolute;
+        top: 0;
+        left: -45%;
+        height: 100%;
+        width: 45%;
+        background: linear-gradient(
+          90deg,
+          var(--indigo-tint),
+          var(--indigo),
+          var(--indigo-tint)
+        );
+        background-size: 200% 100%;
+        border-radius: var(--radius-pill);
+        animation: shimmerMove 1.2s ease-in-out infinite;
+      }
+      @keyframes shimmerMove {
+        0% {
+          left: -45%;
+        }
+        100% {
+          left: 100%;
+        }
+      }
+      /* bouncing dots */
+      .loading-dots {
+        display: flex;
+        gap: 6px;
+        justify-content: center;
+      }
+      .loading-dots span {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--indigo);
+        opacity: 0.3;
+        animation: dotPulse 1.2s ease-in-out infinite;
+      }
+      .loading-dots span:nth-child(2) {
+        animation-delay: 0.2s;
+      }
+      .loading-dots span:nth-child(3) {
+        animation-delay: 0.4s;
+      }
+      @keyframes dotPulse {
+        0%,
+        80%,
+        100% {
+          opacity: 0.2;
+          transform: scale(0.85);
+        }
+        40% {
+          opacity: 1;
+          transform: scale(1.15);
+        }
+      }
+      /* swap views on .is-loading */
+      .card.is-loading .card-form-view {
+        display: none;
+      }
+      .card.is-loading .card-loading-view {
+        display: flex;
+      }
+
+      /* ── HELP CARD ──────────────────────────────────────── */
+      .help-card {
+        background: var(--white);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-card);
+        overflow: hidden;
+        margin-top: 12px;
+      }
+      .help-card-head {
+        padding: 14px 18px;
+        border-bottom: 1px solid var(--grey-100);
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+      }
+      .help-card-title {
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--black);
+        display: flex;
+        align-items: center;
+        gap: 7px;
+      }
+      .help-card-sub {
+        font-size: 12px;
+        color: var(--grey-500);
+      }
+      .help-section-label {
+        font-size: 10px;
+        font-weight: 700;
+        color: var(--grey-500);
+        letter-spacing: 0.8px;
+        text-transform: uppercase;
+        padding: 14px 18px 8px;
+      }
+      /* ── RANK ROWS ──────────────────────────────────────── */
+      .rank-rows {
+        padding: 0 18px 14px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .rank-row {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 10px 12px;
+        border-radius: var(--radius-sm);
+        border: 1.5px solid;
+      }
+      .rank-row.success {
+        background: #f0faf4;
+        border-color: #b7e8c8;
+      }
+      .rank-row.success-dim {
+        background: #f6fbf8;
+        border-color: #d0ead9;
+      }
+      .rank-row.warning {
+        background: #fffbf0;
+        border-color: #fde68a;
+      }
+      .rank-row.danger {
+        background: #fff5f5;
+        border-color: #fcc;
+      }
+
+      .rank-number {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        font-size: 12px;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        margin-top: 1px;
+      }
+      .rank-number.success {
+        background: #00873a;
+        color: var(--white);
+      }
+      .rank-number.success-dim {
+        background: #43a862;
+        color: var(--white);
+      }
+      .rank-number.warning {
+        background: #f59e0b;
+        color: var(--white);
+      }
+      .rank-number.danger {
+        background: var(--red);
+        color: var(--white);
+      }
+
+      .rank-content {
+        flex: 1;
+      }
+      .rank-top {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 3px;
+      }
+      .rank-title {
+        font-size: 13px;
+        font-weight: 700;
+      }
+      .rank-title.success {
+        color: #00873a;
+      }
+      .rank-title.success-dim {
+        color: #43a862;
+      }
+      .rank-title.warning {
+        color: #b45309;
+      }
+      .rank-title.danger {
+        color: #c0392b;
+      }
+
+      .rank-desc {
+        font-size: 11px;
+        line-height: 1.5;
+        margin: 0;
+      }
+      .rank-desc.success {
+        color: #2d6a45;
+      }
+      .rank-desc.success-dim {
+        color: #3d7a52;
+      }
+      .rank-desc.warning {
+        color: #78490a;
+      }
+      .rank-desc.danger {
+        color: #922b21;
+      }
+
       /* ── FOOTER NAV (mobile) ────────────────────────────── */
       .footer-nav {
         position: fixed;
@@ -890,290 +1170,297 @@
         Booking a train ticket?<br /><span>Shows WL / RAC ?</span><br />
         Find AVL here!
       </h1>
-      <!-- <div class="quick-tabs">
-        <button class="qtab active">
-          <svg viewBox="0 0 24 24">
-            <path
-              d="M4 4h16a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zm0 2v8h16V6H4zm-1 10l-1 3h20l-1-3H3zM6 9h12v2H6V9z"
-            />
-          </svg>
-          Trains
-        </button>
-        <button class="qtab">
-          <svg viewBox="0 0 24 24">
-            <path
-              d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"
-            />
-          </svg>
-          Flights
-        </button>
-        <button class="qtab">
-          <svg viewBox="0 0 24 24">
-            <path
-              d="M4 16c0 1.1.9 2 2 2h12a2 2 0 0 0 2-2V8H4v8zM18 3H6L4 7h16l-2-4zM9 13H7v-2h2v2zm0-4H7V7h2v2zm4 4h-2v-2h2v2zm0-4h-2V7h2v2zm4 4h-2v-2h2v2zm0-4h-2V7h2v2z"
-            />
-          </svg>
-          Buses
-        </button>
-        <button class="qtab">
-          <svg viewBox="0 0 24 24">
-            <path
-              d="M7 13c1.66 0 3-1.34 3-3S8.66 7 7 7s-3 1.34-3 3 1.34 3 3 3zm12-6h-8v7H3V5H1v15h2v-3h18v3h2v-9c0-2.21-1.79-4-4-4z"
-            />
-          </svg>
-          Hotels
-        </button>
-      </div> -->
     </section>
 
     <!-- ══ SEARCH CARD --checked-okk ══════════════════════════════════════ -->
     <div class="card-wrap">
-      <div class="card">
-        <div class="card-head">
-          <div class="card-head-title">
-            <svg viewBox="0 0 24 24">
-              <path
-                d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
-              />
-            </svg>
-            Search Tickets
-          </div>
-          <!-- <div class="irctc-badge">
-            <div class="irctc-badge-dot"></div>
-            IRCTC Partner
-          </div> -->
-        </div>
-
-        <form id="ticket-form" action="/search" method="POST">
-          <!-- Train Number -->
-          <div class="field-row" style="margin-bottom: 10px">
-            <div class="field">
-              <label class="field-label" for="Train-Number">Train Number</label>
-              <div class="field-input-wrap">
-                <span class="field-icon">
-                  <svg viewBox="0 0 24 24">
-                    <path
-                      d="M4 4h16a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zM6 9h12v2H6V9z"
-                    />
-                  </svg>
-                </span>
-                <input
-                  class="form-input"
-                  type="text"
-                  id="Train-Number"
-                  name="trainNo"
-                  placeholder="e.g. 12301"
-                  autocomplete="off"
-                  inputmode="numeric"
-                />
-              </div>
-            </div>
-          </div>
-
-          <!-- From / Swap / To -->
-          <div
-            class="field-row"
-            style="
-              display: grid;
-              grid-template-columns: 1fr auto 1fr;
-              gap: 8px;
-              margin-bottom: 10px;
-              align-items: flex-end;
-            "
-          >
-            <div class="field">
-              <label class="field-label" for="FromStnCode">From Station</label>
-              <div class="field-input-wrap">
-                <span class="field-icon">
-                  <svg viewBox="0 0 24 24">
-                    <path
-                      d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"
-                    />
-                  </svg>
-                </span>
-                <input
-                  class="form-input"
-                  type="text"
-                  id="FromStnCode"
-                  name="fromStnCode"
-                  placeholder="BZA"
-                  autocomplete="off"
-                  style="text-transform: uppercase"
-                />
-              </div>
-            </div>
-            <div class="swap-wrap">
-              <button
-                type="button"
-                class="swap-btn"
-                id="swap-btn"
-                title="Swap stations"
-              >
-                <svg viewBox="0 0 24 24">
-                  <path
-                    d="M16 17.01V10h-2v7.01h-3L15 21l4-3.99h-3zM9 3L5 6.99h3V14h2V6.99h3L9 3z"
-                  />
-                </svg>
-              </button>
-            </div>
-            <div class="field">
-              <label class="field-label" for="ToStnCode">To Station</label>
-              <div class="field-input-wrap">
-                <span class="field-icon">
-                  <svg viewBox="0 0 24 24">
-                    <path
-                      d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"
-                    />
-                  </svg>
-                </span>
-                <input
-                  class="form-input"
-                  type="text"
-                  id="ToStnCode"
-                  name="toStnCode"
-                  placeholder="NDLS"
-                  autocomplete="off"
-                  style="text-transform: uppercase"
-                />
-              </div>
-            </div>
-          </div>
-
-          <!-- Date / Coach / Quota -->
-          <div class="field-row three" style="margin-bottom: 10px">
-            <div class="field">
-              <label class="field-label" for="Date">Date of Journey</label>
-              <div class="field-input-wrap">
-                <span class="field-icon">
-                  <svg viewBox="0 0 24 24">
-                    <path
-                      d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.1 0-2 .9-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"
-                    />
-                  </svg>
-                </span>
-                <input class="form-input" type="date" id="Date" name="date" />
-              </div>
-            </div>
-            <div class="field">
-              <label class="field-label" for="Coach">Coach / Class</label>
-              <div class="field-input-wrap">
-                <span class="field-icon">
-                  <svg viewBox="0 0 24 24">
-                    <path
-                      d="M4 4h16v2H4V4zm0 4h16v2H4V8zm0 4h16v2H4v-2zm0 4h10v2H4v-2z"
-                    />
-                  </svg>
-                </span>
-                <select class="field-select" id="Coach" name="coach">
-                  <option value="">Any</option>
-                  <option value="SL">SL — Sleeper</option>
-                  <option value="3A">3A — AC 3 Tier</option>
-                  <option value="2A">2A — AC 2 Tier</option>
-                  <option value="1A">1A — AC First</option>
-                  <option value="CC">CC — Chair Car</option>
-                  <option value="EC">EC — Exec Chair</option>
-                  <option value="2S">2S — Second Sit</option>
-                </select>
-              </div>
-            </div>
-            <div class="field">
-              <label class="field-label" for="Quota">Quota</label>
-              <div class="field-input-wrap">
-                <span class="field-icon">
-                  <svg viewBox="0 0 24 24">
-                    <path
-                      d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 4l6 2.67V11c0 3.95-2.68 7.65-6 8.9-3.32-1.25-6-4.95-6-8.9V7.67L12 5z"
-                    />
-                  </svg>
-                </span>
-                <select class="field-select" id="Quota" name="quota">
-                  <option value="GN" selected>GN — General</option>
-                  <option value="TQ">TQ — Tatkal</option>
-                  <option value="PT">PT — Premium Tatkal</option>
-                  <option value="LD">LD — Ladies</option>
-                  <option value="SS">SS — Sr Citizen</option>
-                  <option value="DF">DF — Defence</option>
-                </select>
-              </div>
-            </div>
-          </div>
-
-          <!-- Tatkal toggle -->
-          <!-- <div class="tatkal-row">
-            <input type="checkbox" id="tatkal-check" />
-            <label class="tatkal-label" for="tatkal-check">
-              Opt for Alternate Travel Plan or Free Cancellation
-            </label>
-            <span class="tatkal-badge">FREE</span>
-          </div> -->
-
-          <!-- Submit -->
-          <button type="submit" class="btn-search" id="search-btn">
-            <div class="spinner"></div>
-            <span
-              class="btn-text"
-              style="display: flex; align-items: center; gap: 8px"
-            >
-              <svg
-                viewBox="0 0 24 24"
-                style="width: 18px; height: 18px; fill: #fff; flex-shrink: 0"
-              >
+      <div class="card" id="main-card">
+        <div class="card-form-view">
+          <div class="card-head">
+            <div class="card-head-title">
+              <svg viewBox="0 0 24 24">
                 <path
                   d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
                 />
               </svg>
-              Search Ticket
-            </span>
-          </button>
-        </form>
+              Search Tickets
+            </div>
+            <!-- <div class="irctc-badge">
+              <div class="irctc-badge-dot"></div>
+              IRCTC Partner
+            </div> -->
+          </div>
+
+          <form id="ticket-form" action="/search" method="POST">
+            <!-- Train Number -->
+            <div class="field-row" style="margin-bottom: 10px">
+              <div class="field">
+                <label class="field-label" for="Train-Number"
+                  >Train Number</label
+                >
+                <div class="field-input-wrap">
+                  <span class="field-icon">
+                    <svg viewBox="0 0 24 24">
+                      <path
+                        d="M4 4h16a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zM6 9h12v2H6V9z"
+                      />
+                    </svg>
+                  </span>
+                  <input
+                    class="form-input"
+                    type="text"
+                    id="Train-Number"
+                    name="trainNo"
+                    placeholder="e.g. 12301"
+                    autocomplete="off"
+                    inputmode="numeric"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <!-- From / Swap / To -->
+            <div
+              class="field-row"
+              style="
+                display: grid;
+                grid-template-columns: 1fr auto 1fr;
+                gap: 8px;
+                margin-bottom: 10px;
+                align-items: flex-end;
+              "
+            >
+              <div class="field">
+                <label class="field-label" for="FromStnCode"
+                  >From Station</label
+                >
+                <div class="field-input-wrap">
+                  <span class="field-icon">
+                    <svg viewBox="0 0 24 24">
+                      <path
+                        d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"
+                      />
+                    </svg>
+                  </span>
+                  <input
+                    class="form-input"
+                    type="text"
+                    id="FromStnCode"
+                    name="fromStnCode"
+                    placeholder="BZA"
+                    autocomplete="off"
+                    style="text-transform: uppercase"
+                  />
+                </div>
+              </div>
+              <div class="swap-wrap">
+                <button
+                  type="button"
+                  class="swap-btn"
+                  id="swap-btn"
+                  title="Swap stations"
+                >
+                  <svg viewBox="0 0 24 24">
+                    <path
+                      d="M16 17.01V10h-2v7.01h-3L15 21l4-3.99h-3zM9 3L5 6.99h3V14h2V6.99h3L9 3z"
+                    />
+                  </svg>
+                </button>
+              </div>
+              <div class="field">
+                <label class="field-label" for="ToStnCode">To Station</label>
+                <div class="field-input-wrap">
+                  <span class="field-icon">
+                    <svg viewBox="0 0 24 24">
+                      <path
+                        d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"
+                      />
+                    </svg>
+                  </span>
+                  <input
+                    class="form-input"
+                    type="text"
+                    id="ToStnCode"
+                    name="toStnCode"
+                    placeholder="NDLS"
+                    autocomplete="off"
+                    style="text-transform: uppercase"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <!-- Date / Coach / Quota -->
+            <div class="field-row three" style="margin-bottom: 10px">
+              <div class="field">
+                <label class="field-label" for="Date">Date of Journey</label>
+                <div class="field-input-wrap">
+                  <span class="field-icon">
+                    <svg viewBox="0 0 24 24">
+                      <path
+                        d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.1 0-2 .9-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"
+                      />
+                    </svg>
+                  </span>
+                  <input class="form-input" type="date" id="Date" name="date" />
+                </div>
+              </div>
+              <div class="field">
+                <label class="field-label" for="Coach">Coach / Class</label>
+                <div class="field-input-wrap">
+                  <span class="field-icon">
+                    <svg viewBox="0 0 24 24">
+                      <path
+                        d="M4 4h16v2H4V4zm0 4h16v2H4V8zm0 4h16v2H4v-2zm0 4h10v2H4v-2z"
+                      />
+                    </svg>
+                  </span>
+                  <select class="field-select" id="Coach" name="coach">
+                    <option value="">Any</option>
+                    <option value="2S">2S — Second Sit</option>
+                    <option value="SL">SL — Sleeper</option>
+                    <option value="3A">3A — AC 3 Tier</option>
+                    <option value="2A">2A — AC 2 Tier</option>
+                    <option value="1A">1A — AC First</option>
+                    <option value="CC">CC — Chair Car</option>
+                    <option value="EC">EC — Exec Chair</option>
+                    <option value="3E">3E — AC E Tier</option>
+                  </select>
+                </div>
+              </div>
+              <div class="field">
+                <label class="field-label" for="Quota">Quota</label>
+                <div class="field-input-wrap">
+                  <span class="field-icon">
+                    <svg viewBox="0 0 24 24">
+                      <path
+                        d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 4l6 2.67V11c0 3.95-2.68 7.65-6 8.9-3.32-1.25-6-4.95-6-8.9V7.67L12 5z"
+                      />
+                    </svg>
+                  </span>
+                  <select class="field-select" id="Quota" name="quota">
+                    <option value="GN" selected>GN — General</option>
+                    <option value="TQ">TQ — Tatkal</option>
+                    <option value="PT">PT — Premium Tatkal</option>
+                    <option value="LD">LD — Ladies</option>
+                    <option value="SS">SS — Sr Citizen</option>
+                    <option value="DF">DF — Defence</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- Submit -->
+            <button type="submit" class="btn-search" id="search-btn">
+              <div class="spinner"></div>
+              <span
+                class="btn-text"
+                style="display: flex; align-items: center; gap: 8px"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  style="width: 18px; height: 18px; fill: #fff; flex-shrink: 0"
+                >
+                  <path
+                    d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
+                  />
+                </svg>
+                Search Ticket
+              </span>
+            </button>
+          </form>
+        </div>
+
+        <!-- ══ LOADING VIEW (shown while POST is in-flight) ══ -->
+        <div class="card-loading-view">
+          <div class="loading-train-icon">
+            <svg viewBox="0 0 24 24">
+              <path
+                d="M4 4h16a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zm0 2v8h16V6H4zm-1 10l-1 3h20l-1-3H3zm5 1h8v1H8v-1zM6 9h12v2H6V9zm0-2h12v1H6V7z"
+              />
+            </svg>
+          </div>
+          <div class="loading-title">Searching for trains…</div>
+          <div class="loading-sub">
+            Checking availability for
+            <strong id="loading-route">— → —</strong>
+          </div>
+          <div class="shimmer-track">
+            <div class="shimmer-fill"></div>
+          </div>
+          <div class="loading-dots">
+            <span></span><span></span><span></span>
+          </div>
+        </div>
+      </div>
+      <!-- ── HELP CARD ─────────────────────────────────────── -->
+      <!-- ── HELP CARD ─────────────────────────────────────── -->
+      <div class="help-card">
+        <!-- head -->
+        <div class="help-card-head">
+          <div class="help-card-title">
+            🔍 How to get an available seat faster
+          </div>
+          <div class="help-card-sub">
+            Pick the right search below based on your current WL position
+          </div>
+        </div>
+        <!-- rank section -->
+        <div class="help-section-label">
+          Ranked by WL position — try in this order
+        </div>
+        <div class="rank-rows">
+          <!-- RAC -->
+          <div class="rank-row success">
+            <div class="rank-number success">1</div>
+            <div class="rank-content">
+              <div class="rank-top">
+                <span class="rank-title success">RAC</span>
+              </div>
+              <p class="rank-desc success">
+                1st search priority position to these Train while searching...
+              </p>
+            </div>
+          </div>
+          <!-- WL < 10 -->
+          <div class="rank-row success-dim">
+            <div class="rank-number success-dim">2</div>
+            <div class="rank-content">
+              <div class="rank-top">
+                <span class="rank-title success-dim">WL &lt; 10</span>
+              </div>
+              <p class="rank-desc success-dim">
+                2nd search priority position to these Train while searching...
+              </p>
+            </div>
+          </div>
+          <!-- WL 10-25 -->
+          <div class="rank-row warning">
+            <div class="rank-number warning">3</div>
+            <div class="rank-content">
+              <div class="rank-top">
+                <span class="rank-title warning">WL 10–25</span>
+              </div>
+              <p class="rank-desc warning">
+                3rd search priority position to these Train while searching...
+              </p>
+            </div>
+          </div>
+          <!-- WL > 25 -->
+          <div class="rank-row danger">
+            <div class="rank-number danger">4</div>
+            <div class="rank-content">
+              <div class="rank-top">
+                <span class="rank-title danger">WL &gt; 25</span>
+              </div>
+              <p class="rank-desc danger">
+                4th search priority position to these Train while searching...
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-
-    <!-- ══ QUICK ACTIONS ════════════════════════════════════ -->
-    <!-- <div class="quick-actions">
-      <div class="qa-item">
-        <div class="qa-pill">LIVE</div>
-        <div class="qa-icon">
-          <svg viewBox="0 0 24 24">
-            <path
-              d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"
-            />
-          </svg>
-        </div>
-        <span class="qa-label">Running Status</span>
-      </div>
-      <div class="qa-item">
-        <div class="qa-icon">
-          <svg viewBox="0 0 24 24">
-            <path
-              d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"
-            />
-          </svg>
-        </div>
-        <span class="qa-label">PNR Status</span>
-      </div>
-      <div class="qa-item">
-        <div class="qa-pill offer">₹50 Off</div>
-        <div class="qa-icon">
-          <svg viewBox="0 0 24 24">
-            <path
-              d="M18.06 22.99h1.66c.84 0 1.53-.64 1.63-1.46L23 5.05h-5V1h-1.97v4.05h-4.97l.3 2.34c1.71.47 3.31 1.32 4.27 2.26 1.44 1.42 2.43 2.89 2.43 5.29v8.05zM1 21.99V21h15.03v.99c0 .55-.45 1-1.01 1H2.01c-.56 0-1.01-.45-1.01-1zm15.03-7c0-2.21-1.79-4-4-4H6c-2.21 0-4 1.79-4 4v1h15.03v-1z"
-            />
-          </svg>
-        </div>
-        <span class="qa-label">Food on Train</span>
-      </div>
-      <div class="qa-item">
-        <div class="qa-icon">
-          <svg viewBox="0 0 24 24">
-            <path
-              d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9H9V9h10v2zm-4 4H9v-2h6v2zm4-8H9V5h10v2z"
-            />
-          </svg>
-        </div>
-        <span class="qa-label">Seat Avail</span>
-      </div>
-    </div> -->
 
     <!-- ══ RESULTS ══════════════════════════════════════════ -->
     <div class="results-wrap">
@@ -1182,44 +1469,7 @@
 
     <!-- ══ FOOTER NAV (mobile only) ═════════════════════════ -->
     <nav class="footer-nav">
-      <!-- <div class="fn-item active">
-        <svg viewBox="0 0 24 24">
-          <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
-        </svg>
-        Home
-      </div>
-      <div class="fn-item">
-        <svg viewBox="0 0 24 24">
-          <path
-            d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"
-          />
-        </svg>
-        ixigo Pay
-      </div>
-      <div class="fn-item">
-        <svg viewBox="0 0 24 24">
-          <path
-            d="M20 6h-2.18c.07-.44.18-.86.18-1.3C18 2.55 16.45 1 14.5 1c-1.23 0-2.33.63-3 1.64L12 3.5l-.5-.86C10.83 1.63 9.73 1 8.5 1 6.55 1 5 2.55 5 4.7c0 .44.11.86.18 1.3H3c-1.1 0-2 .9-2 2v11c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2z"
-          />
-        </svg>
-        Trips
-      </div>
-      <div class="fn-item">
-        <svg viewBox="0 0 24 24">
-          <path
-            d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"
-          />
-        </svg>
-        Alerts
-      </div>
-      <div class="fn-item">
-        <svg viewBox="0 0 24 24">
-          <path
-            d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"
-          />
-        </svg>
-        Profile
-      </div> -->
+      <!-- commented out footer items -->
     </nav>
 
     <!-- ══ SCRIPTS ══════════════════════════════════════════ -->
@@ -1228,6 +1478,7 @@
       const $ = (id) => document.getElementById(id);
       const resultsEl = $("results");
       const searchBtn = $("search-btn");
+      const card = $("main-card");
 
       /* Set today as default date */
       const today = new Date().toISOString().split("T")[0];
@@ -1254,20 +1505,39 @@
       });
 
       /* Tatkal quota sync */
-      $("tatkal-check").addEventListener("change", (e) => {
-        if (e.target.checked) $("Quota").value = "TQ";
-        else $("Quota").value = "GN";
-      });
+      $("tatkal-check") &&
+        $("tatkal-check").addEventListener("change", (e) => {
+          if (e.target.checked) $("Quota").value = "TQ";
+          else $("Quota").value = "GN";
+        });
       $("Quota").addEventListener("change", (e) => {
-        $("tatkal-check").checked =
-          e.target.value === "TQ" || e.target.value === "PT";
+        const tc = $("tatkal-check");
+        if (tc) tc.checked = e.target.value === "TQ" || e.target.value === "PT";
+      });
+
+      /* ── Form submit — show loading panel, then let POST proceed ── */
+      $("ticket-form").addEventListener("submit", function (e) {
+        const fromStnCode = $("FromStnCode").value.trim();
+        const toStnCode = $("ToStnCode").value.trim();
+        const date = $("Date").value.trim();
+
+        if (!fromStnCode || !toStnCode || !date) {
+          e.preventDefault();
+          showError("Please fill From, To, and Date fields.");
+          return;
+        }
+
+        /* Update route text in loading panel */
+        $("loading-route").textContent = `${fromStnCode} → ${toStnCode}`;
+
+        /* Flip card to loading view — browser continues the real POST */
+        card.classList.add("is-loading");
       });
 
       /* ── Render results ── */
       function renderResults(data) {
         resultsEl.innerHTML = "";
 
-        // If API returns an array of trains
         const trains = Array.isArray(data)
           ? data
           : data.data
@@ -1334,7 +1604,6 @@
             resultsEl.appendChild(card);
           });
         } else {
-          // Show raw JSON if structure unknown
           const pre = document.createElement("pre");
           pre.className = "result-raw";
           pre.textContent = JSON.stringify(data, null, 2);
@@ -1361,54 +1630,6 @@
         <div class="state-sub">Try a different date, station code, or quota.</div>
       </div>`;
       }
-
-      /* ── Form submit ── */
-      // $("ticket-form").addEventListener("submit", async function (e) {
-      //   e.preventDefault();
-
-      //   const trainNo = $("Train-Number").value.trim();
-      //   const fromStnCode = $("FromStnCode").value.trim();
-      //   const toStnCode = $("ToStnCode").value.trim();
-      //   const date = $("Date").value.trim();
-      //   const coach = $("Coach").value.trim();
-      //   const quota = $("Quota").value || "GN";
-
-      //   if (!fromStnCode || !toStnCode || !date) {
-      //     showError("Please fill From, To, and Date fields.");
-      //     return;
-      //   }
-
-      //   const payload = { trainNo, fromStnCode, toStnCode, date, coach, quota };
-
-      //   // Loading state
-      //   searchBtn.classList.add("loading");
-      //   resultsEl.innerHTML = `
-      // <div class="state-card">
-      //   <div class="state-icon">🚂</div>
-      //   <div class="state-title">Searching trains…</div>
-      //   <div class="state-sub">Checking availability for ${fromStnCode} → ${toStnCode}</div>
-      // </div>`;
-
-      //   try {
-      //     const res = await axios.post("http://localhost:8000/search", payload);
-      //     searchBtn.classList.remove("loading");
-
-      //     const data = res.data;
-      //     if (!data || (Array.isArray(data) && data.length === 0)) {
-      //       showEmpty();
-      //     } else {
-      //       renderResults(data);
-      //     }
-      //   } catch (err) {
-      //     searchBtn.classList.remove("loading");
-      //     const msg =
-      //       err.response?.data?.message ||
-      //       err.response?.data?.error ||
-      //       err.message ||
-      //       "Failed to connect to server.";
-      //     showError(msg);
-      //   }
-      //});
     </script>
   </body>
 </html>
