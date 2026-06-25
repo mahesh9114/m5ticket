@@ -4,28 +4,34 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>M5-ticket Find Book Travel</title>
+
+    <!-- ── GOOGLE FONTS ───────────────────────────────────────── -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <!-- <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script> -->
+
     <style>
-      /* ── TOKENS ─────────────────────────────────────────── */
+      /* ════════════════════════════════════════════════════════
+         DESIGN TOKENS
+         ════════════════════════════════════════════════════════ */
+
       :root {
-        /* ── #0022D2 ELECTRIC BLUE SYSTEM ─────────────────── */
-        --indigo: #0022d2; /* Main Accent: Form borders, hero banner, primary buttons */
-        --indigo-dark: #0019a8; /* Hover State: Slightly deeper blue for button interaction */
-        --indigo-dim: #3b5aff; /* Active Focus: Lighter, sharp highlight variant for input focus */
-        --indigo-tint: #ebedff; /* Soft Panel Base: Clean light blue tint for list frames or backgrounds */
+        /* ── Electric Blue System (#0022D2) ─────────────────── */
+        --indigo: #0022d2; /* Main accent: borders, hero, primary buttons  */
+        --indigo-dark: #0019a8; /* Hover state: deeper blue for button hover    */
+        --indigo-dim: #3b5aff; /* Active focus: lighter highlight for inputs   */
+        --indigo-tint: #ebedff; /* Soft panel base: light blue tint background  */
         --indigo-mid: rgba(
           0,
           34,
           210,
           0.12
-        ); /* Transparency Layer: Subtle blue box shadow ring overlay */
+        ); /* Transparency layer: subtle blue shadow ring  */
 
+        /* ── Greyscale ──────────────────────────────────────── */
         --black: #0a0a0a;
         --grey-900: #111111;
         --grey-700: #3a3a3a;
@@ -33,21 +39,31 @@
         --grey-300: #c4c4c4;
         --grey-100: #f2f2f2;
         --white: #ffffff;
+
+        /* ── Status Colors ──────────────────────────────────── */
         --green: #00c853;
         --orange: #ff9800;
         --red: #f44336;
+
+        /* ── Radii ──────────────────────────────────────────── */
         --radius-sm: 8px;
         --radius-md: 12px;
         --radius-lg: 18px;
         --radius-pill: 999px;
+
+        /* ── Shadows ────────────────────────────────────────── */
         --shadow-card: 0 2px 12px rgba(0, 0, 0, 0.08);
-        /* ── MATCHING SHADOW ACCENT ─────────────────────────── */
-        --shadow-btn: 0 4px 14px rgba(0, 34, 210, 0.35); /* Button elevation glow shadow */
+        --shadow-btn: 0 4px 14px rgba(0, 34, 210, 0.35); /* Button elevation glow */
+
+        /* ── Misc ───────────────────────────────────────────── */
         --font: "Inter", system-ui, sans-serif;
         --transition: 0.18s ease;
       }
 
-      /* ── RESET ───────────────────────────────────────────── */
+      /* ════════════════════════════════════════════════════════
+         RESET
+         ════════════════════════════════════════════════════════ */
+
       *,
       *::before,
       *::after {
@@ -80,7 +96,10 @@
         text-decoration: none;
       }
 
-      /* ── HEADER ─────────────────────────────────────────── */
+      /* ════════════════════════════════════════════════════════
+         HEADER
+         ════════════════════════════════════════════════════════ */
+
       .header {
         background: var(--white);
         border-bottom: 1px solid rgba(0, 0, 0, 0.07);
@@ -95,11 +114,11 @@
         height: 56px;
         display: flex;
         align-items: center;
-        /* 1. CHANGED: Centers the flex items horizontally */
-        justify-content: center;
-        /* 2. ADDED: Adds a clean gap space between the logo and navigation */
+        justify-content: center; /* Centers logo + nav horizontally */
         gap: 40px;
       }
+
+      /* Logo */
       .logo {
         display: flex;
         align-items: center;
@@ -130,8 +149,10 @@
         font-size: 9px;
         color: var(--grey-500);
         letter-spacing: 1px;
-        display: none;
+        display: none; /* Shown on desktop via media query */
       }
+
+      /* Nav */
       .header-nav {
         display: flex;
         align-items: center;
@@ -168,7 +189,10 @@
         color: var(--white);
       }
 
-      /* ── HERO BAND ──────────────────────────────────────── */
+      /* ════════════════════════════════════════════════════════
+         HERO BAND
+         ════════════════════════════════════════════════════════ */
+
       .hero {
         background: var(--indigo);
         padding: 28px 16px 72px;
@@ -194,7 +218,10 @@
         font-weight: 400;
       }
 
-      /* ── QUICK TABS ─────────────────────────────────────── */
+      /* ════════════════════════════════════════════════════════
+         QUICK TABS
+         ════════════════════════════════════════════════════════ */
+
       .quick-tabs {
         display: flex;
         justify-content: center;
@@ -227,7 +254,10 @@
         border-color: var(--white);
       }
 
-      /* ── CARD ───────────────────────────────────────────── */
+      /* ════════════════════════════════════════════════════════
+         SEARCH CARD
+         ════════════════════════════════════════════════════════ */
+
       .card-wrap {
         max-width: 640px;
         margin: -48px auto 0;
@@ -274,11 +304,15 @@
         background: var(--green);
       }
 
-      /* ── FORM ───────────────────────────────────────────── */
+      /* ════════════════════════════════════════════════════════
+         FORM
+         ════════════════════════════════════════════════════════ */
+
       #ticket-form {
         padding: 16px 20px 20px;
       }
 
+      /* Field layout rows */
       .field-row {
         display: grid;
         gap: 10px;
@@ -291,6 +325,7 @@
         grid-template-columns: 1fr 1fr 1fr;
       }
 
+      /* Individual field */
       .field {
         display: flex;
         flex-direction: column;
@@ -305,6 +340,8 @@
         text-transform: uppercase;
         padding-left: 2px;
       }
+
+      /* Input wrapper (border + icon + input) */
       .field-input-wrap {
         display: flex;
         align-items: center;
@@ -320,6 +357,8 @@
         border-color: var(--indigo);
         box-shadow: 0 0 0 3px var(--indigo-mid);
       }
+
+      /* Icon inside input */
       .field-icon {
         padding: 0 10px;
         display: flex;
@@ -336,6 +375,7 @@
         fill: var(--indigo);
       }
 
+      /* Text / date input */
       .form-input {
         width: 100%;
         padding: 11px 12px 11px 0;
@@ -344,12 +384,10 @@
         color: var(--black);
         border: none;
         background: transparent;
-        /* CORRECTED: Added the leading dashes and cross-browser backups */
         -webkit-appearance: none;
         -moz-appearance: none;
         appearance: none;
       }
-
       .form-input::placeholder {
         color: var(--grey-300);
         font-weight: 400;
@@ -359,7 +397,7 @@
         opacity: 0;
       }
 
-      /* swap button */
+      /* Swap stations button */
       .swap-wrap {
         display: flex;
         align-items: flex-end;
@@ -389,7 +427,7 @@
         fill: var(--white);
       }
 
-      /* quota select */
+      /* Select (Coach / Quota) */
       .field-select {
         width: 100%;
         padding: 11px 12px 11px 0;
@@ -403,7 +441,7 @@
         cursor: pointer;
       }
 
-      /* tatkal row */
+      /* Tatkal toggle row */
       .tatkal-row {
         display: flex;
         align-items: center;
@@ -436,7 +474,7 @@
         letter-spacing: 0.3px;
       }
 
-      /* submit */
+      /* Search / submit button */
       .btn-search {
         width: 100%;
         padding: 15px;
@@ -471,7 +509,10 @@
         pointer-events: none;
       }
 
-      /* ── QUICK ACTIONS ──────────────────────────────────── */
+      /* ════════════════════════════════════════════════════════
+         QUICK ACTIONS GRID
+         ════════════════════════════════════════════════════════ */
+
       .quick-actions {
         max-width: 640px;
         margin: 14px auto 0;
@@ -535,7 +576,10 @@
         background: var(--indigo);
       }
 
-      /* ── RESULTS ────────────────────────────────────────── */
+      /* ════════════════════════════════════════════════════════
+         RESULTS
+         ════════════════════════════════════════════════════════ */
+
       .results-wrap {
         max-width: 640px;
         margin: 16px auto 0;
@@ -561,7 +605,7 @@
         border-radius: var(--radius-pill);
       }
 
-      /* result card */
+      /* Result card */
       .result-card {
         background: var(--white);
         border-radius: var(--radius-md);
@@ -581,6 +625,8 @@
           transform: translateY(0);
         }
       }
+
+      /* Card sections */
       .rc-top {
         padding: 14px 16px;
         display: flex;
@@ -598,6 +644,8 @@
         color: var(--grey-500);
         margin-top: 2px;
       }
+
+      /* Availability badge */
       .rc-avail {
         font-size: 11px;
         font-weight: 700;
@@ -618,11 +666,11 @@
         color: #bf360c;
       }
 
+      /* Route row */
       .rc-route {
         padding: 0 16px 14px;
         display: flex;
         align-items: center;
-        gap: 0;
       }
       .rc-stn {
         flex: 1;
@@ -641,7 +689,6 @@
         flex: 2;
         display: flex;
         align-items: center;
-        gap: 0;
         position: relative;
         padding: 0 8px;
       }
@@ -670,6 +717,7 @@
         padding: 0 6px;
       }
 
+      /* Card footer */
       .rc-bottom {
         border-top: 1px solid var(--grey-100);
         padding: 10px 16px;
@@ -712,7 +760,7 @@
         background: var(--indigo-dark);
       }
 
-      /* raw json fallback */
+      /* Raw JSON fallback (dev/debug) */
       .result-raw {
         background: var(--grey-900);
         color: #b0ffb0;
@@ -726,7 +774,7 @@
         word-break: break-word;
       }
 
-      /* state cards */
+      /* Empty / error states */
       .state-card {
         background: var(--white);
         border-radius: var(--radius-md);
@@ -753,7 +801,11 @@
         color: var(--red);
       }
 
-      /* spinner */
+      /* ════════════════════════════════════════════════════════
+         LOADING VIEW  (shown while POST is in-flight)
+         ════════════════════════════════════════════════════════ */
+
+      /* Spinner inside submit button */
       .spinner {
         width: 20px;
         height: 20px;
@@ -775,7 +827,7 @@
         }
       }
 
-      /* ── LOADING VIEW ──────────────────────────────────── */
+      /* Card view toggle — .is-loading swaps form ↔ loading panel */
       .card-form-view {
         display: block;
       }
@@ -798,7 +850,15 @@
           opacity: 1;
         }
       }
-      /* train icon bounce */
+
+      .card.is-loading .card-form-view {
+        display: none;
+      }
+      .card.is-loading .card-loading-view {
+        display: flex;
+      }
+
+      /* Bouncing train icon */
       .loading-train-icon {
         width: 56px;
         height: 56px;
@@ -824,6 +884,8 @@
           transform: translateY(-8px);
         }
       }
+
+      /* Loading text */
       .loading-title {
         font-size: 16px;
         font-weight: 700;
@@ -840,7 +902,8 @@
         color: var(--indigo);
         font-weight: 600;
       }
-      /* shimmer track */
+
+      /* Shimmer progress track */
       .shimmer-track {
         width: 100%;
         max-width: 320px;
@@ -875,7 +938,8 @@
           left: 100%;
         }
       }
-      /* bouncing dots */
+
+      /* Bouncing dots */
       .loading-dots {
         display: flex;
         gap: 6px;
@@ -907,15 +971,11 @@
           transform: scale(1.15);
         }
       }
-      /* swap views on .is-loading */
-      .card.is-loading .card-form-view {
-        display: none;
-      }
-      .card.is-loading .card-loading-view {
-        display: flex;
-      }
 
-      /* ── HELP CARD ──────────────────────────────────────── */
+      /* ════════════════════════════════════════════════════════
+         HELP / WL PRIORITY CARD
+         ════════════════════════════════════════════════════════ */
+
       .help-card {
         background: var(--white);
         border-radius: var(--radius-lg);
@@ -950,7 +1010,8 @@
         text-transform: uppercase;
         padding: 14px 18px 8px;
       }
-      /* ── RANK ROWS ──────────────────────────────────────── */
+
+      /* Rank rows */
       .rank-rows {
         padding: 0 18px 14px;
         display: flex;
@@ -982,6 +1043,7 @@
         border-color: #fcc;
       }
 
+      /* Rank number circle */
       .rank-number {
         width: 24px;
         height: 24px;
@@ -1011,6 +1073,7 @@
         color: var(--white);
       }
 
+      /* Rank content */
       .rank-content {
         flex: 1;
       }
@@ -1055,7 +1118,10 @@
         color: #922b21;
       }
 
-      /* ── FOOTER NAV (mobile) ────────────────────────────── */
+      /* ════════════════════════════════════════════════════════
+         FOOTER NAV  (mobile only)
+         ════════════════════════════════════════════════════════ */
+
       .footer-nav {
         position: fixed;
         bottom: 0;
@@ -1094,7 +1160,11 @@
         fill: var(--indigo);
       }
 
-      /* ── DESKTOP OVERRIDES ──────────────────────────────── */
+      /* ════════════════════════════════════════════════════════
+         RESPONSIVE OVERRIDES
+         ════════════════════════════════════════════════════════ */
+
+      /* ── Desktop (≥ 640px) ──────────────────────────────── */
       @media (min-width: 640px) {
         .hero {
           padding: 48px 16px 88px;
@@ -1121,6 +1191,8 @@
           padding: 20px 24px 24px;
         }
       }
+
+      /* ── Mobile (< 640px) ───────────────────────────────── */
       @media (max-width: 639px) {
         body {
           padding-bottom: 64px;
@@ -1128,6 +1200,7 @@
         .header-nav .nav-chip {
           display: none;
         }
+        /* Three-col row collapses to 2-col, last field spans full width */
         .field-row.three {
           grid-template-columns: 1fr 1fr;
         }
@@ -1135,10 +1208,213 @@
           grid-column: span 2;
         }
       }
+      /* ════════════════════════════════════════════════════════
+         DISCLAIMER POPUP
+         ════════════════════════════════════════════════════════ */
+
+      .disclaimer-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.55);
+        z-index: 999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 16px;
+        animation: fadeIn 0.2s ease;
+      }
+      .disclaimer-overlay.hidden {
+        display: none;
+      }
+      .disclaimer-box {
+        background: var(--white);
+        border-radius: var(--radius-lg);
+        box-shadow: 0 8px 40px rgba(0, 0, 0, 0.22);
+        max-width: 420px;
+        width: 100%;
+        overflow: hidden;
+      }
+      .disclaimer-head {
+        background: var(--indigo);
+        padding: 18px 20px 16px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .disclaimer-head-icon {
+        font-size: 22px;
+        flex-shrink: 0;
+      }
+      .disclaimer-head-title {
+        font-size: 15px;
+        font-weight: 700;
+        color: var(--white);
+        line-height: 1.3;
+      }
+      .disclaimer-head-sub {
+        font-size: 11px;
+        color: rgba(255, 255, 255, 0.65);
+        margin-top: 2px;
+      }
+      .disclaimer-body {
+        padding: 18px 20px;
+      }
+      .disclaimer-body p {
+        font-size: 13px;
+        color: var(--grey-700);
+        line-height: 1.65;
+        margin-bottom: 12px;
+      }
+      .disclaimer-body p:last-of-type {
+        margin-bottom: 0;
+      }
+      .disclaimer-body strong {
+        color: var(--black);
+        font-weight: 600;
+      }
+      .disclaimer-tc {
+        background: var(--indigo-tint);
+        border: 1px solid rgba(0, 34, 210, 0.15);
+        border-radius: var(--radius-sm);
+        padding: 12px 14px;
+        margin-top: 14px;
+        font-size: 12px;
+        color: var(--grey-700);
+        line-height: 1.6;
+      }
+      .disclaimer-tc ul {
+        margin: 6px 0 0 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+      .disclaimer-footer {
+        padding: 14px 20px 18px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .disclaimer-agree-row {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        cursor: pointer;
+      }
+      .disclaimer-agree-row input[type="checkbox"] {
+        accent-color: var(--indigo);
+        width: 16px;
+        height: 16px;
+        margin-top: 2px;
+        flex-shrink: 0;
+        cursor: pointer;
+      }
+      .disclaimer-agree-label {
+        font-size: 12px;
+        color: var(--grey-700);
+        line-height: 1.5;
+        cursor: pointer;
+        user-select: none;
+      }
+      .btn-disclaimer-agree {
+        width: 100%;
+        padding: 13px;
+        background: var(--grey-300);
+        color: var(--white);
+        font-size: 14px;
+        font-weight: 700;
+        border-radius: var(--radius-sm);
+        transition: var(--transition);
+        cursor: not-allowed;
+        pointer-events: none;
+      }
+      .btn-disclaimer-agree.ready {
+        background: var(--indigo);
+        box-shadow: var(--shadow-btn);
+        cursor: pointer;
+        pointer-events: auto;
+      }
+      .btn-disclaimer-agree.ready:hover {
+        background: var(--indigo-dark);
+      }
     </style>
   </head>
+
   <body>
-    <!-- ══ HEADER ══════════════════════════════════════════ -->
+    <!-- ════════════════════════════════════════════════════════
+         DISCLAIMER POPUP
+         ════════════════════════════════════════════════════════ -->
+    <div class="disclaimer-overlay" id="disclaimer-overlay">
+      <div class="disclaimer-box">
+        <!-- Head -->
+        <div class="disclaimer-head">
+          <div class="disclaimer-head-icon">⚠️</div>
+          <div>
+            <div class="disclaimer-head-title">
+              Independent Tool — Not Affiliated with IRCTC
+            </div>
+            <div class="disclaimer-head-sub">Please read before continuing</div>
+          </div>
+        </div>
+
+        <!-- Body -->
+        <div class="disclaimer-body">
+          <p>
+            <strong>m5ticket is an independent search tool.</strong> It is not
+            affiliated with, endorsed by, or officially partnered with Indian
+            Railways, IRCTC, or any government railway authority.
+          </p>
+          <p>
+            This tool only helps you <strong>check availability</strong>. All
+            bookings must be made directly on the official
+            <a
+              href="https://www.irctc.co.in"
+              target="_blank"
+              style="color: var(--indigo); font-weight: 600"
+              >irctc.co.in</a
+            >
+            website or authorised apps. Always verify before purchasing.
+          </p>
+
+          <!-- T&C summary -->
+          <div class="disclaimer-tc">
+            <strong>By continuing you agree that:</strong>
+            <ul>
+              <li>This tool is for informational purposes only</li>
+              <li>Availability shown may not reflect real-time IRCTC data</li>
+              <li>
+                You will verify and book only through official IRCTC channels
+              </li>
+              <li>
+                The creator holds no liability for missed or incorrect bookings
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Footer: checkbox + button -->
+        <div class="disclaimer-footer">
+          <label class="disclaimer-agree-row">
+            <input type="checkbox" id="disclaimer-check" />
+            <span class="disclaimer-agree-label">
+              I understand this is not an official IRCTC tool and I agree to the
+              terms above.
+            </span>
+          </label>
+          <button
+            class="btn-disclaimer-agree"
+            id="disclaimer-agree-btn"
+            disabled
+          >
+            I Agree — Continue
+          </button>
+        </div>
+      </div>
+    </div>
+    <!-- /disclaimer-overlay -->
+
+    <!-- ════════════════════════════════════════════════════════
+         HEADER
+         ════════════════════════════════════════════════════════ -->
     <header class="header">
       <div class="header-inner">
         <div class="logo">
@@ -1163,18 +1439,24 @@
       </div>
     </header>
 
-    <!-- ══ HERO ════════════════════════════════════════════ -->
+    <!-- ════════════════════════════════════════════════════════
+         HERO BAND
+         ════════════════════════════════════════════════════════ -->
     <section class="hero">
       <!-- <p class="hero-eyebrow">IRCTC Authorised Partner</p> -->
       <h1 class="hero-title">
-        Booking a train ticket?<br /><span>Shows WL / RAC ?</span><br />
+        Booking a train ticket?<br />
+        <span>Shows WL / RAC ?</span><br />
         Find AVL here!
       </h1>
     </section>
 
-    <!-- ══ SEARCH CARD --checked-okk ══════════════════════════════════════ -->
+    <!-- ════════════════════════════════════════════════════════
+         SEARCH CARD
+         ════════════════════════════════════════════════════════ -->
     <div class="card-wrap">
       <div class="card" id="main-card">
+        <!-- ── Form view (default) ─────────────────────────── -->
         <div class="card-form-view">
           <div class="card-head">
             <div class="card-head-title">
@@ -1192,7 +1474,7 @@
           </div>
 
           <form id="ticket-form" action="/search" method="POST">
-            <!-- Train Number -->
+            <!-- Train Number ──────────────────────────────── -->
             <div class="field-row" style="margin-bottom: 10px">
               <div class="field">
                 <label class="field-label" for="Train-Number"
@@ -1202,7 +1484,7 @@
                   <span class="field-icon">
                     <svg viewBox="0 0 24 24">
                       <path
-                        d="M4 4h16a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zM6 9h12v2H6V9z"
+                        d="M4 4h16v2H4V4zm0 4h16v2H4V8zm0 4h16v2H4v-2zm0 4h10v2H4v-2z"
                       />
                     </svg>
                   </span>
@@ -1219,7 +1501,7 @@
               </div>
             </div>
 
-            <!-- From / Swap / To -->
+            <!-- From / Swap / To ─────────────────────────── -->
             <div
               class="field-row"
               style="
@@ -1230,6 +1512,7 @@
                 align-items: flex-end;
               "
             >
+              <!-- From -->
               <div class="field">
                 <label class="field-label" for="FromStnCode"
                   >From Station</label
@@ -1253,6 +1536,8 @@
                   />
                 </div>
               </div>
+
+              <!-- Swap button -->
               <div class="swap-wrap">
                 <button
                   type="button"
@@ -1267,6 +1552,8 @@
                   </svg>
                 </button>
               </div>
+
+              <!-- To -->
               <div class="field">
                 <label class="field-label" for="ToStnCode">To Station</label>
                 <div class="field-input-wrap">
@@ -1290,8 +1577,9 @@
               </div>
             </div>
 
-            <!-- Date / Coach / Quota -->
+            <!-- Date / Coach / Quota ─────────────────────── -->
             <div class="field-row three" style="margin-bottom: 10px">
+              <!-- Date -->
               <div class="field">
                 <label class="field-label" for="Date">Date of Journey</label>
                 <div class="field-input-wrap">
@@ -1305,6 +1593,8 @@
                   <input class="form-input" type="date" id="Date" name="date" />
                 </div>
               </div>
+
+              <!-- Coach / Class -->
               <div class="field">
                 <label class="field-label" for="Coach">Coach / Class</label>
                 <div class="field-input-wrap">
@@ -1328,6 +1618,8 @@
                   </select>
                 </div>
               </div>
+
+              <!-- Quota -->
               <div class="field">
                 <label class="field-label" for="Quota">Quota</label>
                 <div class="field-input-wrap">
@@ -1350,7 +1642,7 @@
               </div>
             </div>
 
-            <!-- Submit -->
+            <!-- Submit ───────────────────────────────────── -->
             <button type="submit" class="btn-search" id="search-btn">
               <div class="spinner"></div>
               <span
@@ -1370,8 +1662,9 @@
             </button>
           </form>
         </div>
+        <!-- /card-form-view -->
 
-        <!-- ══ LOADING VIEW (shown while POST is in-flight) ══ -->
+        <!-- ── Loading view (shown while POST is in-flight) ── -->
         <div class="card-loading-view">
           <div class="loading-train-icon">
             <svg viewBox="0 0 24 24">
@@ -1392,11 +1685,12 @@
             <span></span><span></span><span></span>
           </div>
         </div>
+        <!-- /card-loading-view -->
       </div>
-      <!-- ── HELP CARD ─────────────────────────────────────── -->
-      <!-- ── HELP CARD ─────────────────────────────────────── -->
+      <!-- /card -->
+
+      <!-- ── WL Priority Help Card ───────────────────────── -->
       <div class="help-card">
-        <!-- head -->
         <div class="help-card-head">
           <div class="help-card-title">
             🔍 How to get an available seat faster
@@ -1405,12 +1699,13 @@
             Pick the right search below based on your current WL position
           </div>
         </div>
-        <!-- rank section -->
+
         <div class="help-section-label">
           Ranked by WL position — try in this order
         </div>
+
         <div class="rank-rows">
-          <!-- RAC -->
+          <!-- Rank 1: RAC -->
           <div class="rank-row success">
             <div class="rank-number success">1</div>
             <div class="rank-content">
@@ -1422,7 +1717,8 @@
               </p>
             </div>
           </div>
-          <!-- WL < 10 -->
+
+          <!-- Rank 2: WL < 10 -->
           <div class="rank-row success-dim">
             <div class="rank-number success-dim">2</div>
             <div class="rank-content">
@@ -1434,7 +1730,8 @@
               </p>
             </div>
           </div>
-          <!-- WL 10-25 -->
+
+          <!-- Rank 3: WL 10–25 -->
           <div class="rank-row warning">
             <div class="rank-number warning">3</div>
             <div class="rank-content">
@@ -1446,7 +1743,8 @@
               </p>
             </div>
           </div>
-          <!-- WL > 25 -->
+
+          <!-- Rank 4: WL > 25 -->
           <div class="rank-row danger">
             <div class="rank-number danger">4</div>
             <div class="rank-content">
@@ -1459,33 +1757,43 @@
             </div>
           </div>
         </div>
+        <!-- /rank-rows -->
       </div>
+      <!-- /help-card -->
     </div>
+    <!-- /card-wrap -->
 
-    <!-- ══ RESULTS ══════════════════════════════════════════ -->
+    <!-- ════════════════════════════════════════════════════════
+         RESULTS
+         ════════════════════════════════════════════════════════ -->
     <div class="results-wrap">
       <div id="results"></div>
     </div>
 
-    <!-- ══ FOOTER NAV (mobile only) ═════════════════════════ -->
+    <!-- ════════════════════════════════════════════════════════
+         FOOTER NAV  (mobile only)
+         ════════════════════════════════════════════════════════ -->
     <nav class="footer-nav">
-      <!-- commented out footer items -->
+      <!-- footer items commented out -->
     </nav>
 
-    <!-- ══ SCRIPTS ══════════════════════════════════════════ -->
+    <!-- ════════════════════════════════════════════════════════
+         SCRIPTS
+         ════════════════════════════════════════════════════════ -->
     <script>
-      /* ── Helpers ── */
+      /* ── Shortcuts ────────────────────────────────────────── */
       const $ = (id) => document.getElementById(id);
+
       const resultsEl = $("results");
       const searchBtn = $("search-btn");
       const card = $("main-card");
 
-      /* Set today as default date */
+      /* ── Set today as default journey date ────────────────── */
       const today = new Date().toISOString().split("T")[0];
       $("Date").value = today;
       $("Date").min = today;
 
-      /* Auto-uppercase station inputs */
+      /* ── Auto-uppercase station code inputs ───────────────── */
       ["FromStnCode", "ToStnCode"].forEach((id) => {
         $(id).addEventListener("input", (e) => {
           const pos = e.target.selectionStart;
@@ -1494,7 +1802,7 @@
         });
       });
 
-      /* Swap stations */
+      /* ── Swap From ↔ To stations ──────────────────────────── */
       $("swap-btn").addEventListener("click", () => {
         const a = $("FromStnCode").value;
         const b = $("ToStnCode").value;
@@ -1504,18 +1812,19 @@
         setTimeout(() => ($("swap-btn").style.transform = ""), 300);
       });
 
-      /* Tatkal quota sync */
+      /* ── Tatkal checkbox ↔ Quota select sync ──────────────── */
       $("tatkal-check") &&
         $("tatkal-check").addEventListener("change", (e) => {
           if (e.target.checked) $("Quota").value = "TQ";
           else $("Quota").value = "GN";
         });
+
       $("Quota").addEventListener("change", (e) => {
         const tc = $("tatkal-check");
         if (tc) tc.checked = e.target.value === "TQ" || e.target.value === "PT";
       });
 
-      /* ── Form submit — show loading panel, then let POST proceed ── */
+      /* ── Form submit: validate → show loading → let POST proceed ── */
       $("ticket-form").addEventListener("submit", function (e) {
         const fromStnCode = $("FromStnCode").value.trim();
         const toStnCode = $("ToStnCode").value.trim();
@@ -1527,17 +1836,21 @@
           return;
         }
 
-        /* Update route text in loading panel */
+        /* Update route label inside the loading panel */
         $("loading-route").textContent = `${fromStnCode} → ${toStnCode}`;
 
         /* Flip card to loading view — browser continues the real POST */
         card.classList.add("is-loading");
       });
 
-      /* ── Render results ── */
+      /* ════════════════════════════════════════════════════════
+         RESULT RENDERING
+         ════════════════════════════════════════════════════════ */
+
       function renderResults(data) {
         resultsEl.innerHTML = "";
 
+        /* Normalise data shape — accept array, data.data, or data.trains */
         const trains = Array.isArray(data)
           ? data
           : data.data
@@ -1547,13 +1860,15 @@
               : null;
 
         if (trains && trains.length > 0) {
+          /* Header row */
           const head = document.createElement("div");
           head.className = "results-head";
           head.innerHTML = `
-        <span class="results-title">Available Trains</span>
-        <span class="results-count">${trains.length} found</span>`;
+            <span class="results-title">Available Trains</span>
+            <span class="results-count">${trains.length} found</span>`;
           resultsEl.appendChild(head);
 
+          /* One card per train */
           trains.forEach((t, i) => {
             const avail = t.availability || t.avail || "AVAILABLE";
             const availClass = avail.startsWith("WL")
@@ -1566,44 +1881,45 @@
             card.className = "result-card";
             card.style.animationDelay = `${i * 0.06}s`;
             card.innerHTML = `
-          <div class="rc-top">
-            <div>
-              <div class="rc-train-name">${t.trainName || t.train_name || "Train"}</div>
-              <div class="rc-train-no">#${t.trainNo || t.train_no || ""}</div>
-            </div>
-            <span class="rc-avail ${availClass}">${avail}</span>
-          </div>
-          <div class="rc-route">
-            <div class="rc-stn">
-              <div class="rc-time">${t.departTime || t.depart || "--:--"}</div>
-              <div class="rc-code">${t.fromStn || t.from || ""}</div>
-            </div>
-            <div class="rc-line">
-              <div class="rc-line-bar"></div>
-              <span class="rc-dur">${t.duration || ""}</span>
-              <div class="rc-line-bar"></div>
-            </div>
-            <div class="rc-stn" style="text-align:right;">
-              <div class="rc-time">${t.arrivalTime || t.arrival || "--:--"}</div>
-              <div class="rc-code">${t.toStn || t.to || ""}</div>
-            </div>
-          </div>
-          <div class="rc-bottom">
-            <div class="rc-class-chips">
-              ${(t.classes || ["SL", "3A", "2A"])
-                .map(
-                  (c, ci) =>
-                    `<span class="rc-chip ${ci === 0 ? "active" : ""}">${c}</span>`,
-                )
-                .join("")}
-            </div>
-            <button class="rc-price-btn">
-              ${t.fare ? `₹${t.fare}` : "Book →"}
-            </button>
-          </div>`;
+              <div class="rc-top">
+                <div>
+                  <div class="rc-train-name">${t.trainName || t.train_name || "Train"}</div>
+                  <div class="rc-train-no">#${t.trainNo || t.train_no || ""}</div>
+                </div>
+                <span class="rc-avail ${availClass}">${avail}</span>
+              </div>
+              <div class="rc-route">
+                <div class="rc-stn">
+                  <div class="rc-time">${t.departTime || t.depart || "--:--"}</div>
+                  <div class="rc-code">${t.fromStn || t.from || ""}</div>
+                </div>
+                <div class="rc-line">
+                  <div class="rc-line-bar"></div>
+                  <span class="rc-dur">${t.duration || ""}</span>
+                  <div class="rc-line-bar"></div>
+                </div>
+                <div class="rc-stn" style="text-align:right;">
+                  <div class="rc-time">${t.arrivalTime || t.arrival || "--:--"}</div>
+                  <div class="rc-code">${t.toStn || t.to || ""}</div>
+                </div>
+              </div>
+              <div class="rc-bottom">
+                <div class="rc-class-chips">
+                  ${(t.classes || ["SL", "3A", "2A"])
+                    .map(
+                      (c, ci) =>
+                        `<span class="rc-chip ${ci === 0 ? "active" : ""}">${c}</span>`,
+                    )
+                    .join("")}
+                </div>
+                <button class="rc-price-btn">
+                  ${t.fare ? `₹${t.fare}` : "Book →"}
+                </button>
+              </div>`;
             resultsEl.appendChild(card);
           });
         } else {
+          /* Fallback: show raw JSON if shape is unrecognised */
           const pre = document.createElement("pre");
           pre.className = "result-raw";
           pre.textContent = JSON.stringify(data, null, 2);
@@ -1613,23 +1929,49 @@
         }
       }
 
+      /* ── Error state ──────────────────────────────────────── */
       function showError(msg) {
         resultsEl.innerHTML = `
-      <div class="state-card">
-        <div class="state-icon">⚠️</div>
-        <div class="state-title">Something went wrong</div>
-        <div class="state-sub error">${msg}</div>
-      </div>`;
+          <div class="state-card">
+            <div class="state-icon">⚠️</div>
+            <div class="state-title">Something went wrong</div>
+            <div class="state-sub error">${msg}</div>
+          </div>`;
       }
 
+      /* ── Empty state ──────────────────────────────────────── */
       function showEmpty() {
         resultsEl.innerHTML = `
-      <div class="state-card">
-        <div class="state-icon">🔍</div>
-        <div class="state-title">No trains found</div>
-        <div class="state-sub">Try a different date, station code, or quota.</div>
-      </div>`;
+          <div class="state-card">
+            <div class="state-icon">🔍</div>
+            <div class="state-title">No trains found</div>
+            <div class="state-sub">Try a different date, station code, or quota.</div>
+          </div>`;
       }
+
+      /* ════════════════════════════════════════════════════════
+         DISCLAIMER POPUP
+         ════════════════════════════════════════════════════════ */
+
+      const disclaimerOverlay = $("disclaimer-overlay");
+      const disclaimerCheck = $("disclaimer-check");
+      const disclaimerBtn = $("disclaimer-agree-btn");
+
+      /* Enable the agree button only when checkbox is ticked */
+      disclaimerCheck.addEventListener("change", () => {
+        if (disclaimerCheck.checked) {
+          disclaimerBtn.classList.add("ready");
+          disclaimerBtn.disabled = false;
+        } else {
+          disclaimerBtn.classList.remove("ready");
+          disclaimerBtn.disabled = true;
+        }
+      });
+
+      /* Dismiss overlay on agree */
+      disclaimerBtn.addEventListener("click", () => {
+        disclaimerOverlay.classList.add("hidden");
+      });
     </script>
   </body>
 </html>

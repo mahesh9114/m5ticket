@@ -2,70 +2,72 @@ import "dotenv/config";
 import { setCache, getCache } from "../../cache/cache.js";
 import { configure, getAvailability } from "railkit";
 
-// ✅ configure railkit with api key
 configure(process.env.RAILKIT_API_KEY);
 
-// m4 — split ticket search via middle stations
-// logic: search fromStnCode→midStation + midStation→toStnCode
-// if both available, its a valid split ticket!
+// M4 — Split ticket search via middle stations
+// If no single seat covers fromStnCode → toStnCode, this tries every station
+// between them as a split point (midStation). Both legs must be AVAILABLE:
+//   Leg 1: fromStnCode → midStation
+//   Leg 2: midStation  → toStnCode
+// The user changes seat at midStation but stays on the same train.
+// Returns { trainNo, trainName, bookFrom, midStation, bookUpTo } if found, false otherwise.
 async function m4(
-  trainNo, // train number e.g. 12711
-  fromStnCode, // from station code e.g. BZA
-  toStnCode, // to station code e.g. MAS
-  date, // date e.g. 22-06-2026
-  coach, // coach type e.g. 2S
-  quota, // quota e.g. GN
-  splicedTrainArr, // array of all stations between from and to
-  finding, // global finding flag
+  trainNo,
+  fromStnCode,
+  toStnCode,
+  date,
+  coach,
+  quota,
+  splicedTrainArr,
 ) {
   try {
-    let arr = splicedTrainArr;
+    const arr = splicedTrainArr;
 
-    // ✅ get positions of from and to in splicedTrainArr
-    let fromIndex = arr.indexOf(fromStnCode);
-    let toIndex = arr.indexOf(toStnCode);
+    // Find where source and destination sit in the station list
+    const fromIndex = arr.indexOf(fromStnCode);
+    const toIndex = arr.indexOf(toStnCode);
 
-    // ✅ get middle stations between from and to
-    let mid = arr.slice(fromIndex + 1, toIndex);
+    // Extract only the stations strictly between from and to — these are the candidate split points
+    const midStations = arr.slice(fromIndex + 1, toIndex);
     console.log("fromIndex + 1:", fromIndex + 1);
     console.log("toIndex:", toIndex);
-    console.log(`midarr: ${mid}`);
-    console.log("mid.length:", mid.length);
+    console.log("midStations:", midStations);
+    console.log("midStations.length:", midStations.length);
 
-    // ✅ normalize date format "22-06-2026" → "22-6-2026"
+    // Strip leading zeros from day and month to match the API's date key format
+    // e.g. "22-06-2026" → "22-6-2026"
     const normalizeDate = (d) => {
       const [day, month, year] = d.split("-");
       return `${parseInt(day)}-${parseInt(month)}-${year}`;
     };
     const normalizedDate = normalizeDate(date);
 
-    // ✅ step 1 — processResult defined FIRST
+    // Checks a single API result for availability on the requested date.
+    // M4 only needs a boolean — it doesn't extract ticket details here (done in the return below).
+    // Returns true if the leg is AVAILABLE, false if waitlisted or date not found.
     function processResult(result) {
       const availabilityList = result.data.availability;
       const match = availabilityList.find(
         (item) => item.date === normalizedDate,
       );
-
-      const { trainNo, trainName } = result.data.train;
-
       console.log("match:", match);
 
-      if (match) {
-        console.log("status:", match.status);
-        if (match.status === "AVAILABLE") {
-          const { fromStationName, toStationName } = result.data.train;
-          console.log(`✅ ${fromStationName} -> ${toStationName}`);
-          return true; // ✅ this leg available
-        } else {
-          return false; // ❌ waitlist
-        }
+      if (!match) return false; // No entry for this date in the response
+
+      console.log("status:", match.status);
+
+      if (match.status === "AVAILABLE") {
+        const { fromStationName, toStationName } = result.data.train;
+        console.log(`✅ ${fromStationName} -> ${toStationName}`);
+        return true; // This leg has an open seat
       }
-      return false; // ❌ no match
+
+      return false; // Seat exists but is waitlisted or closed
     }
 
-    // ✅ step 2 — search function defined SECOND
+    // Checks cache then API for availability between two stations.
+    // Returns true/false via processResult — no ticket details needed at this stage.
     async function search(trainNo, fromStnCode, toStnCode, date, coach, quota) {
-      // ✅ check cache first
       const cached = await getCache(
         trainNo,
         fromStnCode,
@@ -76,7 +78,6 @@ async function m4(
       );
       if (cached) return processResult(cached);
 
-      // ✅ call railkit api
       const result = await getAvailability(
         trainNo,
         fromStnCode,
@@ -87,7 +88,6 @@ async function m4(
       );
 
       if (result && result.success) {
-        // ✅ save to cache
         await setCache(
           trainNo,
           fromStnCode,
@@ -100,18 +100,19 @@ async function m4(
         return processResult(result);
       }
 
-      return false; // ❌ no result
+      return false; // API returned no usable result
     }
 
-    // ✅ step 3 — loop through each middle station as split point
+    // Try each station between from and to as a potential split point.
+    // For each candidate, check leg 1 first — only call the API for leg 2 if leg 1 passes.
+    // This avoids unnecessary API calls when leg 1 is already unavailable.
     let index = 0;
-
-    while (index <= mid.length - 1) {
-      const midStation = mid[index]; // current split point
+    while (index <= midStations.length - 1) {
+      const midStation = midStations[index];
       console.log("midStation:", midStation);
 
-      // ✅ FIRST SEARCH: fromStnCode → midStation
-      const firstFound = await search(
+      // Leg 1: can we get from the source to this mid station?
+      const leg1Available = await search(
         trainNo,
         fromStnCode,
         midStation,
@@ -120,9 +121,9 @@ async function m4(
         quota,
       );
 
-      if (firstFound) {
-        // ✅ SECOND SEARCH: midStation → toStnCode
-        const secondFound = await search(
+      if (leg1Available) {
+        // Leg 1 is open — now check if leg 2 is also available
+        const leg2Available = await search(
           trainNo,
           midStation,
           toStnCode,
@@ -131,29 +132,28 @@ async function m4(
           quota,
         );
 
-        if (secondFound) {
-          // ✅ BOTH LEGS FOUND
+        if (leg2Available) {
+          // Both legs open — valid split ticket found
           console.log("\n🎉 Split Ticket Found!");
-          console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-          console.log(`🎟️  Tkt 1: ${fromStnCode} -> ${midStation}`);
-          console.log(`🎟️  Tkt 2: ${midStation} -> ${toStnCode}`);
+          console.log(`🎟️  Ticket 1: ${fromStnCode} → ${midStation}`);
+          console.log(`🎟️  Ticket 2: ${midStation} → ${toStnCode}`);
           console.log(`📅 Date: ${date}`);
-          console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+
           return {
-            bookFrom: fromStnCode,
-            changeseat: midStation,
-            bookupto: toStnCode,
-            trainNo: trainNo,
-            trainName: trainName,
-          }; // ✅ found! stop
+            trainNo,
+            trainName: arr.trainName, // propagated from splicedTrainArr context
+            bookFrom: fromStnCode, // start of leg 1 (user's boarding station)
+            midStation: midStation, // where the user changes seat between legs
+            bookUpTo: toStnCode, // end of leg 2 (user's destination)
+          };
         }
-        // ❌ second leg not available, try next mid station
+        // Leg 2 unavailable at this mid point — try the next candidate
       }
 
-      index++; // ❌ try next mid station
+      index++; // Move to the next potential split point
     }
 
-    return false; // ❌ no valid split ticket found
+    return false; // No mid station produced two available legs
   } catch (err) {
     console.log("❌ M4 error:", err.message);
     return false;

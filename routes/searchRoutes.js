@@ -2,19 +2,25 @@ import express from "express";
 import { theSplicerStopsOfTrain } from "../models/splicingfunction.js";
 import { executeSequentialSearch } from "../controllers/searchController.js";
 
-// ✅ import all search modules
-import { m1 } from "../models/modules/module1.js"; // direct search from → to
-import { m2 } from "../models/modules/module2.js"; // backwards search — earlier boarding stations
-import { m3 } from "../models/modules/module3.js"; // forward search — later alighting stations
-import { m4 } from "../models/modules/module4.js"; // split ticket via middle stations
-import { m5 } from "../models/modules/module5.js"; // extended split — outside from→to range
+// Search modules — each handles a different ticket-finding strategy:
+// m1 → direct ticket from source to destination
+// m2 → board earlier than the requested source station
+// m3 → alight later than the requested destination station
+// m4 → split ticket through an intermediate station (2 tickets)
+// m5 → extended split ticket outside the source→destination range
+import { m1 } from "../models/modules/module1.js";
+import { m2 } from "../models/modules/module2.js";
+import { m3 } from "../models/modules/module3.js";
+import { m4 } from "../models/modules/module4.js";
+import { m5 } from "../models/modules/module5.js";
 
 const router = express.Router();
 
-// ✅ POST /search — main search route
+// POST /search
+// Main route — receives the search form, runs all modules, and renders the right result view.
 router.post("/search", async (req, res) => {
   try {
-    // ✅ extract inputs from form body
+    // Pull all required fields from the submitted form body
     const { trainNo, fromStnCode, toStnCode, date, coach, quota } = req.body;
 
     console.log("=== m5ticket Search ===");
@@ -27,7 +33,7 @@ router.post("/search", async (req, res) => {
       quota,
     });
 
-    // ✅ validate — all fields required
+    // Reject the request early if any field is missing
     if (!trainNo || !fromStnCode || !toStnCode || !date || !coach || !quota) {
       return res.status(400).render("failure", {
         trainNo,
@@ -40,9 +46,8 @@ router.post("/search", async (req, res) => {
       });
     }
 
-    // ✅ normalize date format
-    // HTML form sends "2026-06-29" (YYYY-MM-DD)
-    // API expects  "29-06-2026"  (DD-MM-YYYY)
+    // The HTML date input sends "YYYY-MM-DD" but the railway API expects "DD-MM-YYYY".
+    // This helper re-orders the parts and zero-pads day/month just in case.
     const normalizeDate = (date) => {
       const pad = (num) => String(num).trim().padStart(2, "0");
       const [year, month, day] = date.split("-");
@@ -50,8 +55,8 @@ router.post("/search", async (req, res) => {
     };
     const normalizedDate = normalizeDate(date);
 
-    console.log("date from form:", date); // 2026-06-29
-    console.log("normalized date:", normalizedDate); // 29-06-2026
+    console.log("date from form:", date); // e.g. 2026-06-29
+    console.log("normalized date:", normalizedDate); // e.g. 29-06-2026
     console.log("inputing-data:", {
       trainNo,
       fromStnCode,
@@ -61,7 +66,8 @@ router.post("/search", async (req, res) => {
       quota,
     });
 
-    // ✅ get all stations between fromStnCode and toStnCode
+    // Fetch the list of all stations the train stops at between fromStnCode and toStnCode.
+    // This "spliced" array is shared across all modules so they know the valid station range.
     const splicedTrainArr = await theSplicerStopsOfTrain(
       trainNo,
       fromStnCode,
@@ -70,13 +76,14 @@ router.post("/search", async (req, res) => {
 
     console.log("\n🔎 Searching for tickets... Please wait.");
 
-    // ✅ run m1→m5 sequential search
+    // Run modules m1 through m5 in sequence.
+    // Each module tries its own strategy; the first one that finds availability wins.
     const result = await executeSequentialSearch(
       {
         trainNo,
         fromStnCode,
         toStnCode,
-        date: normalizedDate, // ✅ pass normalized date to modules
+        date: normalizedDate,
         coach,
         quota,
         splicedTrainArr,
@@ -84,55 +91,52 @@ router.post("/search", async (req, res) => {
       { m1, m2, m3, m4, m5 },
     );
 
-    // ✅ data passed as per EJS view
-
-    // console.log(result);
+    // Build the base data object that every EJS view needs for display
     const viewData = {
       trainNo,
       fromStnCode,
       toStnCode,
-      date: normalizedDate, // ✅ formatted date for display
+      date: normalizedDate,
       coach,
       quota,
-      trainName: result?.trainName || null, // ✅ train name if available
-      //ticket: result?.ticket || null, // ✅ ticket data for EJS
+      trainName: result?.trainName || null,
     };
-    //console.log(viewData);
 
+    // Merge search result with view data into a single object for the template
     const combinedJson = { ...result, ...viewData };
     console.log(combinedJson);
 
-    // ✅ switch on module — render correct EJS view
+    // Route to the correct EJS view based on which module found the ticket
     switch (combinedJson?.module) {
       case "M1":
-        // ✅ direct ticket — 1 ticket journey
+        // Direct ticket — single journey, no changes
         return res.render("m1", combinedJson);
 
       case "M2":
-        // ✅ earlier boarding — 1 ticket journey
+        // Board at an earlier station than requested — single ticket covers the journey
         return res.render("m2", combinedJson);
 
       case "M3":
-        // ✅ later alighting — 1 ticket journey
+        // Alight at a later station than requested — single ticket covers the journey
         return res.render("m3", combinedJson);
 
       case "M4":
-        // ✅ split ticket — 2 ticket journey
+        // No direct availability — journey split into 2 tickets via a middle station
         return res.render("m4", combinedJson);
 
       case "M5":
-        // ✅ extended split — 1 ticket journey
+        // Extended split — availability found outside the original source→destination range
         return res.render("m5", combinedJson);
 
       default:
-        // ❌ nothing found — render failure page
+        // None of the modules found a ticket — show the failure page
         return res.render("failure", {
           ...viewData,
           message: result?.message || "❌ No tickets found",
         });
     }
   } catch (error) {
-    // ❌ unexpected error — render failure page with error message
+    // Unexpected server-side error — log it and show a generic failure page
     console.log("❌ route error:", error.message);
     return res.status(500).render("failure", {
       trainNo: req.body?.trainNo,

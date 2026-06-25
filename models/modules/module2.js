@@ -2,72 +2,73 @@ import "dotenv/config";
 import { setCache, getCache } from "../../cache/cache.js";
 import { configure, getAvailability } from "railkit";
 
-// ✅ configure railkit with api key
 configure(process.env.RAILKIT_API_KEY);
 
-// m2 — backwards search from stations before fromStnCode → toStnCode
-// logic: if direct is waitlist, try boarding from earlier stations
+// M2 — Earlier boarding station search
+// If no direct seat is available from fromStnCode, this walks backwards through
+// the stations before it (within splicedTrainArr) and tries each one as the booking origin.
+// The user still physically boards at fromStnCode — the ticket just starts earlier.
+// Returns { trainNo, trainName, bookFrom } if found, false otherwise.
 async function m2(
-  trainNo, // train number e.g. 12711
-  fromStnCode, // from station code e.g. BZA
-  toStnCode, // to station code e.g. MAS
-  date, // date e.g. 22-06-2026
-  coach, // coach type e.g. 2S
-  quota, // quota e.g. GN
-  splicedTrainArr, // array of all stations between from and to
-  finding, // global finding flag
+  trainNo,
+  fromStnCode,
+  toStnCode,
+  date,
+  coach,
+  quota,
+  splicedTrainArr,
 ) {
   try {
-    let arr = splicedTrainArr;
+    const arr = splicedTrainArr;
 
-    // ✅ get positions of from and to in array
+    // Find where the user's source and destination sit in the station list
     const fromIndex = arr.indexOf(fromStnCode);
     const toIndex = arr.indexOf(toStnCode);
     console.log("fromIndex:", fromIndex);
     console.log("toIndex:", toIndex);
 
-    // ✅ normalize date format "22-06-2026" → "22-6-2026"
+    // Strip leading zeros from day and month to match the API's date key format
+    // e.g. "22-06-2026" → "22-6-2026"
     const normalizeDate = (d) => {
       const [day, month, year] = d.split("-");
       return `${parseInt(day)}-${parseInt(month)}-${year}`;
     };
     const normalizedDate = normalizeDate(date);
 
-    // ✅ step 1 — processResult defined SECOND
+    // Checks an API result for availability on the requested date.
+    // Returns ticket details if the seat is AVAILABLE, false if waitlisted or not found.
     function processResult(result) {
-      const { fromStationName, toStationName } = result.data.train;
+      const { trainNo, trainName, fromStationName, toStationName } =
+        result.data.train;
       const availabilityList = result.data.availability;
-
-      const { trainNo, trainName } = result.data.train;
 
       const match = availabilityList.find(
         (item) => item.date === normalizedDate,
       );
-
       console.log("match:", match);
 
-      if (match) {
-        console.log("status:", match.status);
+      if (!match) return false; // No entry for this date in the response
 
-        if (match.status === "AVAILABLE") {
-          console.log(`✅ Success! ${fromStationName} -> ${toStationName}`);
-          console.log(`📅 Date: ${match.date}`);
-          return {
-            bookFrom: fromStationName,
-            trainNo: trainNo,
-            trainName: trainName,
-          }; // ✅ available — stop loop
-        } else {
-          return false; // ❌ waitlist — try next station
-        }
+      console.log("status:", match.status);
+
+      if (match.status === "AVAILABLE") {
+        console.log(`✅ Success! ${fromStationName} -> ${toStationName}`);
+        console.log(`📅 Date: ${match.date}`);
+
+        return {
+          trainNo,
+          trainName,
+          bookFrom: fromStationName, // the earlier station the ticket is booked from
+        };
       }
 
-      return false; // ❌ no match
+      // Seat exists for this date but isn't open — keep trying earlier stations
+      return false;
     }
 
-    // ✅ step 2 — search function defined FIRST
+    // Checks cache then API for availability between a candidate earlier station and toStnCode.
+    // Saves successful API responses to cache to avoid repeat calls.
     async function search(trainNo, fromStnCode, toStnCode, date, coach, quota) {
-      // ✅ check cache first
       const cached = await getCache(
         trainNo,
         fromStnCode,
@@ -78,7 +79,6 @@ async function m2(
       );
       if (cached) return processResult(cached);
 
-      // ✅ call railkit api
       const result = await getAvailability(
         trainNo,
         fromStnCode,
@@ -89,7 +89,6 @@ async function m2(
       );
 
       if (result && result.success) {
-        // ✅ save to cache
         await setCache(
           trainNo,
           fromStnCode,
@@ -102,23 +101,30 @@ async function m2(
         return processResult(result);
       }
 
-      return false; // ❌ no result
+      return false; // API returned no usable result
     }
 
-    // ✅ step 3 — start from station BEFORE fromStnCode and go backwards
+    // Walk backwards from the station just before fromStnCode toward the start of the array.
+    // Stop as soon as any earlier station returns an available seat.
     let index = fromIndex - 1;
-
     while (index >= 0) {
-      const from = arr[index]; // earlier station
-      console.log("trying from:", from);
+      const earlierStation = arr[index];
+      console.log("trying from:", earlierStation);
 
-      const found = await search(trainNo, from, toStnCode, date, coach, quota);
-      if (found) return found; // ✅ found! stop
+      const found = await search(
+        trainNo,
+        earlierStation,
+        toStnCode,
+        date,
+        coach,
+        quota,
+      );
+      if (found) return found; // Available seat found — stop searching
 
-      index--; // ❌ try next earlier station
+      index--; // No luck — try the next earlier station
     }
 
-    return false; // ❌ no earlier station worked
+    return false; // Exhausted all earlier stations with no availability
   } catch (err) {
     console.log("❌ M2 error:", err.message);
     return false;

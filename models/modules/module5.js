@@ -4,6 +4,16 @@ import { configure, getAvailability } from "railkit";
 
 configure(process.env.RAILKIT_API_KEY);
 
+// M5 — Extended split ticket search (combines M2 + M3)
+// If M1–M4 all fail, this searches across a wider range: stations BEFORE fromStnCode
+// paired with stations AFTER toStnCode. A single ticket spanning both extensions
+// covers the user's journey — they board at fromStnCode and exit at toStnCode.
+//
+// Search order: starts closest to the user's stations and expands outward.
+//   fromCandidates: stations before fromStnCode, traversed right → left (closest first)
+//   toCandidates:   stations after toStnCode,    traversed left → right (closest first)
+//
+// Returns { trainNo, trainName, bookFrom, bookUpTo } if found, false otherwise.
 async function m5(
   trainNo,
   fromStnCode,
@@ -12,56 +22,65 @@ async function m5(
   coach,
   quota,
   splicedTrainArr,
-  finding,
 ) {
   try {
-    let arr = splicedTrainArr;
-    let fromIndex = arr.indexOf(fromStnCode);
-    let toIndex = arr.indexOf(toStnCode);
-    let fromarr = arr.slice(0, fromIndex);
-    let toarr = arr.slice(toIndex + 1, arr.length);
+    const arr = splicedTrainArr;
+
+    const fromIndex = arr.indexOf(fromStnCode);
+    const toIndex = arr.indexOf(toStnCode);
+
+    // Stations that come before the user's source — candidates for an earlier bookFrom
+    const fromCandidates = arr.slice(0, fromIndex);
+
+    // Stations that come after the user's destination — candidates for a later bookUpTo
+    const toCandidates = arr.slice(toIndex + 1, arr.length);
 
     console.log("fromIndex:", fromIndex);
     console.log("toIndex:", toIndex);
-    console.log(`fromarr: ${fromarr}`);
-    console.log(`toarr: ${toarr}`);
+    console.log("fromCandidates:", fromCandidates);
+    console.log("toCandidates:", toCandidates);
 
+    // Strip leading zeros from day and month to match the API's date key format
+    // e.g. "22-06-2026" → "22-6-2026"
     const normalizeDate = (d) => {
       const [day, month, year] = d.split("-");
       return `${parseInt(day)}-${parseInt(month)}-${year}`;
     };
     const normalizedDate = normalizeDate(date);
 
-    // ✅ step 1 — processResult FIRST
+    // Checks an API result for availability on the requested date.
+    // Returns full ticket details if AVAILABLE, false if waitlisted or date not found.
     function processResult(result) {
-      const { fromStationName, toStationName } = result.data.train;
+      const { trainNo, trainName, fromStationName, toStationName } =
+        result.data.train;
       const availabilityList = result.data.availability;
+
       const match = availabilityList.find(
         (item) => item.date === normalizedDate,
       );
-
-      const { trainNo, trainName } = result.data.train;
-
       console.log("match:", match);
-      if (match) {
-        console.log("status:", match.status);
-        if (match.status === "AVAILABLE") {
-          console.log(`✅ ${fromStationName} -> ${toStationName}`);
-          console.log(`📅 Date: ${match.date}`);
-          return {
-            bookFrom: fromStationName,
-            bookUpTo: toStationName,
-            trainNo: trainNo,
-            trainName: trainName,
-          };
-        } else {
-          return false;
-        }
+
+      if (!match) return false; // No entry for this date in the response
+
+      console.log("status:", match.status);
+
+      if (match.status === "AVAILABLE") {
+        console.log(`✅ ${fromStationName} -> ${toStationName}`);
+        console.log(`📅 Date: ${match.date}`);
+
+        return {
+          trainNo,
+          trainName,
+          bookFrom: fromStationName, // the earlier station the ticket starts from
+          bookUpTo: toStationName, // the later station the ticket ends at
+        };
       }
-      return false;
+
+      return false; // Seat exists but is waitlisted or closed
     }
 
-    // ✅ step 2 — search SECOND
+    // Checks cache then API for availability between two stations.
+    // Saves successful API responses to cache to avoid repeat calls.
     async function search(trainNo, fromStnCode, toStnCode, date, coach, quota) {
       const cached = await getCache(
         trainNo,
@@ -94,29 +113,42 @@ async function m5(
         );
         return processResult(result);
       }
-      return false;
+
+      return false; // API returned no usable result
     }
 
-    // ✅ step 3 — loops LAST
-    let i = fromarr.length - 1;
+    // Outer loop: walk backwards through fromCandidates (closest earlier station first).
+    // Inner loop: for each earlier station, try every later station in toCandidates.
+    // The first combination that returns an available seat wins.
+    let i = fromCandidates.length - 1;
     while (i >= 0) {
-      const from = fromarr[i];
-      for (let j = 0; j < toarr.length; j++) {
-        const to = toarr[j];
-        console.log(`trying: ${from} → ${to}`);
-        const found = await search(trainNo, from, to, date, coach, quota);
+      const earlierStation = fromCandidates[i];
+
+      for (let j = 0; j < toCandidates.length; j++) {
+        const laterStation = toCandidates[j];
+        console.log(`trying: ${earlierStation} → ${laterStation}`);
+
+        const found = await search(
+          trainNo,
+          earlierStation,
+          laterStation,
+          date,
+          coach,
+          quota,
+        );
+
         if (found) {
           console.log("\n🎉 Extended Ticket Found!");
-          console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-          console.log(`🎟️  ${from} -> ${to}`);
+          console.log(`🎟️  ${earlierStation} → ${laterStation}`);
           console.log(`📅 Date: ${date}`);
-          console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-          return found;
+          return found; // Return the full ticket details from processResult
         }
       }
-      i--;
+
+      i--; // No combination worked for this earlier station — move further back
     }
-    return false;
+
+    return false; // Exhausted all from/to combinations with no availability
   } catch (err) {
     console.log("❌ M5 error:", err.message);
     return false;

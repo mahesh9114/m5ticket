@@ -4,64 +4,65 @@ import { configure, getAvailability } from "railkit";
 
 configure(process.env.RAILKIT_API_KEY);
 
-async function m1(
-  trainNo,
-  fromStnCode,
-  toStnCode,
-  date,
-  coach,
-  quota,
-  finding,
-) {
+// M1 — Direct ticket search
+// Checks if a seat is available exactly from fromStnCode → toStnCode on the given date.
+// Returns ticket details if available, false otherwise.
+async function m1(trainNo, fromStnCode, toStnCode, date, coach, quota) {
   try {
-    // ✅ step 1 — processResult defined FIRST at top
+    // Parses an API result and checks whether the requested date has available seats.
+    // Handles both YYYY-MM-DD (from HTML form) and DD-MM-YYYY (from API) date formats.
     function processResult(result) {
-      const { fromStationName, toStationName } = result.data.train;
+      const { trainNo, trainName, fromStationName, toStationName } =
+        result.data.train;
+      const availabilityList = result.data.availability;
 
+      // The API returns availability keyed by "D-M-YYYY" (no leading zeros).
+      // Normalize whatever date format arrives into that same shape for comparison.
       const normalizeDate = (d) => {
-        // Checks if the date starts with a 4-digit year (e.g., 2026-06-29)
-        if (d.includes("-") && d.split("-")[0].length === 4) {
-          const [year, month, day] = d.split("-");
-          return `${parseInt(day)}-${parseInt(month)}-${year}`; // Returns "29-6-2026"
+        const parts = d.split("-");
+
+        // YYYY-MM-DD → D-M-YYYY (strip leading zeros from day and month)
+        if (parts[0].length === 4) {
+          const [year, month, day] = parts;
+          return `${parseInt(day)}-${parseInt(month)}-${year}`;
         }
 
-        // Fallback: If it already arrives as DD-MM-YYYY
-        const [day, month, year] = d.split("-");
+        // DD-MM-YYYY → D-M-YYYY (already in right order, just strip leading zeros)
+        const [day, month, year] = parts;
         return `${parseInt(day)}-${parseInt(month)}-${year}`;
       };
 
       const normalizedDate = normalizeDate(date);
 
-      const { trainNo, trainName } = result.data.train;
-
-      const availabilityList = result.data.availability;
+      // Find the availability entry that matches the requested date
       const match = availabilityList.find(
         (item) => item.date === normalizedDate,
       );
-
       console.log("match:", match);
 
-      if (match) {
-        console.log("status:", match.status);
-        if (match.status === "AVAILABLE") {
-          console.log(`✅ Direct ticket found!`);
-          console.log(`🎟️  ${fromStationName} -> ${toStationName}`);
-          console.log(`📅 Date: ${match.date}`);
-          return {
-            bookFrom: fromStationName,
-            bookUpTo: toStationName,
-            trainNo: trainNo,
-            trainName: trainName,
-          }; // ✅ found
-        } else {
-          console.log(`❌ Status: "${match.status}" — not available`);
-          return false; // ❌ not available
-        }
+      if (!match) return false; // No entry for this date in the response
+
+      console.log("status:", match.status);
+
+      if (match.status === "AVAILABLE") {
+        console.log(`✅ Direct ticket found!`);
+        console.log(`🎟️  ${fromStationName} -> ${toStationName}`);
+        console.log(`📅 Date: ${match.date}`);
+
+        return {
+          trainNo,
+          trainName,
+          bookFrom: fromStationName, // human-readable station name (not code)
+          bookUpTo: toStationName, // human-readable station name (not code)
+        };
       }
-      return false; // ❌ no match
+
+      // Date matched but seat status is not AVAILABLE (e.g. WL, REGRET)
+      console.log(`❌ Status: "${match.status}" — not available`);
+      return false;
     }
 
-    // ✅ step 2 — check cache
+    // Check cache first — avoids a redundant API call if this exact query was made before
     const cached = await getCache(
       trainNo,
       fromStnCode,
@@ -72,6 +73,7 @@ async function m1(
     );
     if (cached) return processResult(cached);
 
+    // Cache miss — call the railway API for live availability
     const result = await getAvailability(
       trainNo,
       fromStnCode,
@@ -80,10 +82,9 @@ async function m1(
       coach,
       quota,
     );
-    // ✅ step 3 — call api
 
-    // ✅ step 4 — save to cache and process
     if (result && result.success) {
+      // Save the API response to cache so repeat searches don't hit the API again
       await setCache(
         trainNo,
         fromStnCode,
@@ -93,10 +94,10 @@ async function m1(
         quota,
         result,
       );
-      return processResult(result); // ✅ now works!
+      return processResult(result);
     }
 
-    return false; // ❌ no result
+    return false; // API returned no usable result
   } catch (error) {
     console.log("❌ M1 error:", error.message);
     return false;
