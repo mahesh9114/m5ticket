@@ -1,0 +1,231 @@
+{
+  "success": true,
+  "data": {
+    "trainInfo": {
+      "train_no": "12711",
+      "train_name": "PINAKINI SF EXP",
+      "from_stn_name": "Vijayawada Jn",
+      "from_stn_code": "BZA",
+      "to_stn_name": "Mgr Chennai Ctr",
+      "to_stn_code": "MAS",
+      "from_time": "06:10",
+      "to_time": "13:05",
+      "travel_time": "06:55 hrs",
+      "running_days": "1111111",
+      "type": "SUPERFAST",
+      "train_id": "2366"
+    },
+    "route": [
+      {
+        "stnCode": "BZA",
+        "stnName": "Vijayawada Jn",
+        "arrival": "--",
+        "departure": "06:10",
+        "halt": "0 min",
+        "haltMinutes": 0,
+        "distance": "0",
+        "day": "1",
+        "platform": 1,
+        "coordinates": {
+          "latitude": 16.5186584395238,
+          "longitude": 80.6193172931671
+        }
+      },
+      {
+        "stnCode": "TEL",
+        "stnName": "Tenali Jn",
+        "arrival": "06:33",
+        "departure": "06:35",
+        "halt": "2 min",
+        "haltMinutes": 2,
+        "distance": "32",
+        "day": "1",
+        "platform": 3,
+        "coordinates": {
+          "latitude": 16.2422203874026,
+          "longitude": 80.6401741504669
+        }
+      },
+      {
+        "stnCode": "NDO",
+        "stnName": "Nidubrolu",
+        "arrival": "06:53",
+        "departure": "06:55",
+        "halt": "2 min",
+        "haltMinutes": 2,
+        "distance": "53",
+        "day": "1",
+        "platform": 1,
+        "coordinates": {
+          "latitude": 16.0680217887577,
+          "longitude": 80.5574870109558
+        }
+      },
+      {
+        "stnCode": "BPP",
+        "stnName": "Bapatla",
+        "arrival": "07:13",
+        "departure": "07:15",
+        "halt": "2 min",
+        "haltMinutes": 2,
+        "distance": "74",
+        "day": "1",
+        "platform": 2,
+        "coordinates": {
+          "latitude": 15.9085082371567,
+          "longitude": 80.4687595367432
+        }
+      },
+      {
+        "stnCode": "CLX",
+        "stnName": "Chirala",
+        "arrival": "07:28",
+        "departure": "07:30",
+        "halt": "2 min",
+        "haltMinutes": 2,
+        "distance": "89",
+        "day": "1",
+        "platform": 1,
+        "coordinates": {
+          "latitude": 15.8309747176762,
+          "longitude": 80.3535747528076
+        }
+      },
+      {
+        "stnCode": "OGL",
+        "stnName": "Ongole",
+        "arrival": "08:13",
+        "departure": "08:15",
+        "halt": "2 min",
+        "haltMinutes": 2,
+        "distance": "138",
+        "day": "1",
+        "platform": 3,
+        "coordinates": {
+          "latitude": 15.4974178130389,
+          "longitude": 80.0572228431702
+        }
+      },
+      {
+        "stnCode": "SKM",
+        "stnName": "Singarayakonda",
+        "arrival": "08:33",
+        "departure": "08:35",
+        "halt": "2 min",
+        "haltMinutes": 2,
+        "distance": "166",
+        "day": "1",
+        "platform": 2,
+        "coordinates": {
+          "latitude": 15.2530286416161,
+          "longitude": 80.0266912579536
+        }
+      },
+      {
+        "stnCode": "KVZ",
+        "stnName": "Kavali",
+        "arrival": "08:58",
+        "departure": "09:00",
+        "halt": "2 min",
+        "haltMinutes": 2,
+        "distance": "204",
+        "day": "1",
+        "platform": 2,
+        "coordinates": {
+          "latitude": 14.9157479398203,
+          "longitude": 79.9886655807495
+        }
+      },
+      {
+        "stnCode": "BTTR",
+        "stnName": "Bitragunta",
+        "arrival": "09:18",
+        "departure": "09:20",
+        "halt": "2 min",
+        "haltMinutes": 2,
+        "distance": "221",
+        "day": "1",
+        "platform": 2,
+        "coordinates": {
+          "latitude": 14.7666245738871,
+          "longitude": 79.9839717149735
+        }
+      },
+      {
+        "stnCode": "NLR",
+        "stnName": "Nellore",
+        "arrival": "09:48",
+        "departure": "09:50",
+        "halt": "2 min",
+        "haltMinutes": 2,
+        "distance": "254",
+        "day": "1",
+        "platform": 3,
+        "coordinates": {
+          "latitude": 14.4616760910844,
+          "longitude": 79.9898524582386
+        }
+      },
+      {
+        "stnCode": "GDR",
+        "stnName": "Gudur Jn",
+        "arrival": "10:28",
+        "departure": "10:30",
+        "halt": "2 min",
+        "haltMinutes": 2,
+        "distance": "293",
+        "day": "1",
+        "platform": 1,
+        "coordinates": {
+          "latitude": 14.1486438868575,
+          "longitude": 79.8454463481903
+        }
+      },
+      {
+        "stnCode": "NYP",
+        "stnName": "Nayudupeta",
+        "arrival": "10:53",
+        "departure": "10:55",
+        "halt": "2 min",
+        "haltMinutes": 2,
+        "distance": "320",
+        "day": "1",
+        "platform": "",
+        "coordinates": {
+          "latitude": 13.9088504276272,
+          "longitude": 79.9008473753929
+        }
+      },
+      {
+        "stnCode": "SPE",
+        "stnName": "Sullurupeta",
+        "arrival": "11:13",
+        "departure": "11:15",
+        "halt": "2 min",
+        "haltMinutes": 2,
+        "distance": "348",
+        "day": "1",
+        "platform": 2,
+        "coordinates": {
+          "latitude": 13.6966464299126,
+          "longitude": 80.0183898210526
+        }
+      },
+      {
+        "stnCode": "MAS",
+        "stnName": "Mgr Chennai Ctr",
+        "arrival": "13:05",
+        "departure": "--",
+        "halt": "0 min",
+        "haltMinutes": 0,
+        "distance": "430",
+        "day": "1",
+        "platform": 8,
+        "coordinates": {
+          "latitude": 13.0825454795418,
+          "longitude": 80.2754473686218
+        }
+      }
+    ]
+  }
+}

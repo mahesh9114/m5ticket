@@ -74,6 +74,19 @@ router.post("/search", async (req, res) => {
       toStnCode,
     );
 
+    // If either station wasn't found in the route, abort early with a clear message
+    if (!splicedTrainArr) {
+      return res.status(400).render("failure", {
+        trainNo,
+        fromStnCode,
+        toStnCode,
+        date: normalizedDate,
+        coach,
+        quota,
+        message: `❌ Station "${fromStnCode}" or "${toStnCode}" not found in train ${trainNo} route.`,
+      });
+    }
+
     console.log("\n🔎 Searching for tickets... Please wait.");
 
     // Run modules m1 through m5 in sequence.

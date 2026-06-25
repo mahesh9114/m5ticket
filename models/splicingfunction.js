@@ -1,28 +1,43 @@
-import data from "../ALL-TRAINS-8490.json" with { type: "json" };
+import { configure, getTrainInfo } from "railkit";
 
 // Looks up a train by number and returns a sliced array of station codes
 // centered around the user's journey — 4 stations before fromStnCode
 // and 4 stations after toStnCode — giving modules room to search nearby stations.
 async function theSplicerStopsOfTrain(trainNo, fromstncode, tostncode) {
-  // Pad the train number to 5 digits so it matches the JSON key format
-  // e.g. "961" → "00961", "12711" → "12711"
-  const paddedTrainNo = String(trainNo).padStart(5, "0");
+  // Fetch train info from railkit using the train number
+  const trainInfo = await getTrainInfo(trainNo);
 
-  // Look up the train in the JSON dataset
-  const trainData = data[0].trains[paddedTrainNo];
-
-  if (!trainData) {
-    console.error(`Train ${paddedTrainNo} not found.`);
+  // If train not found, log an error and exit early
+  if (!trainInfo) {
+    console.error(`Train ${trainNo} not found.`);
     return;
   }
 
-  // Each stop is stored as "STNCODE:arrivalTime:departureTime" — extract just the station code
-  const trainStops = trainData.stops;
-  const splicedcodes = trainStops.map((stn) => stn.split(":")[0]);
+  // Deep clone the trainInfo object to avoid mutating the original
+  const data = JSON.parse(JSON.stringify(trainInfo));
+
+  // Extract all station codes as a flat array
+  // e.g. ["BZA", "TEL", "NDO", "BPP", "CLX", "OGL", "SKM", ...]
+  const splicedcodes = data.data.route.map((stn) => stn.stnCode);
+  console.log(splicedcodes);
+
+  // Validate that both fromstncode and tostncode exist in the route
+  if (!splicedcodes.includes(fromstncode)) {
+    console.error(
+      `Source station "${fromstncode}" not found in train ${trainNo} route.`,
+    );
+    return;
+  }
+  if (!splicedcodes.includes(tostncode)) {
+    console.error(
+      `Destination station "${tostncode}" not found in train ${trainNo} route.`,
+    );
+    return;
+  }
 
   // Takes the full station code list and returns only the slice relevant to this journey.
-  // The slice extends 4 stations before `fromstncode` and 4 stations after `tostncode`
-  // so that M2, M3, M4, and M5 have nearby stations to search within.
+  // The slice extends 4 stations before fromstncode and 4 stations after tostncode
+  // so that nearby modules have enough surrounding stations to search within.
   function theSlicerOfStops(fromstncode, tostncode, splicedcodes) {
     const fromIndex = splicedcodes.indexOf(fromstncode);
     const toIndex = splicedcodes.indexOf(tostncode);
@@ -35,18 +50,14 @@ async function theSplicerStopsOfTrain(trainNo, fromstncode, tostncode) {
     const toSliceIndex = (toIndex, codesLength) => {
       const cleanToIndex = Number(toIndex);
       const cleanCodesLength = Number(codesLength);
-      const maxIndex = Math.max(0, cleanCodesLength); // guard against negative lengths
-      return Math.min(maxIndex, cleanToIndex + 5);
+      return Math.min(cleanCodesLength, cleanToIndex + 5);
     };
 
     const sliceFrom = fromSliceIndex(fromIndex);
     const sliceTo = toSliceIndex(toIndex, codesLength);
 
-    // Slice out only the relevant portion of the route
-    const splicedTrainArr = splicedcodes.slice(sliceFrom, sliceTo);
-    console.log(splicedTrainArr);
-
-    return splicedTrainArr;
+    // Return only the relevant portion of the route
+    return splicedcodes.slice(sliceFrom, sliceTo);
   }
 
   return theSlicerOfStops(fromstncode, tostncode, splicedcodes);
