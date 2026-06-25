@@ -3,8 +3,12 @@ import Valkey from "iovalkey";
 // Create a Valkey client pointed at the local instance.
 // All modules share this single connection via the exported `valkey` instance.
 const valkey = new Valkey({
-  host: "127.0.0.1",
+  host: process.env.UPSTASH_REDIS_HOST, // e.g. "your-db.upstash.io"
   port: 6379,
+  username: "default", // Upstash requires this
+  password: process.env.UPSTASH_REDIS_PASSWORD,
+  tls: {}, // Upstash enforces TLS — mandatory
+  enableAutoPipelining: true, // optional but recommended
 });
 
 // Wraps the Valkey connection event in a promise so the app can await it
