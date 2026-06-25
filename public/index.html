@@ -4,34 +4,19 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>M5-ticket Find Book Travel</title>
-
-    <!-- ── GOOGLE FONTS ───────────────────────────────────────── -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
-
     <style>
-      /* ════════════════════════════════════════════════════════
-         DESIGN TOKENS
-         ════════════════════════════════════════════════════════ */
-
       :root {
-        /* ── Electric Blue System (#0022D2) ─────────────────── */
-        --indigo: #0022d2; /* Main accent: borders, hero, primary buttons  */
-        --indigo-dark: #0019a8; /* Hover state: deeper blue for button hover    */
-        --indigo-dim: #3b5aff; /* Active focus: lighter highlight for inputs   */
-        --indigo-tint: #ebedff; /* Soft panel base: light blue tint background  */
-        --indigo-mid: rgba(
-          0,
-          34,
-          210,
-          0.12
-        ); /* Transparency layer: subtle blue shadow ring  */
-
-        /* ── Greyscale ──────────────────────────────────────── */
+        --indigo: #0022d2;
+        --indigo-dark: #0019a8;
+        --indigo-dim: #3b5aff;
+        --indigo-tint: #ebedff;
+        --indigo-mid: rgba(0, 34, 210, 0.12);
         --black: #0a0a0a;
         --grey-900: #111111;
         --grey-700: #3a3a3a;
@@ -39,31 +24,18 @@
         --grey-300: #c4c4c4;
         --grey-100: #f2f2f2;
         --white: #ffffff;
-
-        /* ── Status Colors ──────────────────────────────────── */
         --green: #00c853;
         --orange: #ff9800;
         --red: #f44336;
-
-        /* ── Radii ──────────────────────────────────────────── */
         --radius-sm: 8px;
         --radius-md: 12px;
         --radius-lg: 18px;
         --radius-pill: 999px;
-
-        /* ── Shadows ────────────────────────────────────────── */
         --shadow-card: 0 2px 12px rgba(0, 0, 0, 0.08);
-        --shadow-btn: 0 4px 14px rgba(0, 34, 210, 0.35); /* Button elevation glow */
-
-        /* ── Misc ───────────────────────────────────────────── */
+        --shadow-btn: 0 4px 14px rgba(0, 34, 210, 0.35);
         --font: "Inter", system-ui, sans-serif;
         --transition: 0.18s ease;
       }
-
-      /* ════════════════════════════════════════════════════════
-         RESET
-         ════════════════════════════════════════════════════════ */
-
       *,
       *::before,
       *::after {
@@ -96,10 +68,7 @@
         text-decoration: none;
       }
 
-      /* ════════════════════════════════════════════════════════
-         HEADER
-         ════════════════════════════════════════════════════════ */
-
+      /* HEADER */
       .header {
         background: var(--white);
         border-bottom: 1px solid rgba(0, 0, 0, 0.07);
@@ -114,11 +83,9 @@
         height: 56px;
         display: flex;
         align-items: center;
-        justify-content: center; /* Centers logo + nav horizontally */
+        justify-content: center;
         gap: 40px;
       }
-
-      /* Logo */
       .logo {
         display: flex;
         align-items: center;
@@ -149,62 +116,14 @@
         font-size: 9px;
         color: var(--grey-500);
         letter-spacing: 1px;
-        display: none; /* Shown on desktop via media query */
+        display: none;
       }
 
-      /* Nav */
-      .header-nav {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-      }
-      .nav-chip {
-        font-size: 12px;
-        font-weight: 500;
-        color: var(--grey-700);
-        padding: 6px 12px;
-        border-radius: var(--radius-pill);
-        border: 1px solid transparent;
-        transition: var(--transition);
-      }
-      .nav-chip:hover {
-        background: var(--indigo-tint);
-        color: var(--indigo);
-      }
-      .nav-chip.active {
-        background: var(--indigo);
-        color: var(--white);
-      }
-      .btn-login {
-        font-size: 13px;
-        font-weight: 600;
-        color: var(--indigo);
-        padding: 7px 16px;
-        border-radius: var(--radius-pill);
-        border: 1.5px solid var(--indigo);
-        transition: var(--transition);
-      }
-      .btn-login:hover {
-        background: var(--indigo);
-        color: var(--white);
-      }
-
-      /* ════════════════════════════════════════════════════════
-         HERO BAND
-         ════════════════════════════════════════════════════════ */
-
+      /* HERO */
       .hero {
         background: var(--indigo);
         padding: 28px 16px 72px;
         text-align: center;
-      }
-      .hero-eyebrow {
-        font-size: 11px;
-        font-weight: 600;
-        letter-spacing: 2px;
-        color: rgba(255, 255, 255, 0.55);
-        margin-bottom: 8px;
-        text-transform: uppercase;
       }
       .hero-title {
         font-size: clamp(22px, 5vw, 34px);
@@ -218,46 +137,7 @@
         font-weight: 400;
       }
 
-      /* ════════════════════════════════════════════════════════
-         QUICK TABS
-         ════════════════════════════════════════════════════════ */
-
-      .quick-tabs {
-        display: flex;
-        justify-content: center;
-        gap: 6px;
-        margin-top: 18px;
-        flex-wrap: wrap;
-      }
-      .qtab {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        padding: 8px 16px;
-        border-radius: var(--radius-pill);
-        border: 1.5px solid rgba(255, 255, 255, 0.25);
-        font-size: 13px;
-        font-weight: 500;
-        color: rgba(255, 255, 255, 0.75);
-        transition: var(--transition);
-        background: transparent;
-      }
-      .qtab svg {
-        width: 16px;
-        height: 16px;
-        fill: currentColor;
-      }
-      .qtab.active,
-      .qtab:hover {
-        background: var(--white);
-        color: var(--indigo);
-        border-color: var(--white);
-      }
-
-      /* ════════════════════════════════════════════════════════
-         SEARCH CARD
-         ════════════════════════════════════════════════════════ */
-
+      /* CARD */
       .card-wrap {
         max-width: 640px;
         margin: -48px auto 0;
@@ -288,31 +168,11 @@
         height: 18px;
         fill: var(--indigo);
       }
-      .irctc-badge {
-        display: flex;
-        align-items: center;
-        gap: 5px;
-        font-size: 10px;
-        font-weight: 600;
-        color: var(--grey-500);
-        letter-spacing: 0.3px;
-      }
-      .irctc-badge-dot {
-        width: 6px;
-        height: 6px;
-        border-radius: 50%;
-        background: var(--green);
-      }
 
-      /* ════════════════════════════════════════════════════════
-         FORM
-         ════════════════════════════════════════════════════════ */
-
+      /* FORM */
       #ticket-form {
         padding: 16px 20px 20px;
       }
-
-      /* Field layout rows */
       .field-row {
         display: grid;
         gap: 10px;
@@ -324,8 +184,6 @@
       .field-row.three {
         grid-template-columns: 1fr 1fr 1fr;
       }
-
-      /* Individual field */
       .field {
         display: flex;
         flex-direction: column;
@@ -340,8 +198,6 @@
         text-transform: uppercase;
         padding-left: 2px;
       }
-
-      /* Input wrapper (border + icon + input) */
       .field-input-wrap {
         display: flex;
         align-items: center;
@@ -357,8 +213,6 @@
         border-color: var(--indigo);
         box-shadow: 0 0 0 3px var(--indigo-mid);
       }
-
-      /* Icon inside input */
       .field-icon {
         padding: 0 10px;
         display: flex;
@@ -374,8 +228,6 @@
       .field-input-wrap:focus-within .field-icon svg {
         fill: var(--indigo);
       }
-
-      /* Text / date input */
       .form-input {
         width: 100%;
         padding: 11px 12px 11px 0;
@@ -396,8 +248,6 @@
       .form-input::-webkit-calendar-picker-indicator {
         opacity: 0;
       }
-
-      /* Swap stations button */
       .swap-wrap {
         display: flex;
         align-items: flex-end;
@@ -426,8 +276,6 @@
       .swap-btn:hover svg {
         fill: var(--white);
       }
-
-      /* Select (Coach / Quota) */
       .field-select {
         width: 100%;
         padding: 11px 12px 11px 0;
@@ -440,41 +288,6 @@
         appearance: none;
         cursor: pointer;
       }
-
-      /* Tatkal toggle row */
-      .tatkal-row {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        padding: 10px 12px;
-        margin-bottom: 10px;
-        border-radius: var(--radius-sm);
-        background: var(--indigo-tint);
-        border: 1px solid rgba(63, 0, 255, 0.15);
-      }
-      .tatkal-row input[type="checkbox"] {
-        accent-color: var(--indigo);
-        width: 16px;
-        height: 16px;
-        cursor: pointer;
-      }
-      .tatkal-label {
-        font-size: 12px;
-        font-weight: 500;
-        color: var(--black);
-        flex: 1;
-      }
-      .tatkal-badge {
-        font-size: 10px;
-        font-weight: 700;
-        color: var(--white);
-        background: var(--indigo);
-        padding: 2px 8px;
-        border-radius: var(--radius-pill);
-        letter-spacing: 0.3px;
-      }
-
-      /* Search / submit button */
       .btn-search {
         width: 100%;
         padding: 15px;
@@ -504,82 +317,300 @@
       .btn-search:active {
         transform: translateY(0);
       }
-      .btn-search.loading {
-        opacity: 0.75;
-        pointer-events: none;
-      }
 
-      /* ════════════════════════════════════════════════════════
-         QUICK ACTIONS GRID
-         ════════════════════════════════════════════════════════ */
-
-      .quick-actions {
-        max-width: 640px;
-        margin: 14px auto 0;
-        padding: 0 16px;
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 8px;
+      /* LOADING */
+      .spinner {
+        width: 20px;
+        height: 20px;
+        border: 2.5px solid rgba(255, 255, 255, 0.4);
+        border-top-color: #fff;
+        border-radius: 50%;
+        animation: spin 0.7s linear infinite;
+        display: none;
       }
-      .qa-item {
-        background: var(--white);
-        border-radius: var(--radius-md);
-        padding: 12px 8px;
-        text-align: center;
-        box-shadow: var(--shadow-card);
-        display: flex;
+      .loading .spinner {
+        display: block;
+      }
+      .loading .btn-text {
+        display: none;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      .card-form-view {
+        display: block;
+      }
+      .card-loading-view {
+        display: none;
         flex-direction: column;
         align-items: center;
-        gap: 6px;
-        transition: var(--transition);
-        position: relative;
-        overflow: hidden;
+        justify-content: center;
+        padding: 48px 32px 52px;
+        text-align: center;
+        min-height: 260px;
+        background: var(--white);
+        animation: fadeIn 0.22s ease;
       }
-      .qa-item:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
       }
-      .qa-icon {
-        width: 38px;
-        height: 38px;
-        border-radius: 10px;
-        background: var(--indigo-tint);
+      .card.is-loading .card-form-view {
+        display: none;
+      }
+      .card.is-loading .card-loading-view {
+        display: flex;
+      }
+      .loading-train-icon {
+        width: 56px;
+        height: 56px;
+        border-radius: 14px;
+        background: var(--indigo);
         display: flex;
         align-items: center;
         justify-content: center;
+        margin-bottom: 20px;
+        animation: trainBounce 1s ease-in-out infinite;
       }
-      .qa-icon svg {
-        width: 18px;
-        height: 18px;
-        fill: var(--indigo);
+      .loading-train-icon svg {
+        width: 28px;
+        height: 28px;
+        fill: var(--white);
       }
-      .qa-label {
-        font-size: 10px;
-        font-weight: 600;
-        color: var(--black);
-        text-transform: uppercase;
-        letter-spacing: 0.3px;
-        line-height: 1.3;
+      @keyframes trainBounce {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-8px);
+        }
       }
-      .qa-pill {
-        position: absolute;
-        top: 6px;
-        right: 6px;
-        font-size: 9px;
+      .loading-title {
+        font-size: 16px;
         font-weight: 700;
-        color: var(--white);
-        padding: 2px 6px;
+        color: var(--black);
+        margin-bottom: 6px;
+      }
+      .loading-sub {
+        font-size: 13px;
+        color: var(--grey-500);
+        margin-bottom: 28px;
+        line-height: 1.5;
+      }
+      .loading-sub strong {
+        color: var(--indigo);
+        font-weight: 600;
+      }
+      .shimmer-track {
+        width: 100%;
+        max-width: 320px;
+        height: 4px;
+        background: var(--grey-100);
         border-radius: var(--radius-pill);
-        background: var(--green);
+        overflow: hidden;
+        margin-bottom: 16px;
+        position: relative;
       }
-      .qa-pill.offer {
+      .shimmer-fill {
+        position: absolute;
+        top: 0;
+        left: -45%;
+        height: 100%;
+        width: 45%;
+        background: linear-gradient(
+          90deg,
+          var(--indigo-tint),
+          var(--indigo),
+          var(--indigo-tint)
+        );
+        background-size: 200% 100%;
+        border-radius: var(--radius-pill);
+        animation: shimmerMove 1.2s ease-in-out infinite;
+      }
+      @keyframes shimmerMove {
+        0% {
+          left: -45%;
+        }
+        100% {
+          left: 100%;
+        }
+      }
+      .loading-dots {
+        display: flex;
+        gap: 6px;
+        justify-content: center;
+      }
+      .loading-dots span {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
         background: var(--indigo);
+        opacity: 0.3;
+        animation: dotPulse 1.2s ease-in-out infinite;
+      }
+      .loading-dots span:nth-child(2) {
+        animation-delay: 0.2s;
+      }
+      .loading-dots span:nth-child(3) {
+        animation-delay: 0.4s;
+      }
+      @keyframes dotPulse {
+        0%,
+        80%,
+        100% {
+          opacity: 0.2;
+          transform: scale(0.85);
+        }
+        40% {
+          opacity: 1;
+          transform: scale(1.15);
+        }
       }
 
-      /* ════════════════════════════════════════════════════════
-         RESULTS
-         ════════════════════════════════════════════════════════ */
+      /* HELP CARD */
+      .help-card {
+        background: var(--white);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-card);
+        overflow: hidden;
+        margin-top: 12px;
+      }
+      .help-card-head {
+        padding: 14px 18px;
+        border-bottom: 1px solid var(--grey-100);
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+      }
+      .help-card-title {
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--black);
+        display: flex;
+        align-items: center;
+        gap: 7px;
+      }
+      .help-card-sub {
+        font-size: 12px;
+        color: var(--grey-500);
+      }
+      .help-section-label {
+        font-size: 10px;
+        font-weight: 700;
+        color: var(--grey-500);
+        letter-spacing: 0.8px;
+        text-transform: uppercase;
+        padding: 14px 18px 8px;
+      }
+      .rank-rows {
+        padding: 0 18px 14px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .rank-row {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 10px 12px;
+        border-radius: var(--radius-sm);
+        border: 1.5px solid;
+      }
+      .rank-row.success {
+        background: #f0faf4;
+        border-color: #b7e8c8;
+      }
+      .rank-row.success-dim {
+        background: #f6fbf8;
+        border-color: #d0ead9;
+      }
+      .rank-row.warning {
+        background: #fffbf0;
+        border-color: #fde68a;
+      }
+      .rank-row.danger {
+        background: #fff5f5;
+        border-color: #fcc;
+      }
+      .rank-number {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        font-size: 12px;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        margin-top: 1px;
+      }
+      .rank-number.success {
+        background: #00873a;
+        color: var(--white);
+      }
+      .rank-number.success-dim {
+        background: #43a862;
+        color: var(--white);
+      }
+      .rank-number.warning {
+        background: #f59e0b;
+        color: var(--white);
+      }
+      .rank-number.danger {
+        background: var(--red);
+        color: var(--white);
+      }
+      .rank-content {
+        flex: 1;
+      }
+      .rank-top {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 3px;
+      }
+      .rank-title {
+        font-size: 13px;
+        font-weight: 700;
+      }
+      .rank-title.success {
+        color: #00873a;
+      }
+      .rank-title.success-dim {
+        color: #43a862;
+      }
+      .rank-title.warning {
+        color: #b45309;
+      }
+      .rank-title.danger {
+        color: #c0392b;
+      }
+      .rank-desc {
+        font-size: 11px;
+        line-height: 1.5;
+        margin: 0;
+      }
+      .rank-desc.success {
+        color: #2d6a45;
+      }
+      .rank-desc.success-dim {
+        color: #3d7a52;
+      }
+      .rank-desc.warning {
+        color: #78490a;
+      }
+      .rank-desc.danger {
+        color: #922b21;
+      }
 
+      /* RESULTS */
       .results-wrap {
         max-width: 640px;
         margin: 16px auto 0;
@@ -604,8 +635,6 @@
         padding: 4px 10px;
         border-radius: var(--radius-pill);
       }
-
-      /* Result card */
       .result-card {
         background: var(--white);
         border-radius: var(--radius-md);
@@ -625,8 +654,6 @@
           transform: translateY(0);
         }
       }
-
-      /* Card sections */
       .rc-top {
         padding: 14px 16px;
         display: flex;
@@ -644,8 +671,6 @@
         color: var(--grey-500);
         margin-top: 2px;
       }
-
-      /* Availability badge */
       .rc-avail {
         font-size: 11px;
         font-weight: 700;
@@ -665,8 +690,6 @@
         background: #fbe9e7;
         color: #bf360c;
       }
-
-      /* Route row */
       .rc-route {
         padding: 0 16px 14px;
         display: flex;
@@ -716,8 +739,6 @@
         white-space: nowrap;
         padding: 0 6px;
       }
-
-      /* Card footer */
       .rc-bottom {
         border-top: 1px solid var(--grey-100);
         padding: 10px 16px;
@@ -759,22 +780,6 @@
       .rc-price-btn:hover {
         background: var(--indigo-dark);
       }
-
-      /* Raw JSON fallback (dev/debug) */
-      .result-raw {
-        background: var(--grey-900);
-        color: #b0ffb0;
-        font-size: 11px;
-        font-family: monospace;
-        line-height: 1.6;
-        padding: 16px;
-        border-radius: var(--radius-md);
-        overflow-x: auto;
-        white-space: pre-wrap;
-        word-break: break-word;
-      }
-
-      /* Empty / error states */
       .state-card {
         background: var(--white);
         border-radius: var(--radius-md);
@@ -801,327 +806,7 @@
         color: var(--red);
       }
 
-      /* ════════════════════════════════════════════════════════
-         LOADING VIEW  (shown while POST is in-flight)
-         ════════════════════════════════════════════════════════ */
-
-      /* Spinner inside submit button */
-      .spinner {
-        width: 20px;
-        height: 20px;
-        border: 2.5px solid rgba(255, 255, 255, 0.4);
-        border-top-color: #fff;
-        border-radius: 50%;
-        animation: spin 0.7s linear infinite;
-        display: none;
-      }
-      .loading .spinner {
-        display: block;
-      }
-      .loading .btn-text {
-        display: none;
-      }
-      @keyframes spin {
-        to {
-          transform: rotate(360deg);
-        }
-      }
-
-      /* Card view toggle — .is-loading swaps form ↔ loading panel */
-      .card-form-view {
-        display: block;
-      }
-      .card-loading-view {
-        display: none;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        padding: 48px 32px 52px;
-        text-align: center;
-        min-height: 260px;
-        background: var(--white);
-        animation: fadeIn 0.22s ease;
-      }
-      @keyframes fadeIn {
-        from {
-          opacity: 0;
-        }
-        to {
-          opacity: 1;
-        }
-      }
-
-      .card.is-loading .card-form-view {
-        display: none;
-      }
-      .card.is-loading .card-loading-view {
-        display: flex;
-      }
-
-      /* Bouncing train icon */
-      .loading-train-icon {
-        width: 56px;
-        height: 56px;
-        border-radius: 14px;
-        background: var(--indigo);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-bottom: 20px;
-        animation: trainBounce 1s ease-in-out infinite;
-      }
-      .loading-train-icon svg {
-        width: 28px;
-        height: 28px;
-        fill: var(--white);
-      }
-      @keyframes trainBounce {
-        0%,
-        100% {
-          transform: translateY(0);
-        }
-        50% {
-          transform: translateY(-8px);
-        }
-      }
-
-      /* Loading text */
-      .loading-title {
-        font-size: 16px;
-        font-weight: 700;
-        color: var(--black);
-        margin-bottom: 6px;
-      }
-      .loading-sub {
-        font-size: 13px;
-        color: var(--grey-500);
-        margin-bottom: 28px;
-        line-height: 1.5;
-      }
-      .loading-sub strong {
-        color: var(--indigo);
-        font-weight: 600;
-      }
-
-      /* Shimmer progress track */
-      .shimmer-track {
-        width: 100%;
-        max-width: 320px;
-        height: 4px;
-        background: var(--grey-100);
-        border-radius: var(--radius-pill);
-        overflow: hidden;
-        margin-bottom: 16px;
-        position: relative;
-      }
-      .shimmer-fill {
-        position: absolute;
-        top: 0;
-        left: -45%;
-        height: 100%;
-        width: 45%;
-        background: linear-gradient(
-          90deg,
-          var(--indigo-tint),
-          var(--indigo),
-          var(--indigo-tint)
-        );
-        background-size: 200% 100%;
-        border-radius: var(--radius-pill);
-        animation: shimmerMove 1.2s ease-in-out infinite;
-      }
-      @keyframes shimmerMove {
-        0% {
-          left: -45%;
-        }
-        100% {
-          left: 100%;
-        }
-      }
-
-      /* Bouncing dots */
-      .loading-dots {
-        display: flex;
-        gap: 6px;
-        justify-content: center;
-      }
-      .loading-dots span {
-        width: 7px;
-        height: 7px;
-        border-radius: 50%;
-        background: var(--indigo);
-        opacity: 0.3;
-        animation: dotPulse 1.2s ease-in-out infinite;
-      }
-      .loading-dots span:nth-child(2) {
-        animation-delay: 0.2s;
-      }
-      .loading-dots span:nth-child(3) {
-        animation-delay: 0.4s;
-      }
-      @keyframes dotPulse {
-        0%,
-        80%,
-        100% {
-          opacity: 0.2;
-          transform: scale(0.85);
-        }
-        40% {
-          opacity: 1;
-          transform: scale(1.15);
-        }
-      }
-
-      /* ════════════════════════════════════════════════════════
-         HELP / WL PRIORITY CARD
-         ════════════════════════════════════════════════════════ */
-
-      .help-card {
-        background: var(--white);
-        border-radius: var(--radius-lg);
-        box-shadow: var(--shadow-card);
-        overflow: hidden;
-        margin-top: 12px;
-      }
-      .help-card-head {
-        padding: 14px 18px;
-        border-bottom: 1px solid var(--grey-100);
-        display: flex;
-        flex-direction: column;
-        gap: 3px;
-      }
-      .help-card-title {
-        font-size: 13px;
-        font-weight: 700;
-        color: var(--black);
-        display: flex;
-        align-items: center;
-        gap: 7px;
-      }
-      .help-card-sub {
-        font-size: 12px;
-        color: var(--grey-500);
-      }
-      .help-section-label {
-        font-size: 10px;
-        font-weight: 700;
-        color: var(--grey-500);
-        letter-spacing: 0.8px;
-        text-transform: uppercase;
-        padding: 14px 18px 8px;
-      }
-
-      /* Rank rows */
-      .rank-rows {
-        padding: 0 18px 14px;
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-      }
-      .rank-row {
-        display: flex;
-        align-items: flex-start;
-        gap: 12px;
-        padding: 10px 12px;
-        border-radius: var(--radius-sm);
-        border: 1.5px solid;
-      }
-      .rank-row.success {
-        background: #f0faf4;
-        border-color: #b7e8c8;
-      }
-      .rank-row.success-dim {
-        background: #f6fbf8;
-        border-color: #d0ead9;
-      }
-      .rank-row.warning {
-        background: #fffbf0;
-        border-color: #fde68a;
-      }
-      .rank-row.danger {
-        background: #fff5f5;
-        border-color: #fcc;
-      }
-
-      /* Rank number circle */
-      .rank-number {
-        width: 24px;
-        height: 24px;
-        border-radius: 50%;
-        font-size: 12px;
-        font-weight: 700;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
-        margin-top: 1px;
-      }
-      .rank-number.success {
-        background: #00873a;
-        color: var(--white);
-      }
-      .rank-number.success-dim {
-        background: #43a862;
-        color: var(--white);
-      }
-      .rank-number.warning {
-        background: #f59e0b;
-        color: var(--white);
-      }
-      .rank-number.danger {
-        background: var(--red);
-        color: var(--white);
-      }
-
-      /* Rank content */
-      .rank-content {
-        flex: 1;
-      }
-      .rank-top {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        margin-bottom: 3px;
-      }
-      .rank-title {
-        font-size: 13px;
-        font-weight: 700;
-      }
-      .rank-title.success {
-        color: #00873a;
-      }
-      .rank-title.success-dim {
-        color: #43a862;
-      }
-      .rank-title.warning {
-        color: #b45309;
-      }
-      .rank-title.danger {
-        color: #c0392b;
-      }
-
-      .rank-desc {
-        font-size: 11px;
-        line-height: 1.5;
-        margin: 0;
-      }
-      .rank-desc.success {
-        color: #2d6a45;
-      }
-      .rank-desc.success-dim {
-        color: #3d7a52;
-      }
-      .rank-desc.warning {
-        color: #78490a;
-      }
-      .rank-desc.danger {
-        color: #922b21;
-      }
-
-      /* ════════════════════════════════════════════════════════
-         FOOTER NAV  (mobile only)
-         ════════════════════════════════════════════════════════ */
-
+      /* FOOTER NAV */
       .footer-nav {
         position: fixed;
         bottom: 0;
@@ -1133,85 +818,8 @@
         z-index: 100;
         padding-bottom: env(safe-area-inset-bottom, 0px);
       }
-      .fn-item {
-        flex: 1;
-        padding: 10px 4px 8px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 4px;
-        font-size: 10px;
-        font-weight: 600;
-        color: var(--grey-500);
-        text-transform: uppercase;
-        letter-spacing: 0.3px;
-        transition: color var(--transition);
-      }
-      .fn-item svg {
-        width: 22px;
-        height: 22px;
-        fill: var(--grey-300);
-        transition: fill var(--transition);
-      }
-      .fn-item.active {
-        color: var(--indigo);
-      }
-      .fn-item.active svg {
-        fill: var(--indigo);
-      }
 
-      /* ════════════════════════════════════════════════════════
-         RESPONSIVE OVERRIDES
-         ════════════════════════════════════════════════════════ */
-
-      /* ── Desktop (≥ 640px) ──────────────────────────────── */
-      @media (min-width: 640px) {
-        .hero {
-          padding: 48px 16px 88px;
-        }
-        .logo-tag {
-          display: block;
-        }
-        .footer-nav {
-          display: none;
-        }
-        body {
-          padding-bottom: 0;
-        }
-        .quick-actions {
-          grid-template-columns: repeat(4, 1fr);
-        }
-        .field-row.mobile-stack {
-          grid-template-columns: 1fr 1fr 1fr;
-        }
-        .card-head {
-          padding: 24px 24px 0;
-        }
-        #ticket-form {
-          padding: 20px 24px 24px;
-        }
-      }
-
-      /* ── Mobile (< 640px) ───────────────────────────────── */
-      @media (max-width: 639px) {
-        body {
-          padding-bottom: 64px;
-        }
-        .header-nav .nav-chip {
-          display: none;
-        }
-        /* Three-col row collapses to 2-col, last field spans full width */
-        .field-row.three {
-          grid-template-columns: 1fr 1fr;
-        }
-        .field-row.three .field:last-child {
-          grid-column: span 2;
-        }
-      }
-      /* ════════════════════════════════════════════════════════
-         DISCLAIMER POPUP
-         ════════════════════════════════════════════════════════ */
-
+      /* DISCLAIMER POPUP */
       .disclaimer-overlay {
         position: fixed;
         inset: 0;
@@ -1336,16 +944,254 @@
       .btn-disclaimer-agree.ready:hover {
         background: var(--indigo-dark);
       }
+
+      /* ══════════════════════════════════════════════════════
+         MAINTENANCE POPUP
+         ══════════════════════════════════════════════════════ */
+      .maint-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.65);
+        z-index: 1000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 16px;
+        animation: fadeIn 0.25s ease;
+      }
+      .maint-overlay.hidden {
+        display: none;
+      }
+      .maint-box {
+        background: var(--white);
+        border-radius: var(--radius-lg);
+        box-shadow: 0 12px 48px rgba(0, 0, 0, 0.28);
+        max-width: 400px;
+        width: 100%;
+        overflow: hidden;
+      }
+
+      /* Orange/amber head for maintenance (distinct from blue disclaimer) */
+      .maint-head {
+        background: linear-gradient(135deg, #e65100 0%, #ff9800 100%);
+        padding: 22px 20px 18px;
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+      }
+      .maint-head-icon {
+        font-size: 28px;
+        flex-shrink: 0;
+        line-height: 1;
+      }
+
+      .maint-head-title {
+        font-size: 16px;
+        font-weight: 700;
+        color: #fff;
+        line-height: 1.3;
+        letter-spacing: -0.2px;
+      }
+      .maint-head-sub {
+        font-size: 11px;
+        color: rgba(255, 255, 255, 0.7);
+        margin-top: 3px;
+      }
+
+      .maint-body {
+        padding: 20px;
+      }
+
+      /* Countdown / time window banner */
+      .maint-window {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        background: #fff8f0;
+        border: 1.5px solid #ffd180;
+        border-radius: var(--radius-sm);
+        padding: 12px 14px;
+        margin-bottom: 16px;
+      }
+      .maint-window-icon {
+        font-size: 20px;
+        flex-shrink: 0;
+      }
+
+      .maint-window-label {
+        font-size: 10px;
+        font-weight: 700;
+        color: #b45309;
+        letter-spacing: 0.8px;
+        text-transform: uppercase;
+        margin-bottom: 2px;
+      }
+      .maint-window-time {
+        font-size: 15px;
+        font-weight: 700;
+        color: #e65100;
+        letter-spacing: 0.2px;
+      }
+
+      /* Live countdown timer */
+      .maint-countdown {
+        text-align: center;
+        margin-bottom: 16px;
+      }
+      .maint-countdown-label {
+        font-size: 11px;
+        color: var(--grey-500);
+        font-weight: 500;
+        margin-bottom: 6px;
+      }
+      .maint-clock {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: var(--grey-100);
+        border-radius: var(--radius-sm);
+        padding: 10px 16px;
+      }
+      .maint-clock-seg {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2px;
+      }
+      .maint-clock-num {
+        font-size: 22px;
+        font-weight: 700;
+        color: var(--black);
+        font-variant-numeric: tabular-nums;
+        min-width: 32px;
+        text-align: center;
+      }
+      .maint-clock-unit {
+        font-size: 9px;
+        color: var(--grey-500);
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+      }
+      .maint-clock-colon {
+        font-size: 20px;
+        font-weight: 700;
+        color: var(--grey-300);
+        padding-bottom: 12px;
+      }
+
+      .maint-body p {
+        font-size: 13px;
+        color: var(--grey-700);
+        line-height: 1.65;
+        margin-bottom: 10px;
+      }
+      .maint-body p:last-of-type {
+        margin-bottom: 0;
+      }
+      .maint-body strong {
+        color: var(--black);
+        font-weight: 600;
+      }
+
+      .maint-footer {
+        padding: 14px 20px 18px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .btn-maint-close {
+        width: 100%;
+        padding: 13px;
+        background: var(--grey-100);
+        color: var(--grey-700);
+        font-size: 14px;
+        font-weight: 600;
+        border-radius: var(--radius-sm);
+        border: 1.5px solid var(--grey-300);
+        transition: var(--transition);
+      }
+      .btn-maint-close:hover {
+        background: var(--grey-300);
+      }
+      .maint-hint {
+        font-size: 11px;
+        color: var(--grey-500);
+        text-align: center;
+        line-height: 1.5;
+      }
+
+      /* Pulse dot on the orange head */
+      .maint-pulse {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 11px;
+        color: rgba(255, 255, 255, 0.8);
+        margin-top: 6px;
+      }
+      .maint-pulse-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: #fff;
+        animation: pulseDot 1.2s ease-in-out infinite;
+      }
+      @keyframes pulseDot {
+        0%,
+        100% {
+          opacity: 0.4;
+          transform: scale(0.8);
+        }
+        50% {
+          opacity: 1;
+          transform: scale(1.2);
+        }
+      }
+
+      @media (min-width: 640px) {
+        .hero {
+          padding: 48px 16px 88px;
+        }
+        .logo-tag {
+          display: block;
+        }
+        .footer-nav {
+          display: none;
+        }
+        body {
+          padding-bottom: 0;
+        }
+        .field-row.mobile-stack {
+          grid-template-columns: 1fr 1fr 1fr;
+        }
+        .card-head {
+          padding: 24px 24px 0;
+        }
+        #ticket-form {
+          padding: 20px 24px 24px;
+        }
+      }
+      @media (max-width: 639px) {
+        body {
+          padding-bottom: 64px;
+        }
+        .header-nav .nav-chip {
+          display: none;
+        }
+        .field-row.three {
+          grid-template-columns: 1fr 1fr;
+        }
+        .field-row.three .field:last-child {
+          grid-column: span 2;
+        }
+      }
     </style>
   </head>
-
   <body>
-    <!-- ════════════════════════════════════════════════════════
-         DISCLAIMER POPUP
-         ════════════════════════════════════════════════════════ -->
+    <!-- DISCLAIMER POPUP -->
     <div class="disclaimer-overlay" id="disclaimer-overlay">
       <div class="disclaimer-box">
-        <!-- Head -->
         <div class="disclaimer-head">
           <div class="disclaimer-head-icon">⚠️</div>
           <div>
@@ -1355,8 +1201,6 @@
             <div class="disclaimer-head-sub">Please read before continuing</div>
           </div>
         </div>
-
-        <!-- Body -->
         <div class="disclaimer-body">
           <p>
             <strong>m5ticket is an independent search tool.</strong> It is not
@@ -1374,8 +1218,6 @@
             >
             website or authorised apps. Always verify before purchasing.
           </p>
-
-          <!-- T&C summary -->
           <div class="disclaimer-tc">
             <strong>By continuing you agree that:</strong>
             <ul>
@@ -1390,15 +1232,13 @@
             </ul>
           </div>
         </div>
-
-        <!-- Footer: checkbox + button -->
         <div class="disclaimer-footer">
           <label class="disclaimer-agree-row">
             <input type="checkbox" id="disclaimer-check" />
-            <span class="disclaimer-agree-label">
-              I understand this is not an official IRCTC tool and I agree to the
-              terms above.
-            </span>
+            <span class="disclaimer-agree-label"
+              >I understand this is not an official IRCTC tool and I agree to
+              the terms above.</span
+            >
           </label>
           <button
             class="btn-disclaimer-agree"
@@ -1410,11 +1250,75 @@
         </div>
       </div>
     </div>
-    <!-- /disclaimer-overlay -->
 
-    <!-- ════════════════════════════════════════════════════════
-         HEADER
-         ════════════════════════════════════════════════════════ -->
+    <!-- MAINTENANCE POPUP -->
+    <div class="maint-overlay hidden" id="maint-overlay">
+      <div class="maint-box">
+        <div class="maint-head">
+          <div class="maint-head-icon">🔧</div>
+          <div class="maint-head-text">
+            <div class="maint-head-title">Down for Maintenance</div>
+            <div class="maint-head-sub">Scheduled nightly update window</div>
+            <div class="maint-pulse">
+              <span class="maint-pulse-dot"></span>
+              Live — resumes automatically after window
+            </div>
+          </div>
+        </div>
+
+        <div class="maint-body">
+          <div class="maint-window">
+            <div class="maint-window-icon">🕐</div>
+            <div class="maint-window-text">
+              <div class="maint-window-label">Maintenance Window</div>
+              <div class="maint-window-time">11:35 PM — 12:25 AM</div>
+            </div>
+          </div>
+
+          <div class="maint-countdown">
+            <div class="maint-countdown-label">Service resumes in</div>
+            <div class="maint-clock">
+              <div class="maint-clock-seg">
+                <span class="maint-clock-num" id="cnt-h">00</span>
+                <span class="maint-clock-unit">hrs</span>
+              </div>
+              <span class="maint-clock-colon">:</span>
+              <div class="maint-clock-seg">
+                <span class="maint-clock-num" id="cnt-m">00</span>
+                <span class="maint-clock-unit">min</span>
+              </div>
+              <span class="maint-clock-colon">:</span>
+              <div class="maint-clock-seg">
+                <span class="maint-clock-num" id="cnt-s">00</span>
+                <span class="maint-clock-unit">sec</span>
+              </div>
+            </div>
+          </div>
+
+          <p>
+            Sorry for the inconvenience. We perform
+            <strong>scheduled maintenance and updates</strong> every night
+            between <strong>11:35 PM and 12:25 AM</strong> to keep things fast
+            and accurate.
+          </p>
+          <p>
+            Please try again after the window closes — the service resumes
+            automatically. No action needed on your end.
+          </p>
+        </div>
+
+        <div class="maint-footer">
+          <button class="btn-maint-close" id="maint-close-btn">
+            Got it — I'll come back later
+          </button>
+          <div class="maint-hint">
+            The page will automatically notify you when service is back 🔔
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- HEADER -->
     <header class="header">
       <div class="header-inner">
         <div class="logo">
@@ -1430,20 +1334,11 @@
             <div class="logo-tag">Find - Book - Travel</div>
           </div>
         </div>
-        <!-- <nav class="header-nav">
-          <span class="nav-chip active">Trains</span>
-          <span class="nav-chip">PNR</span>
-          <span class="nav-chip">My Trips</span>
-          <button class="btn-login">Login</button>
-        </nav> -->
       </div>
     </header>
 
-    <!-- ════════════════════════════════════════════════════════
-         HERO BAND
-         ════════════════════════════════════════════════════════ -->
+    <!-- HERO -->
     <section class="hero">
-      <!-- <p class="hero-eyebrow">IRCTC Authorised Partner</p> -->
       <h1 class="hero-title">
         Booking a train ticket?<br />
         <span>Shows WL / RAC ?</span><br />
@@ -1451,12 +1346,10 @@
       </h1>
     </section>
 
-    <!-- ════════════════════════════════════════════════════════
-         SEARCH CARD
-         ════════════════════════════════════════════════════════ -->
+    <!-- SEARCH CARD -->
     <div class="card-wrap">
       <div class="card" id="main-card">
-        <!-- ── Form view (default) ─────────────────────────── -->
+        <!-- Form view -->
         <div class="card-form-view">
           <div class="card-head">
             <div class="card-head-title">
@@ -1467,27 +1360,22 @@
               </svg>
               Search Tickets
             </div>
-            <!-- <div class="irctc-badge">
-              <div class="irctc-badge-dot"></div>
-              IRCTC Partner
-            </div> -->
           </div>
 
           <form id="ticket-form" action="/search" method="POST">
-            <!-- Train Number ──────────────────────────────── -->
+            <!-- Train Number -->
             <div class="field-row" style="margin-bottom: 10px">
               <div class="field">
                 <label class="field-label" for="Train-Number"
                   >Train Number</label
                 >
                 <div class="field-input-wrap">
-                  <span class="field-icon">
-                    <svg viewBox="0 0 24 24">
+                  <span class="field-icon"
+                    ><svg viewBox="0 0 24 24">
                       <path
                         d="M4 4h16v2H4V4zm0 4h16v2H4V8zm0 4h16v2H4v-2zm0 4h10v2H4v-2z"
-                      />
-                    </svg>
-                  </span>
+                      /></svg
+                  ></span>
                   <input
                     class="form-input"
                     type="text"
@@ -1501,7 +1389,7 @@
               </div>
             </div>
 
-            <!-- From / Swap / To ─────────────────────────── -->
+            <!-- From / Swap / To -->
             <div
               class="field-row"
               style="
@@ -1512,19 +1400,17 @@
                 align-items: flex-end;
               "
             >
-              <!-- From -->
               <div class="field">
                 <label class="field-label" for="FromStnCode"
                   >From Station</label
                 >
                 <div class="field-input-wrap">
-                  <span class="field-icon">
-                    <svg viewBox="0 0 24 24">
+                  <span class="field-icon"
+                    ><svg viewBox="0 0 24 24">
                       <path
                         d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"
-                      />
-                    </svg>
-                  </span>
+                      /></svg
+                  ></span>
                   <input
                     class="form-input"
                     type="text"
@@ -1536,8 +1422,6 @@
                   />
                 </div>
               </div>
-
-              <!-- Swap button -->
               <div class="swap-wrap">
                 <button
                   type="button"
@@ -1552,18 +1436,15 @@
                   </svg>
                 </button>
               </div>
-
-              <!-- To -->
               <div class="field">
                 <label class="field-label" for="ToStnCode">To Station</label>
                 <div class="field-input-wrap">
-                  <span class="field-icon">
-                    <svg viewBox="0 0 24 24">
+                  <span class="field-icon"
+                    ><svg viewBox="0 0 24 24">
                       <path
                         d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"
-                      />
-                    </svg>
-                  </span>
+                      /></svg
+                  ></span>
                   <input
                     class="form-input"
                     type="text"
@@ -1577,34 +1458,29 @@
               </div>
             </div>
 
-            <!-- Date / Coach / Quota ─────────────────────── -->
+            <!-- Date / Coach / Quota -->
             <div class="field-row three" style="margin-bottom: 10px">
-              <!-- Date -->
               <div class="field">
                 <label class="field-label" for="Date">Date of Journey</label>
                 <div class="field-input-wrap">
-                  <span class="field-icon">
-                    <svg viewBox="0 0 24 24">
+                  <span class="field-icon"
+                    ><svg viewBox="0 0 24 24">
                       <path
                         d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.1 0-2 .9-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"
-                      />
-                    </svg>
-                  </span>
+                      /></svg
+                  ></span>
                   <input class="form-input" type="date" id="Date" name="date" />
                 </div>
               </div>
-
-              <!-- Coach / Class -->
               <div class="field">
                 <label class="field-label" for="Coach">Coach / Class</label>
                 <div class="field-input-wrap">
-                  <span class="field-icon">
-                    <svg viewBox="0 0 24 24">
+                  <span class="field-icon"
+                    ><svg viewBox="0 0 24 24">
                       <path
                         d="M4 4h16v2H4V4zm0 4h16v2H4V8zm0 4h16v2H4v-2zm0 4h10v2H4v-2z"
-                      />
-                    </svg>
-                  </span>
+                      /></svg
+                  ></span>
                   <select class="field-select" id="Coach" name="coach">
                     <option value="" disabled selected>Select Class</option>
                     <option value="2S">2S — Second Sit</option>
@@ -1618,18 +1494,15 @@
                   </select>
                 </div>
               </div>
-
-              <!-- Quota -->
               <div class="field">
                 <label class="field-label" for="Quota">Quota</label>
                 <div class="field-input-wrap">
-                  <span class="field-icon">
-                    <svg viewBox="0 0 24 24">
+                  <span class="field-icon"
+                    ><svg viewBox="0 0 24 24">
                       <path
                         d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 4l6 2.67V11c0 3.95-2.68 7.65-6 8.9-3.32-1.25-6-4.95-6-8.9V7.67L12 5z"
-                      />
-                    </svg>
-                  </span>
+                      /></svg
+                  ></span>
                   <select class="field-select" id="Quota" name="quota">
                     <option value="GN" selected>GN — General</option>
                     <option value="TQ">TQ — Tatkal</option>
@@ -1642,7 +1515,7 @@
               </div>
             </div>
 
-            <!-- Submit ───────────────────────────────────── -->
+            <!-- Submit -->
             <button type="submit" class="btn-search" id="search-btn">
               <div class="spinner"></div>
               <span
@@ -1662,9 +1535,8 @@
             </button>
           </form>
         </div>
-        <!-- /card-form-view -->
 
-        <!-- ── Loading view (shown while POST is in-flight) ── -->
+        <!-- Loading view -->
         <div class="card-loading-view">
           <div class="loading-train-icon">
             <svg viewBox="0 0 24 24">
@@ -1675,21 +1547,16 @@
           </div>
           <div class="loading-title">Searching for trains…</div>
           <div class="loading-sub">
-            Checking availability for
-            <strong id="loading-route">— → —</strong>
+            Checking availability for <strong id="loading-route">— → —</strong>
           </div>
-          <div class="shimmer-track">
-            <div class="shimmer-fill"></div>
-          </div>
+          <div class="shimmer-track"><div class="shimmer-fill"></div></div>
           <div class="loading-dots">
             <span></span><span></span><span></span>
           </div>
         </div>
-        <!-- /card-loading-view -->
       </div>
-      <!-- /card -->
 
-      <!-- ── WL Priority Help Card ───────────────────────── -->
+      <!-- WL Priority Help Card -->
       <div class="help-card">
         <div class="help-card-head">
           <div class="help-card-title">
@@ -1699,13 +1566,10 @@
             Pick the right search below based on your current WL position
           </div>
         </div>
-
         <div class="help-section-label">
           Ranked by WL position — try in this order
         </div>
-
         <div class="rank-rows">
-          <!-- Rank 1: RAC -->
           <div class="rank-row success">
             <div class="rank-number success">1</div>
             <div class="rank-content">
@@ -1717,8 +1581,6 @@
               </p>
             </div>
           </div>
-
-          <!-- Rank 2: WL < 10 -->
           <div class="rank-row success-dim">
             <div class="rank-number success-dim">2</div>
             <div class="rank-content">
@@ -1730,8 +1592,6 @@
               </p>
             </div>
           </div>
-
-          <!-- Rank 3: WL 10–25 -->
           <div class="rank-row warning">
             <div class="rank-number warning">3</div>
             <div class="rank-content">
@@ -1743,8 +1603,6 @@
               </p>
             </div>
           </div>
-
-          <!-- Rank 4: WL > 25 -->
           <div class="rank-row danger">
             <div class="rank-number danger">4</div>
             <div class="rank-content">
@@ -1757,43 +1615,31 @@
             </div>
           </div>
         </div>
-        <!-- /rank-rows -->
       </div>
-      <!-- /help-card -->
     </div>
-    <!-- /card-wrap -->
 
-    <!-- ════════════════════════════════════════════════════════
-         RESULTS
-         ════════════════════════════════════════════════════════ -->
+    <!-- RESULTS -->
     <div class="results-wrap">
       <div id="results"></div>
     </div>
 
-    <!-- ════════════════════════════════════════════════════════
-         FOOTER NAV  (mobile only)
-         ════════════════════════════════════════════════════════ -->
-    <nav class="footer-nav">
-      <!-- footer items commented out -->
-    </nav>
+    <!-- FOOTER NAV -->
+    <nav class="footer-nav"></nav>
 
-    <!-- ════════════════════════════════════════════════════════
-         SCRIPTS
-         ════════════════════════════════════════════════════════ -->
     <script>
-      /* ── Shortcuts ────────────────────────────────────────── */
       const $ = (id) => document.getElementById(id);
-
       const resultsEl = $("results");
-      const searchBtn = $("search-btn");
       const card = $("main-card");
 
-      /* ── Set today as default journey date ────────────────── */
-      const today = new Date().toISOString().split("T")[0];
+      /* ── Default date (local timezone fix) ── */
+      const now = new Date();
+      const today = new Date(now.getTime() - now.getTimezoneOffset() * 60000)
+        .toISOString()
+        .split("T")[0];
       $("Date").value = today;
       $("Date").min = today;
 
-      /* ── Auto-uppercase station code inputs ───────────────── */
+      /* ── Uppercase station codes ── */
       ["FromStnCode", "ToStnCode"].forEach((id) => {
         $(id).addEventListener("input", (e) => {
           const pos = e.target.selectionStart;
@@ -1802,30 +1648,91 @@
         });
       });
 
-      /* ── Swap From ↔ To stations ──────────────────────────── */
+      /* ── Swap stations ── */
       $("swap-btn").addEventListener("click", () => {
-        const a = $("FromStnCode").value;
-        const b = $("ToStnCode").value;
+        const a = $("FromStnCode").value,
+          b = $("ToStnCode").value;
         $("FromStnCode").value = b;
         $("ToStnCode").value = a;
         $("swap-btn").style.transform = "rotate(180deg)";
         setTimeout(() => ($("swap-btn").style.transform = ""), 300);
       });
 
-      /* ── Tatkal checkbox ↔ Quota select sync ──────────────── */
-      $("tatkal-check") &&
-        $("tatkal-check").addEventListener("change", (e) => {
-          if (e.target.checked) $("Quota").value = "TQ";
-          else $("Quota").value = "GN";
-        });
+      /* ══════════════════════════════════════════════════════
+         MAINTENANCE WINDOW CHECK
+         Window: 23:35 – 00:25 (i.e. 11:35 PM to 12:25 AM next day)
+         ══════════════════════════════════════════════════════ */
 
-      $("Quota").addEventListener("change", (e) => {
-        const tc = $("tatkal-check");
-        if (tc) tc.checked = e.target.value === "TQ" || e.target.value === "PT";
+      function isInMaintenanceWindow() {
+        const now = new Date();
+        const h = now.getHours(),
+          m = now.getMinutes();
+        // minutes-since-midnight
+        const totalMin = h * 60 + m;
+        const winStart = 23 * 60 + 35; // 23:35 = 1415 min
+        const winEnd = 0 * 60 + 25; // 00:25 = 25 min (next day)
+        // window crosses midnight: active if >= 1415 OR <= 25
+        return totalMin >= winStart || totalMin <= winEnd;
+      }
+
+      /* Compute seconds until maintenance ends (00:25) */
+      function secondsUntilEnd() {
+        const now = new Date();
+        const end = new Date(now);
+        // If past midnight and before 00:25 → end is today at 00:25
+        // If before midnight → end is tomorrow at 00:25
+        if (now.getHours() === 0 && now.getMinutes() <= 25) {
+          end.setHours(0, 25, 0, 0);
+        } else {
+          end.setDate(end.getDate() + 1);
+          end.setHours(0, 25, 0, 0);
+        }
+        return Math.max(0, Math.floor((end - now) / 1000));
+      }
+
+      let countdownTimer = null;
+
+      function startCountdown() {
+        function tick() {
+          const secs = secondsUntilEnd();
+          const hh = Math.floor(secs / 3600);
+          const mm = Math.floor((secs % 3600) / 60);
+          const ss = secs % 60;
+          $("cnt-h").textContent = String(hh).padStart(2, "0");
+          $("cnt-m").textContent = String(mm).padStart(2, "0");
+          $("cnt-s").textContent = String(ss).padStart(2, "0");
+          if (secs <= 0) {
+            clearInterval(countdownTimer);
+            // Auto-close popup when window ends
+            $("maint-overlay").classList.add("hidden");
+          }
+        }
+        tick();
+        countdownTimer = setInterval(tick, 1000);
+      }
+
+      function showMaintenancePopup() {
+        $("maint-overlay").classList.remove("hidden");
+        startCountdown();
+      }
+
+      /* Close button */
+      $("maint-close-btn").addEventListener("click", () => {
+        $("maint-overlay").classList.add("hidden");
+        if (countdownTimer) clearInterval(countdownTimer);
       });
 
-      /* ── Form submit: validate → show loading → let POST proceed ── */
+      /* ── Form submit: check maintenance window first, then validate ── */
       $("ticket-form").addEventListener("submit", function (e) {
+        e.preventDefault(); // Always prevent default; we handle submission
+
+        /* 1. Check maintenance window */
+        if (isInMaintenanceWindow()) {
+          showMaintenancePopup();
+          return;
+        }
+
+        /* 2. Validate fields */
         const trainNo = $("Train-Number").value.trim();
         const fromStnCode = $("FromStnCode").value.trim();
         const toStnCode = $("ToStnCode").value.trim();
@@ -1841,130 +1748,19 @@
           !coach ||
           !quota
         ) {
-          e.preventDefault();
           showError("Please fill all fields before searching.");
           return;
         }
 
+        /* 3. Show loading and submit */
         $("loading-route").textContent = `${fromStnCode} → ${toStnCode}`;
         card.classList.add("is-loading");
+        this.submit();
       });
 
-      /* ════════════════════════════════════════════════════════
-         RESULT RENDERING
-         ════════════════════════════════════════════════════════ */
-
-      function renderResults(data) {
-        resultsEl.innerHTML = "";
-
-        /* Normalise data shape — accept array, data.data, or data.trains */
-        const trains = Array.isArray(data)
-          ? data
-          : data.data
-            ? data.data
-            : data.trains
-              ? data.trains
-              : null;
-
-        if (trains && trains.length > 0) {
-          /* Header row */
-          const head = document.createElement("div");
-          head.className = "results-head";
-          head.innerHTML = `
-            <span class="results-title">Available Trains</span>
-            <span class="results-count">${trains.length} found</span>`;
-          resultsEl.appendChild(head);
-
-          /* One card per train */
-          trains.forEach((t, i) => {
-            const avail = t.availability || t.avail || "AVAILABLE";
-            const availClass = avail.startsWith("WL")
-              ? "avail-wl"
-              : avail.startsWith("RAC")
-                ? "avail-rak"
-                : "avail-yes";
-
-            const card = document.createElement("div");
-            card.className = "result-card";
-            card.style.animationDelay = `${i * 0.06}s`;
-            card.innerHTML = `
-              <div class="rc-top">
-                <div>
-                  <div class="rc-train-name">${t.trainName || t.train_name || "Train"}</div>
-                  <div class="rc-train-no">#${t.trainNo || t.train_no || ""}</div>
-                </div>
-                <span class="rc-avail ${availClass}">${avail}</span>
-              </div>
-              <div class="rc-route">
-                <div class="rc-stn">
-                  <div class="rc-time">${t.departTime || t.depart || "--:--"}</div>
-                  <div class="rc-code">${t.fromStn || t.from || ""}</div>
-                </div>
-                <div class="rc-line">
-                  <div class="rc-line-bar"></div>
-                  <span class="rc-dur">${t.duration || ""}</span>
-                  <div class="rc-line-bar"></div>
-                </div>
-                <div class="rc-stn" style="text-align:right;">
-                  <div class="rc-time">${t.arrivalTime || t.arrival || "--:--"}</div>
-                  <div class="rc-code">${t.toStn || t.to || ""}</div>
-                </div>
-              </div>
-              <div class="rc-bottom">
-                <div class="rc-class-chips">
-                  ${(t.classes || ["SL", "3A", "2A"])
-                    .map(
-                      (c, ci) =>
-                        `<span class="rc-chip ${ci === 0 ? "active" : ""}">${c}</span>`,
-                    )
-                    .join("")}
-                </div>
-                <button class="rc-price-btn">
-                  ${t.fare ? `₹${t.fare}` : "Book →"}
-                </button>
-              </div>`;
-            resultsEl.appendChild(card);
-          });
-        } else {
-          /* Fallback: show raw JSON if shape is unrecognised */
-          const pre = document.createElement("pre");
-          pre.className = "result-raw";
-          pre.textContent = JSON.stringify(data, null, 2);
-          resultsEl.innerHTML =
-            '<div class="results-head"><span class="results-title">API Response</span></div>';
-          resultsEl.appendChild(pre);
-        }
-      }
-
-      /* ── Error state ──────────────────────────────────────── */
-      function showError(msg) {
-        resultsEl.innerHTML = `
-          <div class="state-card">
-            <div class="state-icon">⚠️</div>
-            <div class="state-title">Something went wrong</div>
-            <div class="state-sub error">${msg}</div>
-          </div>`;
-      }
-
-      /* ── Empty state ──────────────────────────────────────── */
-      function showEmpty() {
-        resultsEl.innerHTML = `
-          <div class="state-card">
-            <div class="state-icon">🔍</div>
-            <div class="state-title">No trains found</div>
-            <div class="state-sub">Try a different date, station code, or quota.</div>
-          </div>`;
-      }
-
-      /* ════════════════════════════════════════════════════════
-         DISCLAIMER POPUP
-         ════════════════════════════════════════════════════════ */
-
-      const disclaimerOverlay = $("disclaimer-overlay");
+      /* ── Disclaimer ── */
       const disclaimerCheck = $("disclaimer-check");
       const disclaimerBtn = $("disclaimer-agree-btn");
-
-      /* Enable the agree button only when checkbox is ticked */
       disclaimerCheck.addEventListener("change", () => {
         if (disclaimerCheck.checked) {
           disclaimerBtn.classList.add("ready");
@@ -1974,11 +1770,64 @@
           disclaimerBtn.disabled = true;
         }
       });
-
-      /* Dismiss overlay on agree */
       disclaimerBtn.addEventListener("click", () => {
-        disclaimerOverlay.classList.add("hidden");
+        $("disclaimer-overlay").classList.add("hidden");
       });
+
+      /* ── Render results ── */
+      function renderResults(data) {
+        resultsEl.innerHTML = "";
+        const trains = Array.isArray(data)
+          ? data
+          : data.data
+            ? data.data
+            : data.trains
+              ? data.trains
+              : null;
+        if (trains && trains.length > 0) {
+          const head = document.createElement("div");
+          head.className = "results-head";
+          head.innerHTML = `<span class="results-title">Available Trains</span><span class="results-count">${trains.length} found</span>`;
+          resultsEl.appendChild(head);
+          trains.forEach((t, i) => {
+            const avail = t.availability || t.avail || "AVAILABLE";
+            const availClass = avail.startsWith("WL")
+              ? "avail-wl"
+              : avail.startsWith("RAC")
+                ? "avail-rak"
+                : "avail-yes";
+            const c = document.createElement("div");
+            c.className = "result-card";
+            c.style.animationDelay = `${i * 0.06}s`;
+            c.innerHTML = `
+              <div class="rc-top">
+                <div><div class="rc-train-name">${t.trainName || t.train_name || "Train"}</div><div class="rc-train-no">#${t.trainNo || t.train_no || ""}</div></div>
+                <span class="rc-avail ${availClass}">${avail}</span>
+              </div>
+              <div class="rc-route">
+                <div class="rc-stn"><div class="rc-time">${t.departTime || t.depart || "--:--"}</div><div class="rc-code">${t.fromStn || t.from || ""}</div></div>
+                <div class="rc-line"><div class="rc-line-bar"></div><span class="rc-dur">${t.duration || ""}</span><div class="rc-line-bar"></div></div>
+                <div class="rc-stn" style="text-align:right"><div class="rc-time">${t.arrivalTime || t.arrival || "--:--"}</div><div class="rc-code">${t.toStn || t.to || ""}</div></div>
+              </div>
+              <div class="rc-bottom">
+                <div class="rc-class-chips">${(t.classes || ["SL", "3A", "2A"]).map((c, ci) => `<span class="rc-chip ${ci === 0 ? "active" : ""}">${c}</span>`).join("")}</div>
+                <button class="rc-price-btn">${t.fare ? `₹${t.fare}` : "Book →"}</button>
+              </div>`;
+            resultsEl.appendChild(c);
+          });
+        } else {
+          const pre = document.createElement("pre");
+          pre.className = "result-raw";
+          pre.textContent = JSON.stringify(data, null, 2);
+          resultsEl.innerHTML =
+            '<div class="results-head"><span class="results-title">API Response</span></div>';
+          resultsEl.appendChild(pre);
+        }
+      }
+
+      function showError(msg) {
+        resultsEl.innerHTML = `<div class="state-card"><div class="state-icon">⚠️</div><div class="state-title">Something went wrong</div><div class="state-sub error">${msg}</div></div>`;
+      }
     </script>
   </body>
 </html>
