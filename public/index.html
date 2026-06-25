@@ -1606,7 +1606,7 @@
                     </svg>
                   </span>
                   <select class="field-select" id="Coach" name="coach">
-                    <option value="">Any</option>
+                    <option value="" disabled selected>Select Class</option>
                     <option value="2S">2S — Second Sit</option>
                     <option value="SL">SL — Sleeper</option>
                     <option value="3A">3A — AC 3 Tier</option>
@@ -1826,20 +1826,27 @@
 
       /* ── Form submit: validate → show loading → let POST proceed ── */
       $("ticket-form").addEventListener("submit", function (e) {
+        const trainNo = $("Train-Number").value.trim();
         const fromStnCode = $("FromStnCode").value.trim();
         const toStnCode = $("ToStnCode").value.trim();
         const date = $("Date").value.trim();
+        const coach = $("Coach").value.trim();
+        const quota = $("Quota").value.trim();
 
-        if (!fromStnCode || !toStnCode || !date) {
+        if (
+          !trainNo ||
+          !fromStnCode ||
+          !toStnCode ||
+          !date ||
+          !coach ||
+          !quota
+        ) {
           e.preventDefault();
-          showError("Please fill From, To, and Date fields.");
+          showError("Please fill all fields before searching.");
           return;
         }
 
-        /* Update route label inside the loading panel */
         $("loading-route").textContent = `${fromStnCode} → ${toStnCode}`;
-
-        /* Flip card to loading view — browser continues the real POST */
         card.classList.add("is-loading");
       });
 
