@@ -1393,6 +1393,11 @@
                     placeholder="e.g. 12301"
                     autocomplete="off"
                     inputmode="numeric"
+                    maxlength="5"
+                    pattern="[0-9]{1,5}"
+                    oninput="
+                      this.value = this.value.replace(/[^0-9]/g, '').slice(0, 5)
+                    "
                   />
                 </div>
               </div>
