@@ -10,7 +10,7 @@ async function theSplicerStopsOfTrain(trainNo, fromstncode, tostncode) {
   // If train not found, log an error and exit early
   if (!trainInfo) {
     console.error(`Train ${trainNo} not found.`);
-    return;
+    return null;
   }
 
   // Deep clone the trainInfo object to avoid mutating the original
@@ -26,13 +26,13 @@ async function theSplicerStopsOfTrain(trainNo, fromstncode, tostncode) {
     console.error(
       `Source station "${fromstncode}" not found in train ${trainNo} route.`,
     );
-    return;
+    return null;
   }
   if (!splicedcodes.includes(tostncode)) {
     console.error(
       `Destination station "${tostncode}" not found in train ${trainNo} route.`,
     );
-    return;
+    return null;
   }
 
   // Takes the full station code list and returns only the slice relevant to this journey.

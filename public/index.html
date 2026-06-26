@@ -1433,6 +1433,8 @@
                     placeholder="BZA"
                     autocomplete="off"
                     style="text-transform: uppercase"
+                    pattern="[A-Za-z]*"
+                    onkeypress="return /[a-zA-Z]/.test(event.key);"
                   />
                 </div>
               </div>
@@ -1467,6 +1469,8 @@
                     placeholder="NDLS"
                     autocomplete="off"
                     style="text-transform: uppercase"
+                    pattern="[A-Za-z]*"
+                    onkeypress="return /[a-zA-Z]/.test(event.key);"
                   />
                 </div>
               </div>
