@@ -945,9 +945,7 @@
         background: var(--indigo-dark);
       }
 
-      /* ══════════════════════════════════════════════════════
-         MAINTENANCE POPUP
-         ══════════════════════════════════════════════════════ */
+      /* MAINTENANCE POPUP */
       .maint-overlay {
         position: fixed;
         inset: 0;
@@ -970,8 +968,6 @@
         width: 100%;
         overflow: hidden;
       }
-
-      /* Orange/amber head for maintenance (distinct from blue disclaimer) */
       .maint-head {
         background: linear-gradient(135deg, #e65100 0%, #ff9800 100%);
         padding: 22px 20px 18px;
@@ -984,7 +980,6 @@
         flex-shrink: 0;
         line-height: 1;
       }
-
       .maint-head-title {
         font-size: 16px;
         font-weight: 700;
@@ -997,12 +992,9 @@
         color: rgba(255, 255, 255, 0.7);
         margin-top: 3px;
       }
-
       .maint-body {
         padding: 20px;
       }
-
-      /* Countdown / time window banner */
       .maint-window {
         display: flex;
         align-items: center;
@@ -1017,7 +1009,6 @@
         font-size: 20px;
         flex-shrink: 0;
       }
-
       .maint-window-label {
         font-size: 10px;
         font-weight: 700;
@@ -1032,8 +1023,6 @@
         color: #e65100;
         letter-spacing: 0.2px;
       }
-
-      /* Live countdown timer */
       .maint-countdown {
         text-align: center;
         margin-bottom: 16px;
@@ -1079,7 +1068,6 @@
         color: var(--grey-300);
         padding-bottom: 12px;
       }
-
       .maint-body p {
         font-size: 13px;
         color: var(--grey-700);
@@ -1093,7 +1081,6 @@
         color: var(--black);
         font-weight: 600;
       }
-
       .maint-footer {
         padding: 14px 20px 18px;
         display: flex;
@@ -1120,8 +1107,6 @@
         text-align: center;
         line-height: 1.5;
       }
-
-      /* Pulse dot on the orange head */
       .maint-pulse {
         display: inline-flex;
         align-items: center;
@@ -1146,6 +1131,36 @@
         50% {
           opacity: 1;
           transform: scale(1.2);
+        }
+      }
+
+      /* FIELD ERROR STATES */
+      .field-input-wrap.field-error {
+        border-color: var(--red);
+        background: #fff0f0;
+      }
+      .field-input-wrap.field-error:focus-within {
+        border-color: var(--red);
+        box-shadow: 0 0 0 3px rgba(244, 67, 54, 0.15);
+      }
+      .field-error-msg {
+        font-size: 11px;
+        color: var(--red);
+        font-weight: 500;
+        padding-left: 2px;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        animation: errIn 0.15s ease;
+      }
+      @keyframes errIn {
+        from {
+          opacity: 0;
+          transform: translateY(-3px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
         }
       }
 
@@ -1260,12 +1275,11 @@
             <div class="maint-head-title">Down for Maintenance</div>
             <div class="maint-head-sub">Scheduled nightly update window</div>
             <div class="maint-pulse">
-              <span class="maint-pulse-dot"></span>
-              Live — resumes automatically after window
+              <span class="maint-pulse-dot"></span> Live — resumes automatically
+              after window
             </div>
           </div>
         </div>
-
         <div class="maint-body">
           <div class="maint-window">
             <div class="maint-window-icon">🕐</div>
@@ -1274,27 +1288,25 @@
               <div class="maint-window-time">11:35 PM — 12:25 AM</div>
             </div>
           </div>
-
           <div class="maint-countdown">
             <div class="maint-countdown-label">Service resumes in</div>
             <div class="maint-clock">
               <div class="maint-clock-seg">
-                <span class="maint-clock-num" id="cnt-h">00</span>
-                <span class="maint-clock-unit">hrs</span>
+                <span class="maint-clock-num" id="cnt-h">00</span
+                ><span class="maint-clock-unit">hrs</span>
               </div>
               <span class="maint-clock-colon">:</span>
               <div class="maint-clock-seg">
-                <span class="maint-clock-num" id="cnt-m">00</span>
-                <span class="maint-clock-unit">min</span>
+                <span class="maint-clock-num" id="cnt-m">00</span
+                ><span class="maint-clock-unit">min</span>
               </div>
               <span class="maint-clock-colon">:</span>
               <div class="maint-clock-seg">
-                <span class="maint-clock-num" id="cnt-s">00</span>
-                <span class="maint-clock-unit">sec</span>
+                <span class="maint-clock-num" id="cnt-s">00</span
+                ><span class="maint-clock-unit">sec</span>
               </div>
             </div>
           </div>
-
           <p>
             Sorry for the inconvenience. We perform
             <strong>scheduled maintenance and updates</strong> every night
@@ -1306,7 +1318,6 @@
             automatically. No action needed on your end.
           </p>
         </div>
-
         <div class="maint-footer">
           <button class="btn-maint-close" id="maint-close-btn">
             Got it — I'll come back later
@@ -1349,7 +1360,6 @@
     <!-- SEARCH CARD -->
     <div class="card-wrap">
       <div class="card" id="main-card">
-        <!-- Form view -->
         <div class="card-form-view">
           <div class="card-head">
             <div class="card-head-title">
@@ -1361,7 +1371,6 @@
               Search Tickets
             </div>
           </div>
-
           <form id="ticket-form" action="/search" method="POST">
             <!-- Train Number -->
             <div class="field-row" style="margin-bottom: 10px">
@@ -1369,7 +1378,7 @@
                 <label class="field-label" for="Train-Number"
                   >Train Number</label
                 >
-                <div class="field-input-wrap">
+                <div class="field-input-wrap" id="wrap-Train-Number">
                   <span class="field-icon"
                     ><svg viewBox="0 0 24 24">
                       <path
@@ -1404,7 +1413,7 @@
                 <label class="field-label" for="FromStnCode"
                   >From Station</label
                 >
-                <div class="field-input-wrap">
+                <div class="field-input-wrap" id="wrap-FromStnCode">
                   <span class="field-icon"
                     ><svg viewBox="0 0 24 24">
                       <path
@@ -1438,7 +1447,7 @@
               </div>
               <div class="field">
                 <label class="field-label" for="ToStnCode">To Station</label>
-                <div class="field-input-wrap">
+                <div class="field-input-wrap" id="wrap-ToStnCode">
                   <span class="field-icon"
                     ><svg viewBox="0 0 24 24">
                       <path
@@ -1462,7 +1471,7 @@
             <div class="field-row three" style="margin-bottom: 10px">
               <div class="field">
                 <label class="field-label" for="Date">Date of Journey</label>
-                <div class="field-input-wrap">
+                <div class="field-input-wrap" id="wrap-Date">
                   <span class="field-icon"
                     ><svg viewBox="0 0 24 24">
                       <path
@@ -1474,7 +1483,7 @@
               </div>
               <div class="field">
                 <label class="field-label" for="Coach">Coach / Class</label>
-                <div class="field-input-wrap">
+                <div class="field-input-wrap" id="wrap-Coach">
                   <span class="field-icon"
                     ><svg viewBox="0 0 24 24">
                       <path
@@ -1496,7 +1505,7 @@
               </div>
               <div class="field">
                 <label class="field-label" for="Quota">Quota</label>
-                <div class="field-input-wrap">
+                <div class="field-input-wrap" id="wrap-Quota">
                   <span class="field-icon"
                     ><svg viewBox="0 0 24 24">
                       <path
@@ -1545,7 +1554,7 @@
               />
             </svg>
           </div>
-          <div class="loading-title">Searching for trains…</div>
+          <div class="loading-title">Searching for tickets…</div>
           <div class="loading-sub">
             Checking availability for <strong id="loading-route">— → —</strong>
           </div>
@@ -1631,13 +1640,25 @@
       const resultsEl = $("results");
       const card = $("main-card");
 
-      /* ── Default date (local timezone fix) ── */
+      // Default date local timezone fix of 60-day Advance Reservation Period (ARP)
+      const dateInput = document.getElementById("Date");
       const now = new Date();
       const today = new Date(now.getTime() - now.getTimezoneOffset() * 60000)
         .toISOString()
         .split("T")[0];
-      $("Date").value = today;
-      $("Date").min = today;
+
+      dateInput.value = today;
+      dateInput.min = today;
+
+      const maxDate = new Date(now);
+      maxDate.setDate(maxDate.getDate() + 60);
+      const max = new Date(
+        maxDate.getTime() - maxDate.getTimezoneOffset() * 60000,
+      )
+        .toISOString()
+        .split("T")[0];
+
+      dateInput.max = max;
 
       /* ── Uppercase station codes ── */
       ["FromStnCode", "ToStnCode"].forEach((id) => {
@@ -1658,36 +1679,23 @@
         setTimeout(() => ($("swap-btn").style.transform = ""), 300);
       });
 
-      /* ══════════════════════════════════════════════════════
-         MAINTENANCE WINDOW CHECK
-         Window: 23:35 – 00:25 (i.e. 11:35 PM to 12:25 AM next day)
-         ══════════════════════════════════════════════════════ */
-
+      /* ── Maintenance window ── */
       function isInMaintenanceWindow() {
-        const now = new Date();
-        const h = now.getHours(),
-          m = now.getMinutes();
-        // minutes-since-midnight
-        const totalMin = h * 60 + m;
-        const winStart = 23 * 60 + 35; // 23:35 = 1415 min
-        const winEnd = 0 * 60 + 25; // 00:25 = 25 min (next day)
-        // window crosses midnight: active if >= 1415 OR <= 25
-        return totalMin >= winStart || totalMin <= winEnd;
+        const n = new Date();
+        const totalMin = n.getHours() * 60 + n.getMinutes();
+        return totalMin >= 23 * 60 + 35 || totalMin <= 25;
       }
 
-      /* Compute seconds until maintenance ends (00:25) */
       function secondsUntilEnd() {
-        const now = new Date();
-        const end = new Date(now);
-        // If past midnight and before 00:25 → end is today at 00:25
-        // If before midnight → end is tomorrow at 00:25
-        if (now.getHours() === 0 && now.getMinutes() <= 25) {
+        const n = new Date(),
+          end = new Date(n);
+        if (n.getHours() === 0 && n.getMinutes() <= 25) {
           end.setHours(0, 25, 0, 0);
         } else {
           end.setDate(end.getDate() + 1);
           end.setHours(0, 25, 0, 0);
         }
-        return Math.max(0, Math.floor((end - now) / 1000));
+        return Math.max(0, Math.floor((end - n) / 1000));
       }
 
       let countdownTimer = null;
@@ -1695,15 +1703,16 @@
       function startCountdown() {
         function tick() {
           const secs = secondsUntilEnd();
-          const hh = Math.floor(secs / 3600);
-          const mm = Math.floor((secs % 3600) / 60);
-          const ss = secs % 60;
-          $("cnt-h").textContent = String(hh).padStart(2, "0");
-          $("cnt-m").textContent = String(mm).padStart(2, "0");
-          $("cnt-s").textContent = String(ss).padStart(2, "0");
+          $("cnt-h").textContent = String(Math.floor(secs / 3600)).padStart(
+            2,
+            "0",
+          );
+          $("cnt-m").textContent = String(
+            Math.floor((secs % 3600) / 60),
+          ).padStart(2, "0");
+          $("cnt-s").textContent = String(secs % 60).padStart(2, "0");
           if (secs <= 0) {
             clearInterval(countdownTimer);
-            // Auto-close popup when window ends
             $("maint-overlay").classList.add("hidden");
           }
         }
@@ -1716,44 +1725,73 @@
         startCountdown();
       }
 
-      /* Close button */
       $("maint-close-btn").addEventListener("click", () => {
         $("maint-overlay").classList.add("hidden");
         if (countdownTimer) clearInterval(countdownTimer);
       });
 
-      /* ── Form submit: check maintenance window first, then validate ── */
-      $("ticket-form").addEventListener("submit", function (e) {
-        e.preventDefault(); // Always prevent default; we handle submission
+      /* ── Field validation ── */
+      const FIELDS = [
+        { id: "Train-Number", msg: "Train number is required" },
+        { id: "FromStnCode", msg: "Enter a departure station code" },
+        { id: "ToStnCode", msg: "Enter a destination station code" },
+        { id: "Date", msg: "Pick a date of journey" },
+        { id: "Coach", msg: "Select a coach class" },
+        { id: "Quota", msg: "Select a quota" },
+      ];
 
-        /* 1. Check maintenance window */
+      function getWrap(id) {
+        return document.getElementById(id).closest(".field-input-wrap");
+      }
+
+      function setFieldError(f) {
+        const wrap = getWrap(f.id);
+        wrap.classList.add("field-error");
+        if (!wrap.parentElement.querySelector(".field-error-msg")) {
+          const errEl = document.createElement("span");
+          errEl.className = "field-error-msg";
+          errEl.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="#f44336"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>${f.msg}`;
+          wrap.insertAdjacentElement("afterend", errEl);
+        }
+      }
+
+      function clearFieldError(id) {
+        const wrap = getWrap(id);
+        wrap.classList.remove("field-error");
+        const errEl = wrap.parentElement.querySelector(".field-error-msg");
+        if (errEl) errEl.remove();
+      }
+
+      /* Live-clear on input/change */
+      FIELDS.forEach((f) => {
+        const el = document.getElementById(f.id);
+        el.addEventListener("input", () => clearFieldError(f.id));
+        el.addEventListener("change", () => clearFieldError(f.id));
+      });
+
+      /* ── Form submit ── */
+      $("ticket-form").addEventListener("submit", function (e) {
+        e.preventDefault();
+
         if (isInMaintenanceWindow()) {
           showMaintenancePopup();
           return;
         }
 
-        /* 2. Validate fields */
-        const trainNo = $("Train-Number").value.trim();
-        const fromStnCode = $("FromStnCode").value.trim();
-        const toStnCode = $("ToStnCode").value.trim();
-        const date = $("Date").value.trim();
-        const coach = $("Coach").value.trim();
-        const quota = $("Quota").value.trim();
+        let hasError = false;
+        FIELDS.forEach((f) => {
+          if (!document.getElementById(f.id).value.trim()) {
+            setFieldError(f);
+            hasError = true;
+          } else {
+            clearFieldError(f.id);
+          }
+        });
 
-        if (
-          !trainNo ||
-          !fromStnCode ||
-          !toStnCode ||
-          !date ||
-          !coach ||
-          !quota
-        ) {
-          showError("Please fill all fields before searching.");
-          return;
-        }
+        if (hasError) return;
 
-        /* 3. Show loading and submit */
-        $("loading-route").textContent = `${fromStnCode} → ${toStnCode}`;
+        $("loading-route").textContent =
+          `${$("FromStnCode").value} → ${$("ToStnCode").value}`;
         card.classList.add("is-loading");
         this.submit();
       });

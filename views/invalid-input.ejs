@@ -1,0 +1,564 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>M5-ticket Find Book Travel</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --indigo: #0022d2;
+        --indigo-tint: #ebedff;
+        --black: #0a0a0a;
+        --grey-700: #3a3a3a;
+        --grey-500: #6b6b6b;
+        --grey-300: #c4c4c4;
+        --grey-100: #f2f2f2;
+        --white: #ffffff;
+        --red: #fb8c00;
+        --red-tint: #fff3e0;
+        --red-text: #b35900;
+        --radius-sm: 8px;
+        --radius-md: 12px;
+        --radius-lg: 18px;
+        --radius-pill: 999px;
+        --shadow-card: 0 2px 12px rgba(0, 0, 0, 0.08);
+        --font: "Inter", system-ui, sans-serif;
+        --transition: 0.18s ease;
+      }
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      html {
+        font-family: var(--font);
+        font-size: 16px;
+      }
+      body {
+        background: var(--grey-100);
+        color: var(--black);
+        min-height: 100dvh;
+      }
+      button {
+        cursor: pointer;
+        border: none;
+        background: none;
+        font-family: inherit;
+      }
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+      .header {
+        background: var(--white);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+      .header-inner {
+        max-width: 960px;
+        margin: 0 auto;
+        padding: 0 16px;
+        height: 56px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 40px;
+      }
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .logo-icon {
+        width: 34px;
+        height: 34px;
+        border-radius: var(--radius-sm);
+        background: var(--indigo);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .logo-icon svg {
+        width: 18px;
+        height: 18px;
+        fill: var(--white);
+      }
+      .logo-name {
+        font-size: 18px;
+        font-weight: 700;
+        color: var(--indigo);
+        letter-spacing: -0.4px;
+      }
+      .logo-tag {
+        font-size: 9px;
+        color: var(--grey-500);
+        letter-spacing: 1px;
+      }
+      .hero {
+        background: var(--red);
+        padding: 28px 16px 72px;
+        text-align: center;
+      }
+      .hero-title {
+        font-size: clamp(20px, 4vw, 28px);
+        font-weight: 700;
+        color: var(--white);
+        line-height: 1.2;
+      }
+      .hero-title span {
+        color: rgba(255, 255, 255, 0.6);
+        font-weight: 400;
+      }
+      .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        margin-top: 10px;
+        background: rgba(255, 255, 255, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        border-radius: var(--radius-pill);
+        padding: 5px 14px;
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--white);
+      }
+      .result-wrap {
+        max-width: 640px;
+        margin: -48px auto 0;
+        padding: 0 16px 80px;
+      }
+      .btn-back {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--indigo);
+        background: var(--indigo-tint);
+        border: 1px solid rgba(0, 34, 210, 0.15);
+        padding: 9px 18px;
+        border-radius: var(--radius-pill);
+        margin-bottom: 14px;
+        transition: var(--transition);
+      }
+      .btn-back:hover {
+        background: var(--indigo);
+        color: var(--white);
+      }
+
+      /* failure card */
+      .failure-card {
+        background: var(--white);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-card);
+        overflow: hidden;
+        border: 1.5px solid rgba(244, 67, 54, 0.15);
+        animation: slideUp 0.25s ease both;
+      }
+      @keyframes slideUp {
+        from {
+          opacity: 0;
+          transform: translateY(12px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .failure-head {
+        background: var(--red-tint);
+        border-bottom: 1px solid rgba(244, 67, 54, 0.15);
+        padding: 20px 18px;
+        text-align: center;
+      }
+      .failure-icon {
+        font-size: 48px;
+        margin-bottom: 10px;
+      }
+      .failure-title {
+        font-size: 18px;
+        font-weight: 700;
+        color: var(--red-text);
+        margin-bottom: 6px;
+      }
+      .failure-sub {
+        font-size: 13px;
+        color: var(--grey-500);
+        line-height: 1.5;
+      }
+
+      /* search summary */
+      .search-summary {
+        padding: 18px 18px 0;
+      }
+      .search-summary-title {
+        font-size: 10px;
+        font-weight: 700;
+        color: var(--grey-500);
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        margin-bottom: 12px;
+      }
+      .search-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 8px 0;
+        border-bottom: 1px solid var(--grey-100);
+        gap: 10px;
+      }
+      .search-row:last-child {
+        border-bottom: none;
+      }
+      .search-key {
+        font-size: 12px;
+        color: var(--grey-500);
+        font-weight: 500;
+        flex-shrink: 0;
+      }
+      .search-val-wrap {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        min-width: 0;
+      }
+      .search-val {
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--black);
+        text-align: right;
+        word-break: break-all;
+      }
+      .search-row.is-bad .search-val {
+        color: var(--red-text);
+      }
+      .field-flag {
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 0.4px;
+        padding: 2px 7px;
+        border-radius: var(--radius-pill);
+        flex-shrink: 0;
+        white-space: nowrap;
+      }
+      .field-flag.bad {
+        background: var(--red-tint);
+        color: var(--red-text);
+        border: 1px solid rgba(244, 67, 54, 0.25);
+      }
+
+      /* try again button */
+      .failure-footer {
+        padding: 18px;
+        border-top: 1px solid var(--grey-100);
+      }
+      .btn-try-again {
+        width: 100%;
+        padding: 14px;
+        background: var(--indigo);
+        color: var(--white);
+        font-size: 15px;
+        font-weight: 700;
+        border-radius: var(--radius-sm);
+        box-shadow: 0 4px 14px rgba(0, 34, 210, 0.35);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        transition: var(--transition);
+      }
+      .btn-try-again svg {
+        width: 18px;
+        height: 18px;
+        fill: var(--white);
+      }
+      .btn-try-again:hover {
+        background: #0019a8;
+        transform: translateY(-1px);
+      }
+
+      .footer-nav {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: var(--white);
+        border-top: 1px solid rgba(0, 0, 0, 0.08);
+        display: flex;
+        z-index: 100;
+      }
+      @media (min-width: 640px) {
+        .footer-nav {
+          display: none;
+        }
+      }
+      @media (max-width: 639px) {
+        body {
+          padding-bottom: 64px;
+        }
+      }
+
+      .help-card {
+        background: var(--white);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-card);
+        overflow: hidden;
+        margin-top: 12px;
+      }
+      .help-card-head {
+        padding: 14px 18px;
+        border-bottom: 1px solid var(--grey-100);
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+      }
+      .help-card-title {
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--black);
+        display: flex;
+        align-items: center;
+        gap: 7px;
+      }
+      .help-card-sub {
+        font-size: 12px;
+        color: var(--grey-500);
+      }
+
+      .help-section-label {
+        font-size: 10px;
+        font-weight: 700;
+        color: var(--grey-500);
+        letter-spacing: 0.8px;
+        text-transform: uppercase;
+        padding: 14px 18px 8px;
+      }
+
+      .tip-row {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 10px 18px;
+        border-bottom: 1px solid var(--grey-100);
+      }
+      .tip-row:last-child {
+        border-bottom: none;
+      }
+      .tip-icon-wrap {
+        font-size: 18px;
+        flex-shrink: 0;
+        margin-top: 1px;
+        color: var(--grey-500);
+      }
+      .tip-title {
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--black);
+        margin-bottom: 3px;
+      }
+      .tip-desc {
+        font-size: 12px;
+        color: var(--grey-500);
+        line-height: 1.5;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="header">
+      <div class="header-inner">
+        <div class="logo">
+          <div class="logo-icon">
+            <svg viewBox="0 0 24 24">
+              <path
+                d="M4 4h16a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zm0 2v8h16V6H4zm-1 10l-1 3h20l-1-3H3zm5 1h8v1H8v-1zM6 9h12v2H6V9zm0-2h12v1H6V7z"
+              />
+            </svg>
+          </div>
+          <div>
+            <div class="logo-name">M5-ticket</div>
+            <div class="logo-tag">Find - Book - Travel</div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <section class="hero">
+      <h1 class="hero-title">
+        Search Couldn't Run<br /><span>Check your input below</span>
+      </h1>
+      <div class="hero-badge">⚠️ INVALID INPUT — Please correct &amp; retry</div>
+    </section>
+
+    <div class="result-wrap">
+      <a href="/" class="btn-back">
+        <svg
+          viewBox="0 0 24 24"
+          style="width: 14px; height: 14px; fill: currentColor"
+        >
+          <path
+            d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"
+          />
+        </svg>
+        Search Again
+      </a>
+
+      <!-- failure card -->
+      <div class="failure-card">
+        <div class="failure-head">
+          <div class="failure-icon">⚠️</div>
+          <div class="failure-title">We Couldn't Process Your Search</div>
+          <div class="failure-sub">
+            One or more of the values you entered doesn't look right. Please
+            review the fields below and try again.
+          </div>
+        </div>
+
+        <!-- search summary: values as entered -->
+        <div class="search-summary">
+          <div class="search-summary-title">What You Entered</div>
+
+          <div class="search-row">
+            <span class="search-key">Train No.</span>
+            <div class="search-val-wrap">
+              <span class="search-val"><%= trainNo %></span>
+            </div>
+          </div>
+
+          <div class="search-row">
+            <span class="search-key">From Station</span>
+            <div class="search-val-wrap">
+              <span class="search-val"><%= fromStnCode %></span>
+            </div>
+          </div>
+
+          <div class="search-row">
+            <span class="search-key">To Station</span>
+            <div class="search-val-wrap">
+              <span class="search-val"><%= toStnCode %></span>
+            </div>
+          </div>
+
+          <div class="search-row">
+            <span class="search-key">Date</span>
+            <div class="search-val-wrap">
+              <span class="search-val"><%= date %></span>
+            </div>
+          </div>
+
+          <div class="search-row">
+            <span class="search-key">Coach</span>
+            <div class="search-val-wrap">
+              <span class="search-val"><%= coach %></span>
+            </div>
+          </div>
+
+          <div class="search-row">
+            <span class="search-key">Quota</span>
+            <div class="search-val-wrap">
+              <span class="search-val"><%= quota %></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- try again -->
+        <div class="failure-footer">
+          <a href="/" class="btn-try-again">
+            <svg viewBox="0 0 24 24">
+              <path
+                d="M17.65 6.35A7.958 7.958 0 0 0 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0 1 12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"
+              />
+            </svg>
+            Correct &amp; Search Again
+          </a>
+        </div>
+      </div>
+
+      <!-- static tips: common input mistakes -->
+      <div class="help-card">
+        <div class="help-card-head">
+          <div class="help-card-title">📋 Common Input Mistakes</div>
+          <div class="help-card-sub">
+            Double-check these before searching again
+          </div>
+        </div>
+
+        <div class="tip-row">
+          <div class="tip-icon-wrap">🚆</div>
+          <div class="tip-content">
+            <div class="tip-title">Train number must be 5 digits</div>
+            <div class="tip-desc">
+              Make sure you entered the full numeric train number with no
+              letters or extra spaces, e.g. 12345.
+            </div>
+          </div>
+        </div>
+
+        <div class="tip-row">
+          <div class="tip-icon-wrap">🗺️</div>
+          <div class="tip-content">
+            <div class="tip-title">Station codes must be valid IRCTC codes</div>
+            <div class="tip-desc">
+              Use the official station abbreviation (e.g. NDLS, BCT), not the
+              full city name.
+            </div>
+          </div>
+        </div>
+
+        <div class="tip-row">
+          <div class="tip-icon-wrap">🔁</div>
+          <div class="tip-content">
+            <div class="tip-title">From and To stations can't be the same</div>
+            <div class="tip-desc">
+              Check that your source and destination stations are different
+              and are actually on this train's route.
+            </div>
+          </div>
+        </div>
+
+        <div class="tip-row">
+          <div class="tip-icon-wrap">📅</div>
+          <div class="tip-content">
+            <div class="tip-title">Date must be today or a future date</div>
+            <div class="tip-desc">
+              Use the format shown in the search box, and make sure it isn't a
+              date in the past.
+            </div>
+          </div>
+        </div>
+
+        <div class="tip-row">
+          <div class="tip-icon-wrap">💺</div>
+          <div class="tip-content">
+            <div class="tip-title">Coach class must match a valid class code</div>
+            <div class="tip-desc">
+              Common values are SL, 3A, 2A, 1A, CC, 2S — check there's no typo.
+            </div>
+          </div>
+        </div>
+
+        <div class="tip-row">
+          <div class="tip-icon-wrap">🎟️</div>
+          <div class="tip-content">
+            <div class="tip-title">Quota must be a supported option</div>
+            <div class="tip-desc">
+              Use GN (General), TQ (Tatkal), PT (Premium Tatkal), or LD
+              (Ladies) — other values won't be recognized.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <nav class="footer-nav"></nav>
+  </body>
+</html>
