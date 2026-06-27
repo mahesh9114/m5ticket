@@ -1,6 +1,6 @@
 // Search modules are passed in as `strategies` from the route — imported here only for reference.
 // The actual execution uses the destructured `strategies` object received as a parameter.
-import { compileClient } from "jade";
+import { compileClient } from "pug";
 import { m1 } from "../models/modules/module1.js"; // direct search from → to
 import { m2 } from "../models/modules/module2.js"; // backwards search — earlier boarding stations
 import { m3 } from "../models/modules/module3.js"; // forward search — later alighting stations
