@@ -12,9 +12,19 @@ async function m1(trainNo, fromStnCode, toStnCode, date, coach, quota) {
     // Parses an API result and checks whether the requested date has available seats.
     // Handles both YYYY-MM-DD (from HTML form) and DD-MM-YYYY (from API) date formats.
     function processResult(result) {
-      const { trainNo, trainName, fromStationName, toStationName } =
-        result.data.train;
+      const {
+        trainNo,
+        trainName,
+        fromStationName,
+        toStationName,
+        travelClass,
+      } = result.data.train;
       const availabilityList = result.data.availability;
+
+      // If either station wasn't found in the route, abort early with a clear message
+      if (travelClass !== coach) {
+        return travelClass;
+      }
 
       // The API returns availability keyed by "D-M-YYYY" (no leading zeros).
       // Normalize whatever date format arrives into that same shape for comparison.

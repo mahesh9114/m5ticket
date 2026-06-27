@@ -1524,10 +1524,10 @@
                   <select class="field-select" id="Quota" name="quota">
                     <option value="GN" selected>GN — General</option>
                     <option value="TQ">TQ — Tatkal</option>
-                    <option value="PT">PT — Premium Tatkal</option>
+                    <!-- <option value="PT">PT — Premium Tatkal</option>
                     <option value="LD">LD — Ladies</option>
                     <option value="SS">SS — Sr Citizen</option>
-                    <option value="DF">DF — Defence</option>
+                    <option value="DF">DF — Defence</option> -->
                   </select>
                 </div>
               </div>
@@ -1645,29 +1645,44 @@
     <nav class="footer-nav"></nav>
 
     <script>
+      <!-- Replace everything from "Default date local timezone fix" comment to the closing dateInput.max = max line -->
+
       const $ = (id) => document.getElementById(id);
       const resultsEl = $("results");
       const card = $("main-card");
 
-      // Default date local timezone fix of 60-day Advance Reservation Period (ARP)
+      /* ── Date + Quota logic ── */
       const dateInput = document.getElementById("Date");
-      const now = new Date();
-      const today = new Date(now.getTime() - now.getTimezoneOffset() * 60000)
-        .toISOString()
-        .split("T")[0];
+      const quotaSelect = document.getElementById("Quota");
 
-      dateInput.value = today;
-      dateInput.min = today;
+      function getLocalDateStr(offsetDays = 0) {
+        const d = new Date();
+        d.setDate(d.getDate() + offsetDays);
+        return new Date(d.getTime() - d.getTimezoneOffset() * 60000)
+          .toISOString()
+          .split("T")[0];
+      }
 
-      const maxDate = new Date(now);
-      maxDate.setDate(maxDate.getDate() + 60);
-      const max = new Date(
-        maxDate.getTime() - maxDate.getTimezoneOffset() * 60000,
-      )
-        .toISOString()
-        .split("T")[0];
+      function applyQuotaLogic() {
+        const isTatkal = quotaSelect.value === "TQ";
+        const today = getLocalDateStr(0);
+        const tomorrow = getLocalDateStr(1);
 
-      dateInput.max = max;
+        if (isTatkal) {
+          dateInput.min = tomorrow;
+          dateInput.max = tomorrow;
+          dateInput.value = tomorrow;
+          dateInput.readOnly = true;
+        } else {
+          dateInput.min = today;
+          dateInput.max = getLocalDateStr(60);
+          dateInput.value = today;
+          dateInput.readOnly = false;
+        }
+      }
+
+      applyQuotaLogic();
+      quotaSelect.addEventListener("change", applyQuotaLogic);
 
       /* ── Uppercase station codes ── */
       ["FromStnCode", "ToStnCode"].forEach((id) => {

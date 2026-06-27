@@ -75,8 +75,8 @@ router.post("/search", async (req, res) => {
     );
 
     // If either station wasn't found in the route, abort early with a clear message
-    if (!splicedTrainArr) {
-      return res.status(400).render("failure", {
+    if (!splicedTrainArr || splicedTrainArr.length === 0) {
+      return res.status(400).render("invalid-input", {
         trainNo,
         fromStnCode,
         toStnCode,
@@ -103,6 +103,18 @@ router.post("/search", async (req, res) => {
       },
       { m1, m2, m3, m4, m5 },
     );
+
+    if (result === coach) {
+      return res.status(400).render("invalid-input", {
+        trainNo,
+        fromStnCode,
+        toStnCode,
+        date: normalizedDate,
+        coach,
+        quota,
+        message: `❌ Station "${fromStnCode}" or "${toStnCode}" not found in train ${trainNo} route.`,
+      });
+    }
 
     // Build the base data object that every EJS view needs for display
     const viewData = {
