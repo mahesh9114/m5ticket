@@ -10,15 +10,14 @@
   "dependencies": {
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
-    "dotenv": "^17.4.2",
-    "ejs": "^6.0.1",
+    "dotenv": "^16.4.5",
+    "ejs": "^3.1.10",
     "express": "^5.2.1",
-    "git": "^0.1.5",
     "http-errors": "~1.6.3",
     "iovalkey": "^0.3.3",
-    "jade": "~1.11.0",
     "morgan": "~1.9.1",
     "nodemon": "^3.1.14",
+    "pug": "^3.0.4",
     "railkit": "^4.0.1"
   }
 }
